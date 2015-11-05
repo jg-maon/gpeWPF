@@ -6,6 +6,8 @@
     xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
     xmlns:local="clr-namespace:WpfApplication1"
     x:Class="WpfApplication1.MainWindow"       
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:prism="http://www.codeplex.com/prism"
     mc:Ignorable="d"
     Title="MainWindow" Height="350" Width="1000" 
     >
@@ -18,6 +20,15 @@
     -->
 
 
+    <i:Interaction.Triggers> 
+        <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
+            <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
+                <prism:PopupWindowAction.WindowContent>
+                    <local:CreateNewIdWindowContent/>
+                </prism:PopupWindowAction.WindowContent>
+            </prism:PopupWindowAction>
+        </prism:InteractionRequestTrigger>
+    </i:Interaction.Triggers>
     <Window.Resources>
         <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
         <local:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>
@@ -56,7 +67,7 @@
                     <MenuItem Header="Load" Command="{Binding LoadLayoutCommand, ElementName=mainWindow}"/>
                     <MenuItem Header="Save" Command="{Binding SaveLayoutCommand, ElementName=mainWindow}"/>
                     <MenuItem Header="Dump to Console" Click="OnDumpToConsole"/>
-
+                    <MenuItem Header="CreateNewId" Command="{Binding CreateCommand}" />
                 </MenuItem>
             </Menu>
             <!--AnchorablesSource="{Binding Tools}" DocumentsSource="{Binding Files}"-->

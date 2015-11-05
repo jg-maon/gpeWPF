@@ -24,6 +24,8 @@ using Microsoft.Win32;
 using System.IO;
 using System.Windows;
 using Xceed.Wpf.AvalonDock.Layout;
+using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 
 namespace WpfApplication1
 {
@@ -184,6 +186,38 @@ namespace WpfApplication1
         }
 
         #endregion 
+
+        private InteractionRequest<Confirmation> m_confirmationRequest = new InteractionRequest<Confirmation>();
+        public IInteractionRequest ConfirmationRequest
+        {
+            get
+            { return m_confirmationRequest; }
+        }
+
+        DelegateCommand m_createCommand;
+        public ICommand CreateCommand
+        { 
+            get
+            {
+                return m_createCommand = m_createCommand ?? new DelegateCommand(_OnCreateNewId);
+            }
+        }
+
+        private void _OnCreateNewId()
+        {
+            if(!RaiseConfirm())
+            { return; }
+        }
+
+        public bool RaiseConfirm()
+        {
+            bool isConfirm = true;
+
+            m_confirmationRequest.Raise(new Confirmation { Title = "aaa", Content = "contenttttt" },
+                (c => isConfirm = c.Confirmed));
+
+            return isConfirm;
+        }
 
         #region ActiveDocument
 

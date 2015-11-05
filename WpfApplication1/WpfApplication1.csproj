@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Practices.Prism.Composition">
       <HintPath>..\packages\Prism.Composition.5.0.0\lib\NET45\Microsoft.Practices.Prism.Composition.dll</HintPath>
     </Reference>
@@ -57,6 +58,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -104,6 +106,10 @@
       <DependentUpon>CategoryTreePane.xaml</DependentUpon>
     </Compile>
     <Compile Include="CategoryTreePaneViewModel.cs" />
+    <Compile Include="CreateNewIdWindowContent.xaml.cs">
+      <DependentUpon>CreateNewIdWindowContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CreateNewIdWindowContentViewModel.cs" />
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="FileStatsViewModel.cs" />
     <Compile Include="IdInfoTablePaneViewModel.cs" />
@@ -124,6 +130,10 @@
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="Workspace.cs" />
     <Page Include="CategoryTreePane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CreateNewIdWindowContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
