@@ -51,8 +51,10 @@ namespace WpfApplication1
             get
             {
                 if (_readonyFiles == null)
+                {
+                    _files.Add(ParameterFileTree);
                     _readonyFiles = new ReadOnlyObservableCollection<DocumentViewModel>(_files);
-
+                }
                 return _readonyFiles;
             }
         }
@@ -121,6 +123,8 @@ namespace WpfApplication1
             {
                 var fileViewModel = Open(dlg.FileName);
                 ActiveDocument = fileViewModel;
+
+                ParameterFileTree.Add(dlg.FileName);
             }
         }
 
@@ -174,8 +178,13 @@ namespace WpfApplication1
             _files.Add(CategoryTree);
             _files.Add(IdInfoTable);
             IdInfoTable.SelectedItemChanged += IdInfoTable_SelectedItemChanged;
-            
+
+
+            ParameterFileTree.Add(null);
+
             ActiveDocument = _files.Last();
+
+
         }
 
         void IdInfoTable_SelectedItemChanged(object sender, ParameterViewModelBase e)
@@ -272,6 +281,308 @@ namespace WpfApplication1
         }
 
 
+        public interface ITreeContent<ValueType, TreeType> where TreeType : ITreeContent<ValueType, TreeType>
+        {
+            NodeBase<ValueType, TreeType> SelectedItem { get; set; }
+        }
+
+        public class NodeBase<ValueType, TreeType> : ViewModelBase where TreeType : ITreeContent<ValueType, TreeType>
+        {
+
+            private NodeBase<ValueType, TreeType> m_parent = null;
+            public NodeBase<ValueType, TreeType> Parent
+            {
+                get
+                {
+                    return m_parent;
+                }
+                set
+                {
+                    if (value != m_parent)
+                    {
+                        SetProperty(ref m_parent, value);
+                    }
+                }
+            }
+
+            private ObservableCollection<NodeBase<ValueType, TreeType>> m_nodes = new ObservableCollection<NodeBase<ValueType,TreeType>>();
+            public ObservableCollection<NodeBase<ValueType, TreeType>> Nodes
+            {
+                get
+                {
+                    return m_nodes;
+                }
+                set
+                {
+                    if (value != m_nodes)
+                    {
+                        SetProperty(ref m_nodes, value);
+                    }
+                }
+            }
+
+            private ValueType m_value;
+            public ValueType Value
+            {
+                get
+                {
+                    return m_value;
+                }
+                set
+                {
+                    SetProperty(ref m_value, value);
+                }
+            }
+
+            private readonly TreeType m_tree;
+            public TreeType Tree
+            {
+                get
+                {
+                    return m_tree;
+                }
+            }
+
+            public NodeBase(TreeType tree)
+            {
+                m_tree = tree;
+            }
+            public NodeBase(ValueType value, TreeType tree)
+            {
+                m_tree = tree;
+                m_value = value;
+            }
+
+            public NodeBase<ValueType, TreeType> Add(ValueType value)
+            {
+                NodeBase<ValueType, TreeType> node = new NodeBase<ValueType, TreeType>(value, Tree);
+                node.Parent = this;
+                Nodes.Add(node);
+                return node;
+            }
+
+
+            private bool m_isSelected;
+            public bool IsSelected
+            {
+                get
+                {
+                    return m_isSelected;
+                }
+                set
+                {
+                    if (value != m_isSelected)
+                    {
+                        SetProperty(ref m_isSelected, value);
+                        if (IsSelected)
+                        {
+                            Tree.SelectedItem = this;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// CategoryFilePaneViewModel
+        /// </summary>
+        public class NodeContent : ViewModelBase
+        {
+            public enum NodeType
+            {
+                File,
+                Group
+            }
+            private readonly NodeType m_type;
+            public NodeType Type
+            {
+                get
+                {
+                    return m_type;
+                }
+            }
+
+            public bool IsFileNode
+            {
+                get
+                {
+                    return m_type == NodeContent.NodeType.File;
+                }
+            }
+            public bool IsGroupNode
+            {
+                get
+                {
+                    return m_type == NodeContent.NodeType.Group;
+                }
+            }
+            
+
+            public string Label
+            {
+                get
+                {
+                    
+                    return Path.GetFileNameWithoutExtension(FilePath);
+                }
+            }
+
+            private string m_filePath;
+            public string FilePath
+            {
+                get
+                {
+                    return m_filePath;
+                }
+                set
+                {
+                    if(value != m_filePath)
+                    {
+                        SetProperty(ref m_filePath, value);
+                    }
+                }
+            }
+
+            public NodeContent(NodeType type)
+            {
+                m_type = type;
+            }
+        }
+
+
+        /// <summary>
+        /// パラメータファイルツリーのVM
+        /// </summary>
+        public class ParameterFileTreePaneViewModel : DocumentViewModel, ITreeContent<NodeContent, ParameterFileTreePaneViewModel>
+        {
+            int count = 0;
+            NodeBase<NodeContent, ParameterFileTreePaneViewModel> m_rootNode;
+            public NodeBase<NodeContent, ParameterFileTreePaneViewModel> RootNode
+            {
+                get
+                {
+                    if(null == m_rootNode)
+                    {
+                        m_rootNode = new NodeBase<NodeContent,ParameterFileTreePaneViewModel>(this);
+                    }
+                    return m_rootNode;
+                }
+                set
+                {
+                    if(value != m_rootNode)
+                    {
+                        SetProperty(ref m_rootNode, value);
+                    }
+                }
+
+            }
+
+            private NodeBase<NodeContent, ParameterFileTreePaneViewModel> m_selectedItem;
+            public NodeBase<NodeContent, ParameterFileTreePaneViewModel> SelectedItem
+            {
+                get
+                {
+                    return m_selectedItem;
+                }
+                set
+                {
+                    if (value != m_selectedItem)
+                    {
+                        SetProperty(ref m_selectedItem, value);
+                        m_selectedItem.IsSelected = true;
+                        m_upCommand.RaiseCanExecuteChanged();
+                    }
+                }
+            }
+
+            DelegateCommand m_upCommand;
+            public ICommand UpCommand
+            {
+                get
+                {
+
+                    return m_upCommand = m_upCommand ?? new DelegateCommand(_OnUp, _DoenUp);
+
+                }
+            }
+
+            private bool _DoenUp()
+            {
+                return SelectedItem != null && SelectedItem.Parent != RootNode;
+            }
+
+            private void _OnUp()
+            {
+                _GetCurrentGroupNode(SelectedItem).Parent.Nodes.Add(SelectedItem);
+                SelectedItem.Parent.Nodes.Remove(SelectedItem);
+            }
+
+            DelegateCommand m_addGroupCommand;
+            public ICommand AddGroupCommand
+            {
+                get
+                {
+                    return m_addGroupCommand = m_addGroupCommand ?? new DelegateCommand(_OnAddGroup);
+                }
+            }
+
+            int groupCount = 0;
+            private void _OnAddGroup()
+            {
+                var group = RootNode;
+                if (SelectedItem != null)
+                {
+                    group = _GetCurrentGroupNode(SelectedItem);
+                }
+
+                var added = group.Add(new NodeContent(NodeContent.NodeType.Group) { FilePath = string.Format("group {0}", ++groupCount) });
+                added.IsSelected = true;
+            }
+
+            private NodeBase<NodeContent, ParameterFileTreePaneViewModel> _GetCurrentGroupNode(NodeBase<NodeContent, ParameterFileTreePaneViewModel> node)
+            {
+                if (node.Value.IsGroupNode)
+                {
+                    return node;
+                }
+                // fileノードの場合
+                return node.Parent;
+            }
+
+            public ParameterFileTreePaneViewModel()
+                : base("ファイルツリー")
+            {
+            }
+
+            public void Add(string filePath)
+            {
+                if(filePath == null)
+                {
+                    filePath = "noname" + ++count;
+                }
+                var group = RootNode;
+                if(SelectedItem != null)
+                {
+                    group = _GetCurrentGroupNode(SelectedItem);
+                }
+                var added = group.Add(new NodeContent(NodeContent.NodeType.File) { FilePath = (filePath) });
+                added.IsSelected = true;
+            }
+
+        }
+
+
+        private ParameterFileTreePaneViewModel　m_parameterFileTree;
+        /// <summary>
+        /// ファイルツリー
+        /// </summary>
+        public ParameterFileTreePaneViewModel　ParameterFileTree
+        {
+            get
+            {
+                return m_parameterFileTree = m_parameterFileTree ?? new ParameterFileTreePaneViewModel();
+            }
+        }
 
     }
 }

@@ -19,19 +19,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel;
+using Microsoft.Practices.Prism.Mvvm;
 
 namespace WpfApplication1
 {
-    public class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : BindableBase
     {
 
         protected virtual void RaisePropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            OnPropertyChanged(propertyName);
         }
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

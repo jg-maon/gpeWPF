@@ -34,6 +34,10 @@
         <local:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>
         <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}" />
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" />
+    </Window.InputBindings>
     <Border BorderBrush="Gray" BorderThickness="1">
         <Grid>
             <!--
@@ -52,7 +56,7 @@
             </Grid.RowDefinitions>
             <Menu>
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New" Command="{Binding NewCommand}"/>
+                    <MenuItem Header="_New" Command="{Binding NewCommand}" />
                     <MenuItem Header="_Open" Command="{Binding OpenCommand}"/>
                     <Separator/>
                     <MenuItem Header="Save" Command="{Binding ActiveDocument.SaveCommand}"/>
@@ -92,6 +96,44 @@
                                 <local:CategoryTreePane />
                             </DataTemplate>
                         </local:PanesTemplateSelector.CategoryTreeTemplate>
+                        <local:PanesTemplateSelector.ParameterFileTreeTemplate>
+                            <DataTemplate>
+                                <DataTemplate.Resources>
+                                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                        <Setter Property="Tag" Value="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type TreeView}}}"/>
+                                        <Setter Property="local:TreeViewItemBehaviors.IsEnableDragDropMove" Value="True" />
+                                        
+                                    </Style>
+                                    <HierarchicalDataTemplate x:Key="TreeViewTemplate" 
+                                                              ItemsSource="{Binding Nodes}">
+                                        <TextBlock Text="{Binding Value.Label}"/>
+                                    </HierarchicalDataTemplate>
+                                </DataTemplate.Resources>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <Button Grid.Row="0" Command="{Binding UpCommand}" Content="←"/>
+                                    <TreeView Grid.Row="1" ItemsSource="{Binding RootNode.Nodes}"
+                                              ItemTemplate="{StaticResource TreeViewTemplate}"
+                                              AllowDrop="True"
+                                              local:TreeViewItemBehaviors.IsEnableDragDropMove="True"
+                                              >
+                                        <i:Interaction.Behaviors>
+
+                                            <local:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+
+                                        </i:Interaction.Behaviors>
+                                        <TreeView.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Add Group" Command="{Binding AddGroupCommand}"/>
+                                            </ContextMenu>
+                                        </TreeView.ContextMenu>
+                                    </TreeView>
+                                </Grid>
+                            </DataTemplate>
+                        </local:PanesTemplateSelector.ParameterFileTreeTemplate>
                         <local:PanesTemplateSelector.IdInfoTableTemplate>
                             <DataTemplate>
                                 <DataGrid ItemsSource="{Binding LightSetCollection}"
@@ -210,7 +252,9 @@
 
                 <avalonDock:LayoutRoot>
                     <avalonDock:LayoutPanel Orientation="Horizontal">
-                        <avalonDock:LayoutDocumentPaneGroup>
+                        <avalonDock:LayoutDocumentPaneGroup Orientation="Horizontal">
+                            <avalonDock:LayoutDocumentPane DockWidth="300">
+                            </avalonDock:LayoutDocumentPane>
                             <local:LayoutDocumentPaneEx Name="CategoryTreePane"/>
                             <avalonDock:LayoutDocumentPane>
                                 <avalonDock:LayoutDocument Title="Doc1">
