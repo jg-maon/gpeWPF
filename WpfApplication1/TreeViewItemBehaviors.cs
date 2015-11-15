@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfApplication1.Controls;
 
 namespace WpfApplication1
 {
@@ -117,16 +118,16 @@ namespace WpfApplication1
 
             var srcHolder = e.Data.GetData(typeof(TreeViewItem)) as TreeViewItem;
             if (srcHolder == null) { return; }
-            var srcVM = srcHolder.DataContext as Workspace.NodeBase<Workspace.NodeContent, Workspace.ParameterFileTreePaneViewModel>;
+            var srcVM = srcHolder.DataContext as NodeBase<Workspace.NodeContent>;
             
 
 
             FrameworkElement destItem = sender as TreeViewItem;
-            Workspace.NodeBase<Workspace.NodeContent, Workspace.ParameterFileTreePaneViewModel> destNode, destGroup;
+            NodeBase<Workspace.NodeContent> destNode, destGroup;
 
             if (destItem != null)
             {
-                destNode = destItem.DataContext as Workspace.NodeBase<Workspace.NodeContent, Workspace.ParameterFileTreePaneViewModel>;
+                destNode = destItem.DataContext as NodeBase<Workspace.NodeContent>;
                 destGroup = destNode;
                 if (destNode.Value.IsFileNode)
                 {
@@ -139,7 +140,8 @@ namespace WpfApplication1
                 destItem = sender as TreeView;
                 if(destItem == null)
                 {return;}
-                destNode = ((Workspace.ParameterFileTreePaneViewModel)destItem.DataContext).RootNode;
+                //destNode = ((Workspace.ParameterFileTreePaneViewModel)destItem.DataContext).RootNode;
+                destNode = srcVM.Tree.RootNode;
                 destGroup = destNode;
             }
 
@@ -164,34 +166,9 @@ namespace WpfApplication1
             }
         }
 
-        /// <summary>
-        /// 最後に左クリックした座標
-        /// </summary>
-        private static Point lastLeftMouseButtonDownPoint;
 
 
 
-        public static TreeView GetTree(DependencyObject obj)
-        {
-            return (TreeView)obj.GetValue(TreeProperty);
-        }
-
-        public static void SetTree(DependencyObject obj, TreeView value)
-        {
-            obj.SetValue(TreeProperty, value);
-        }
-
-        // Using a DependencyProperty as the backing store for Tree.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TreeProperty =
-            DependencyProperty.RegisterAttached("Tree", typeof(TreeView), typeof(TreeViewItemBehaviors), new PropertyMetadata(null));
-
-        
-
-
-        /// <summary>
-        /// ドラッグアンドドロップ開始基準となる距離
-        /// </summary>
-        private static readonly double minimumDragDistance = 10.0;
         
 
 

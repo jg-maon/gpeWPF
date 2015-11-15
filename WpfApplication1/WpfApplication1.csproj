@@ -107,12 +107,14 @@
       <DependentUpon>CategoryTreePane.xaml</DependentUpon>
     </Compile>
     <Compile Include="CategoryTreePaneViewModel.cs" />
+    <Compile Include="Controls\TreeViewViewModel.cs" />
     <Compile Include="CreateNewIdWindowContent.xaml.cs">
       <DependentUpon>CreateNewIdWindowContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreateNewIdWindowContentViewModel.cs" />
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="FileSharePaneViewModel.cs" />
     <Compile Include="FileStatsViewModel.cs" />
     <Compile Include="IdInfoTablePaneViewModel.cs" />
     <Compile Include="IEditableValue.cs" />
