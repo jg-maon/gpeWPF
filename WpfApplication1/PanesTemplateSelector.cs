@@ -31,6 +31,7 @@ namespace WpfApplication1
 
         }
 
+        public DataTemplate FileShareTemplate { get; set; }
         public DataTemplate CategoryTreeTemplate { get; set; }
         public DataTemplate ParameterFileTreeTemplate { get; set; }
         public DataTemplate IdInfoTableTemplate { get; set; }
@@ -51,6 +52,8 @@ namespace WpfApplication1
 
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
+            if(item is FileSharePaneViewModel)
+            { return FileShareTemplate; }
             if(item is Workspace.ParameterFileTreePaneViewModel)
             {
                 return ParameterFileTreeTemplate;

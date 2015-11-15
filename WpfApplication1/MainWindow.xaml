@@ -30,9 +30,17 @@
         </prism:InteractionRequestTrigger>
     </i:Interaction.Triggers>
     <Window.Resources>
-        <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
-        <local:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>
-        <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="FileSharePane.xaml"/>
+                <ResourceDictionary>
+
+                    <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
+                    <local:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>
+                    <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}" />
@@ -85,7 +93,7 @@
                 </avalonDock:DockingManager.Theme>
 
                 <avalonDock:DockingManager.LayoutItemTemplateSelector>
-                    <local:PanesTemplateSelector>
+                    <local:PanesTemplateSelector FileShareTemplate="{StaticResource KeyFileSharePaneTemplate}">
                         <local:PanesTemplateSelector.FileViewTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>
@@ -102,6 +110,9 @@
                                     <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
                                         <Setter Property="Tag" Value="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type TreeView}}}"/>
                                         <Setter Property="local:TreeViewItemBehaviors.IsEnableDragDropMove" Value="True" />
+                                        <Setter Property="local:TreeViewItemBehaviors.DragOveredBrush" Value="{StaticResource MouseOverListItem}" />
+                                        <!--<Setter Property="local:TreeViewItemBehaviors.DragOveredBrush" Value="White" />-->
+                                        <Setter Property="local:TreeViewItemBehaviors.NormalBackground" Value="Transparent" />
                                         
                                     </Style>
                                     <HierarchicalDataTemplate x:Key="TreeViewTemplate" 

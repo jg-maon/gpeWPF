@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using WpfApplication1.Controls;
 
 namespace WpfApplication1
@@ -165,6 +166,96 @@ namespace WpfApplication1
 
             }
         }
+
+
+        
+
+        public static Brush GetDragOveredBrush(DependencyObject obj)
+        {
+            return (Brush)obj.GetValue(DragOveredBrushProperty);
+        }
+
+        public static void SetDragOveredBrush(DependencyObject obj, Brush value)
+        {
+            obj.SetValue(DragOveredBrushProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for DragOveredBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DragOveredBrushProperty =
+            DependencyProperty.RegisterAttached("DragOveredBrush", typeof(Brush), typeof(TreeViewItemBehaviors), new PropertyMetadata(null, _OnDragOveredBrushChanged));
+
+        private static void _OnDragOveredBrushChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var item = d as FrameworkElement;
+            
+            if(e.NewValue != null)
+            {
+                item.PreviewDragEnter += item_PreviewDragEnter;
+                item.PreviewDragLeave += item_PreviewDragLeave;
+                item.PreviewDrop += item_PreviewDrop;
+            }
+            else
+            {
+                item.PreviewDragEnter -= item_PreviewDragEnter;
+                item.PreviewDragLeave -= item_PreviewDragLeave;
+                item.PreviewDrop -= item_PreviewDrop;
+            }
+        }
+
+        static void item_PreviewDrop(object sender, DragEventArgs e)
+        {
+            var el = sender as Control;
+            var normalBrush = GetNormalBackground(el);
+            if (normalBrush != null)
+            {
+                el.Background = normalBrush;
+            }
+        }
+
+
+
+
+
+        public static Brush GetNormalBackground(DependencyObject obj)
+        {
+            return (Brush)obj.GetValue(NormalBackgroundProperty);
+        }
+
+        public static void SetNormalBackground(DependencyObject obj, Brush value)
+        {
+            obj.SetValue(NormalBackgroundProperty, value);
+        }
+
+        // Using a DependencyProperty as the backing store for NormalBackground.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NormalBackgroundProperty =
+            DependencyProperty.RegisterAttached("NormalBackground", typeof(Brush), typeof(TreeViewItemBehaviors), new PropertyMetadata(null));
+
+        
+
+        static void item_PreviewDragEnter(object sender, DragEventArgs e)
+        {
+            var el = sender as Control;
+    
+            Brush brush = GetDragOveredBrush(el);
+            if (brush != null)
+            {
+                el.Background = brush;
+            }
+        }
+
+        static void item_PreviewDragLeave(object sender, DragEventArgs e)
+        {
+
+            var el = sender as Control;
+            var normalBrush = GetNormalBackground(el);
+            if (normalBrush != null)
+            {
+                el.Background = normalBrush;
+            }
+        }
+
+
+
 
 
 

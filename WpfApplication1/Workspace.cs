@@ -54,9 +54,19 @@ namespace WpfApplication1
                 if (_readonyFiles == null)
                 {
                     _files.Add(ParameterFileTree);
+                    _files.Add(FileSharePane);
                     _readonyFiles = new ReadOnlyObservableCollection<DocumentViewModel>(_files);
                 }
                 return _readonyFiles;
+            }
+        }
+
+        FileSharePaneViewModel m_fileSharePane;
+        public FileSharePaneViewModel FileSharePane
+        {
+            get
+            {
+                return m_fileSharePane = m_fileSharePane ?? new FileSharePaneViewModel();
             }
         }
 

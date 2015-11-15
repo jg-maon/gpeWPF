@@ -130,6 +130,7 @@
     <Compile Include="Themes\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Themes\TreeViewItemExtensions.cs" />
     <Compile Include="ToolViewModel.cs" />
+    <Compile Include="TreeViewDropHighlighter.cs" />
     <Compile Include="TreeViewItemBehaviors.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="ViewModelBase.cs" />
@@ -139,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreateNewIdWindowContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileSharePane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
