@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:local="clr-namespace:WpfApplication1"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+   
+  >
+    <DataTemplate x:Key="KeyFileSharePaneTemplate">
+        <DataTemplate.Resources>
+
+            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                <Setter Property="Tag" Value="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type TreeView}}}"/>
+                
+            </Style>
+            <HierarchicalDataTemplate x:Key="TreeViewTemplate"
+                                      ItemsSource="{Binding Nodes}">
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}" IsThreeState="True"  />
+                    <Image Source="{Binding}" />
+                    <TextBlock Text="{Binding Label}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+        </DataTemplate.Resources>
+        <TreeView ItemsSource="{Binding RootNode.Nodes}"
+                  ItemTemplate="{StaticResource TreeViewTemplate}"
+                  >
+
+            <i:Interaction.Behaviors>
+                <local:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />
+            </i:Interaction.Behaviors>
+            
+        </TreeView>
+    </DataTemplate>
+</ResourceDictionary>

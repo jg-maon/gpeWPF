@@ -112,16 +112,21 @@
       <DependentUpon>CreateNewIdWindowContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreateNewIdWindowContentViewModel.cs" />
+    <Compile Include="DarkTheme.cs" />
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileSharePaneViewModel.cs" />
     <Compile Include="FileStatsViewModel.cs" />
+    <Compile Include="GParam.cs" />
+    <Compile Include="GParamToParameterParser.cs" />
     <Compile Include="IdInfoTablePaneViewModel.cs" />
     <Compile Include="IEditableValue.cs" />
     <Compile Include="LayoutDocumentPaneEx.cs" />
     <Compile Include="LightSetViewModel.cs" />
+    <Compile Include="MouseDoubleClickBehavior.cs" />
     <Compile Include="ObjectToTypeConverter.cs" />
     <Compile Include="ParameterBase.cs" />
+    <Compile Include="ParameterTab2ViewModel.cs" />
     <Compile Include="ParameterTabContentTemplateSelector.cs" />
     <Compile Include="ParameterTabViewModel.cs" />
     <Compile Include="ParameterViewModelBase.cs" />
@@ -143,6 +148,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DarkBrushes.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="DarkTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileSharePane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -161,6 +174,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Theme.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\ExpressionDark.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -203,6 +220,105 @@
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Generic\Images\DockBottom.PNG" />
+    <Resource Include="Themes\Generic\Images\DockLeft.PNG" />
+    <Resource Include="Themes\Generic\Images\DockPane.PNG" />
+    <Resource Include="Themes\Generic\Images\DockPaneEmpty.png" />
+    <Resource Include="Themes\Generic\Images\DockRight.PNG" />
+    <Resource Include="Themes\Generic\Images\DockTop.PNG" />
+    <Resource Include="Themes\Generic\Images\HTabGroup.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockAnchorableBottom.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockAnchorableLeft.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockAnchorableRight.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockAnchorableTop.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentAsAnchorableBottom.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentAsAnchorableLeft.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentAsAnchorableRight.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentAsAnchorableTop.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentBottom.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentInside.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentLeft.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentRight.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockDocumentTop.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockPaneEmpty.png" />
+    <Resource Include="Themes\Generic\Images\Images\DockPaneLargeEmpty.png" />
+    <Resource Include="Themes\Generic\Images\Images\HTabGroup.png" />
+    <Resource Include="Themes\Generic\Images\Images\Locked.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinAutoHide.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinAutoHide_Black.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinAutoHide_Dark.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinAutoHide_Light.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinClose.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinClose_Black.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinClose_Dark.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinClose_Light.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinDocMenu_Black.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinDocMenu_Dark.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMaximize.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMaximize_Black.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMaximize_Dark.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMaximize_Light.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMenu.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMenu_Black.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMenu_Dark.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinMenu_Light.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinRestore.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinRestore_Black.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinRestore_Dark.png" />
+    <Resource Include="Themes\Generic\Images\Images\PinRestore_Light.png" />
+    <Resource Include="Themes\Generic\Images\Images\VTabGroup.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockDocPaneBottom.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockDocPaneLeft.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockDocPaneRight.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockDocPaneTop.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockPaneBottom.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockPaneInside.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockPaneLeft.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockPaneRight.png" />
+    <Resource Include="Themes\Generic\Images\InnerDockPaneTop.png" />
+    <Resource Include="Themes\Generic\Images\Locked.png" />
+    <Resource Include="Themes\Generic\Images\PinAutoHide.png" />
+    <Resource Include="Themes\Generic\Images\PinClose.png" />
+    <Resource Include="Themes\Generic\Images\PinDocMenu.png" />
+    <Resource Include="Themes\Generic\Images\PinMaximize.png" />
+    <Resource Include="Themes\Generic\Images\PinMenu.png" />
+    <Resource Include="Themes\Generic\Images\PinRestore.png" />
+    <Resource Include="Themes\Generic\Images\VTabGroup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\Generic\Images\DockAnchorableBottom.png" />
+    <Resource Include="Themes\Generic\Images\DockAnchorableLeft.png" />
+    <Resource Include="Themes\Generic\Images\DockAnchorableRight.png" />
+    <Resource Include="Themes\Generic\Images\DockAnchorableTop.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentAsAnchorableBottom.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentAsAnchorableLeft.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentAsAnchorableRight.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentAsAnchorableTop.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentBottom.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentInside.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentLeft.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentRight.png" />
+    <Resource Include="Themes\Generic\Images\DockDocumentTop.png" />
+    <Resource Include="Themes\Generic\Images\DockPaneLargeEmpty.png" />
+    <Resource Include="Themes\Generic\Images\PinAutoHide_Black.png" />
+    <Resource Include="Themes\Generic\Images\PinAutoHide_Dark.png" />
+    <Resource Include="Themes\Generic\Images\PinAutoHide_Light.png" />
+    <Resource Include="Themes\Generic\Images\PinClose_Black.png" />
+    <Resource Include="Themes\Generic\Images\PinClose_Dark.png" />
+    <Resource Include="Themes\Generic\Images\PinClose_Light.png" />
+    <Resource Include="Themes\Generic\Images\PinDocMenu_Black.png" />
+    <Resource Include="Themes\Generic\Images\PinDocMenu_Dark.png" />
+    <Resource Include="Themes\Generic\Images\PinMaximize_Black.png" />
+    <Resource Include="Themes\Generic\Images\PinMaximize_Dark.png" />
+    <Resource Include="Themes\Generic\Images\PinMaximize_Light.png" />
+    <Resource Include="Themes\Generic\Images\PinMenu_Black.png" />
+    <Resource Include="Themes\Generic\Images\PinMenu_Dark.png" />
+    <Resource Include="Themes\Generic\Images\PinMenu_Light.png" />
+    <Resource Include="Themes\Generic\Images\PinRestore_Black.png" />
+    <Resource Include="Themes\Generic\Images\PinRestore_Dark.png" />
+    <Resource Include="Themes\Generic\Images\PinRestore_Light.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,28 @@ namespace WpfApplication1
         {
         
             // パラメータファイルの読み込み
+            if(!string.IsNullOrEmpty(name) && File.Exists(name))
+            {
 
+                GparamRoot gparam;
+
+                //XmlSerializerオブジェクトを作成
+                System.Xml.Serialization.XmlSerializer serializer =
+                    new System.Xml.Serialization.XmlSerializer(typeof(GparamRoot));
+                //読み込むファイルを開く
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(
+                    name, new System.Text.UTF8Encoding(false)))
+                {
+                    //XMLファイルから読み込み、逆シリアル化する
+                    gparam = (GparamRoot)serializer.Deserialize(sr);
+                    
+                }
+
+                if(!GParamToParameterParser.TryParse(gparam, ref this.m_collection))
+                {
+                    System.Windows.MessageBox.Show("gparamファイルの読み込みに失敗","");
+                }
+            }
 
         }
 
@@ -53,5 +75,20 @@ namespace WpfApplication1
             }
         }
 
+
+
+        private ObservableCollection<ParameterCollectionViewModel> m_collection = new ObservableCollection<ParameterCollectionViewModel>();
+        private ReadOnlyObservableCollection<ParameterCollectionViewModel> m_readonlyCollection = null;
+        public ReadOnlyObservableCollection<ParameterCollectionViewModel> Collection
+        {
+            get
+            {
+                if (null == m_readonlyCollection)
+                {
+                    m_readonlyCollection = new ReadOnlyObservableCollection<ParameterCollectionViewModel>(m_collection);
+                }
+                return m_readonlyCollection;
+            }
+        }
     }
 }

@@ -84,12 +84,14 @@
             </Menu>
             <!--AnchorablesSource="{Binding Tools}" DocumentsSource="{Binding Files}"-->
             <avalonDock:DockingManager x:Name="dockManager" 
-                                   AnchorablesSource="{Binding Tools}" 
-                                   DocumentsSource="{Binding Files}"
-                                   ActiveContent="{Binding ActiveDocument, Mode=TwoWay, Converter={StaticResource ActiveDocumentConverter}}"
-                                   Grid.Row="1">
+                                       AnchorablesSource="{Binding Tools}" 
+                                       DocumentsSource="{Binding Files}"
+                                       ActiveContent="{Binding ActiveDocument, Mode=TwoWay, Converter={StaticResource ActiveDocumentConverter}}"
+                                       Grid.Row="1"
+                                       >
                 <avalonDock:DockingManager.Theme>
-                    <avalonDock:ExpressionLightTheme />
+                    <local:DarkTheme />
+                    <!--<avalonDock:ExpressionDarkTheme />-->
                 </avalonDock:DockingManager.Theme>
 
                 <avalonDock:DockingManager.LayoutItemTemplateSelector>
@@ -113,6 +115,9 @@
                                         <Setter Property="local:TreeViewItemBehaviors.DragOveredBrush" Value="{StaticResource MouseOverListItem}" />
                                         <!--<Setter Property="local:TreeViewItemBehaviors.DragOveredBrush" Value="White" />-->
                                         <Setter Property="local:TreeViewItemBehaviors.NormalBackground" Value="Transparent" />
+                                        
+                                        <Setter Property="local:MouseDoubleClickBehavior.Command" Value="{Binding Tag.OpenCommand}"/>
+                                        <Setter Property="local:MouseDoubleClickBehavior.CommandParameter" Value="{Binding}"/>
                                         
                                     </Style>
                                     <HierarchicalDataTemplate x:Key="TreeViewTemplate" 
@@ -263,7 +268,22 @@
 
                 <avalonDock:LayoutRoot>
                     <avalonDock:LayoutPanel Orientation="Horizontal">
-                        <avalonDock:LayoutDocumentPaneGroup Orientation="Horizontal">
+                        <avalonDock:LayoutDocumentPane DockWidth="1" />
+                        <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal">
+                            <avalonDock:LayoutAnchorablePane DockWidth="200">
+                                <avalonDock:LayoutAnchorable Title="ababa" />
+                                <avalonDock:LayoutAnchorable Title="ab" />
+                            </avalonDock:LayoutAnchorablePane>
+                            <avalonDock:LayoutAnchorablePane DockWidth="300">
+                                <avalonDock:LayoutAnchorable Title="ibibi" />
+                                <avalonDock:LayoutAnchorable Title="uehh" />
+                            </avalonDock:LayoutAnchorablePane>
+                            <avalonDock:LayoutAnchorablePane DockWidth="300">
+                                <avalonDock:LayoutAnchorable Title="23233" />
+                                <avalonDock:LayoutAnchorable Title="3333" />
+                            </avalonDock:LayoutAnchorablePane>
+                        </avalonDock:LayoutAnchorablePaneGroup>
+                        <!--<avalonDock:LayoutDocumentPaneGroup Orientation="Horizontal">
                             <avalonDock:LayoutDocumentPane DockWidth="300">
                             </avalonDock:LayoutDocumentPane>
                             <local:LayoutDocumentPaneEx Name="CategoryTreePane"/>
@@ -300,7 +320,7 @@
 
                                 </avalonDock:LayoutDocument>
                             </avalonDock:LayoutDocumentPane>
-                        </avalonDock:LayoutDocumentPaneGroup>
+                        </avalonDock:LayoutDocumentPaneGroup>-->
                     </avalonDock:LayoutPanel>
                     <avalonDock:LayoutRoot.LeftSide>
                         <avalonDock:LayoutAnchorSide>

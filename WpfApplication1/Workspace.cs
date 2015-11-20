@@ -139,15 +139,24 @@ namespace WpfApplication1
             }
         }
 
-        public FileViewModel Open(string filepath)
+        public DocumentViewModel Open(string filepath)
         {
-            var fileViewModel = _files.OfType<FileViewModel>().FirstOrDefault(fm => fm.FilePath == filepath);
-            if (fileViewModel != null)
-                return fileViewModel;
+            //var fileViewModel = _files.OfType<FileViewModel>().FirstOrDefault(fm => fm.FilePath == filepath);
+            //if (fileViewModel != null)
+            //    return fileViewModel;
 
-            fileViewModel = new FileViewModel(filepath);
+            //fileViewModel = new FileViewModel(filepath);
+            //_files.Add(fileViewModel);
+
+            
+            var fileViewModel = new CategoryTreePaneViewModel(filepath);
             _files.Add(fileViewModel);
             return fileViewModel;
+        }
+
+        public void OpenFile(string filePath)
+        {
+
         }
 
         #endregion 
@@ -477,6 +486,27 @@ namespace WpfApplication1
                 var added = group.Add(new NodeContent(NodeContent.NodeType.File) { FilePath = (filePath) });
                 added.IsSelected = true;
             }
+
+
+            private DelegateCommand m_openCommand;
+            public ICommand OpenCommand
+            {
+                get
+                {
+                    return m_openCommand = m_openCommand ?? new DelegateCommand(_OnOpen, _DoesOpen);
+                }
+            }
+
+            private bool _DoesOpen()
+            {
+                return null != SelectedItem && SelectedItem.Value.IsFileNode;
+            }
+
+            private void _OnOpen()
+            {
+                Workspace.This.Open(SelectedItem.Value.FilePath);
+            }
+
 
         }
 
