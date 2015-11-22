@@ -50,8 +50,14 @@ namespace WpfApplication1
 
         public DataTemplate ParameterTabTemplate { get; set; }
 
+        public DataTemplate ParameterTab2Template { get; set; }
+
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
+            if(item is ParameterTab2ViewModel)
+            {
+                return ParameterTab2Template;
+            }
             if(item is FileSharePaneViewModel)
             { return FileShareTemplate; }
             if(item is Workspace.ParameterFileTreePaneViewModel)

@@ -58,6 +58,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -114,6 +115,7 @@
     <Compile Include="CreateNewIdWindowContentViewModel.cs" />
     <Compile Include="DarkTheme.cs" />
     <Compile Include="DocumentViewModel.cs" />
+    <Compile Include="DynamicJson.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileSharePaneViewModel.cs" />
     <Compile Include="FileStatsViewModel.cs" />
@@ -123,11 +125,12 @@
     <Compile Include="IEditableValue.cs" />
     <Compile Include="LayoutDocumentPaneEx.cs" />
     <Compile Include="LightSetViewModel.cs" />
+    <Compile Include="MainWindowBehavior.cs" />
     <Compile Include="MouseDoubleClickBehavior.cs" />
     <Compile Include="ObjectToTypeConverter.cs" />
     <Compile Include="ParameterBase.cs" />
     <Compile Include="ParameterTab2ViewModel.cs" />
-    <Compile Include="ParameterTabContentTemplateSelector.cs" />
+    <Compile Include="ParameterTabTemplateSelector.cs" />
     <Compile Include="ParameterTabViewModel.cs" />
     <Compile Include="ParameterViewModelBase.cs" />
     <Compile Include="ParamLightSet.cs" />
@@ -174,6 +177,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ParameterTabPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Theme.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -215,6 +222,8 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\config\group.config" />
+    <None Include="Resources\sample\sample.gparamxml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -321,6 +330,9 @@
     <Resource Include="Themes\Generic\Images\PinRestore_Light.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /E /I "$(ProjectDir)Resources" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

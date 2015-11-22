@@ -50,6 +50,8 @@ namespace WpfApplication1
                 [XmlAttribute("type")]
                 public int Type { get; set; }
 
+                [XmlAttribute("name")]
+                public string Name { get; set; }
 
                 [XmlElement(ElementName = "value")]
                 public List<_Value> Value { get; set; }

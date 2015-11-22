@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.Practices.Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace WpfApplication1
 {
@@ -90,5 +92,47 @@ namespace WpfApplication1
                 return m_readonlyCollection;
             }
         }
+
+        private ParametersViewModel m_selectedItem;
+        /// <summary>
+        /// 選択中のID
+        /// </summary>
+        public ParametersViewModel SelectedItem
+        {
+            get
+            {
+                return m_selectedItem;
+            }
+            set
+            {
+                if (SetProperty(ref m_selectedItem, value))
+                {
+                    if(value != null)
+                    {
+                        // パラメータビューの更新
+                        bool doFloating = false;
+                        var modifiers = Keyboard.Modifiers;
+                        if (modifiers.HasFlag(ModifierKeys.Control))
+                        {
+                            // Ctrlキーが押されていたらフロート化
+                            doFloating = true;
+                        }
+                        else
+                        {
+                            // それ以外はビューの更新
+                            doFloating = false;
+                        }
+
+                        Workspace.Instance.UpdateParameterTab(this, SelectedItem, doFloating);
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
     }
 }

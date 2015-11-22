@@ -37,11 +37,11 @@ namespace WpfApplication1
 
         }
 
-        static Workspace _this = new Workspace();
+        static Workspace s_instance = new Workspace();
 
-        public static Workspace This
+        public static Workspace Instance
         {
-            get { return _this; }
+            get { return s_instance; }
         }
 
 
@@ -71,14 +71,14 @@ namespace WpfApplication1
         }
 
 
-        ObservableCollection<ParameterTabViewModel> _tools = new ObservableCollection<ParameterTabViewModel>();
-        ReadOnlyObservableCollection<ParameterTabViewModel> _readonyTools = null;
-        public ReadOnlyObservableCollection<ParameterTabViewModel> Tools
+        ObservableCollection<ParameterTab2ViewModel> _tools = new ObservableCollection<ParameterTab2ViewModel>();
+        ReadOnlyObservableCollection<ParameterTab2ViewModel> _readonyTools = null;
+        public ReadOnlyObservableCollection<ParameterTab2ViewModel> Tools
         {
             get
             {
                 if (_readonyTools == null)
-                    _readonyTools = new ReadOnlyObservableCollection<ParameterTabViewModel>(_tools);
+                    _readonyTools = new ReadOnlyObservableCollection<ParameterTab2ViewModel>(_tools);
 
                 return _readonyTools;
             }
@@ -151,6 +151,8 @@ namespace WpfApplication1
             
             var fileViewModel = new CategoryTreePaneViewModel(filepath);
             _files.Add(fileViewModel);
+            fileViewModel.IsSelected = true;
+            fileViewModel.IsActive = true;
             return fileViewModel;
         }
 
@@ -209,9 +211,9 @@ namespace WpfApplication1
 
         void IdInfoTable_SelectedItemChanged(object sender, ParameterViewModelBase e)
         {
-            var tab = new ParameterTabViewModel(CategoryTree,e);
-            if (!_tools.Contains(tab))
-                _tools.Add(tab);
+            //var tab = new ParameterTabViewModel(CategoryTree,e);
+            //if (!_tools.Contains(tab))
+            //    _tools.Add(tab);
         }
 
         #endregion 
@@ -504,7 +506,7 @@ namespace WpfApplication1
 
             private void _OnOpen()
             {
-                Workspace.This.Open(SelectedItem.Value.FilePath);
+                Workspace.Instance.Open(SelectedItem.Value.FilePath);
             }
 
 
@@ -523,5 +525,42 @@ namespace WpfApplication1
             }
         }
 
+
+        /// <summary>
+        /// パラメータ編集タブの更新
+        /// </summary>
+        /// <param name="categoryTreePaneViewModel">開くファイル</param>
+        /// <param name="parameterIdViewModel"></param>
+        /// <param name="doFloating"></param>
+        internal void UpdateParameterTab(CategoryTreePaneViewModel categoryTreePaneViewModel, ParametersViewModel parameterIdViewModel, bool doFloating)
+        {
+            var tab = new ParameterTab2ViewModel(categoryTreePaneViewModel, parameterIdViewModel) { DoFloating = doFloating };
+
+            var first = _tools.FirstOrDefault(t => t == tab);
+            // 既に追加されている場合
+            if(null != first)
+            {
+                first.IsActive = true;
+                first.IsSelected = true;
+            }
+            else
+            {
+                // 1タブも開いていない場合か、フローティングさせたい時
+                if (_tools.Count == 0 || doFloating)
+                {
+                    // 開く
+                    _tools.Add(tab);
+                    return;
+                }
+                else
+                {
+                    // 1タブ開いている場合 パラメータ部分のみ変更
+                    _tools[0] = tab;
+                    OnPropertyChanged(() => this.Tools);
+                    //_tools[0].Parameter = tab.Parameter;
+                }
+            }
+
+        }
     }
 }

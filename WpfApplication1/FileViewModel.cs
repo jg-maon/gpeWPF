@@ -145,7 +145,7 @@ namespace WpfApplication1
 
         private void OnSave(object parameter)
         {
-            Workspace.This.Save(this, false);
+            Workspace.Instance.Save(this, false);
         }
 
         #endregion
@@ -172,7 +172,7 @@ namespace WpfApplication1
 
         private void OnSaveAs(object parameter)
         {
-            Workspace.This.Save(this, true);
+            Workspace.Instance.Save(this, true);
         }
 
         #endregion
@@ -199,7 +199,7 @@ namespace WpfApplication1
 
         private void OnClose()
         {
-            Workspace.This.Close(this);
+            Workspace.Instance.Close(this);
         }
         #endregion
 

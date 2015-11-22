@@ -29,7 +29,7 @@ namespace WpfApplication1
         public FileStatsViewModel()
             :base("File Stats")
         {
-            Workspace.This.ActiveDocumentChanged += new EventHandler(OnActiveDocumentChanged);
+            Workspace.Instance.ActiveDocumentChanged += new EventHandler(OnActiveDocumentChanged);
             ContentId = ToolContentId;
 
             //BitmapImage bi = new BitmapImage();
@@ -43,9 +43,9 @@ namespace WpfApplication1
 
         void OnActiveDocumentChanged(object sender, EventArgs e)
         {
-            if (Workspace.This.ActiveDocument != null)
+            if (Workspace.Instance.ActiveDocument != null)
             {
-                var file =  Workspace.This.ActiveDocument as FileViewModel;
+                var file =  Workspace.Instance.ActiveDocument as FileViewModel;
                 if(file != null &&
                     file.FilePath != null &&
                     File.Exists(file.FilePath))

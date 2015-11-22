@@ -19,8 +19,7 @@
     </WindowChrome.WindowChrome>
     -->
 
-
-    <i:Interaction.Triggers> 
+    <i:Interaction.Triggers>
         <prism:InteractionRequestTrigger SourceObject="{Binding ConfirmationRequest, Mode=OneWay}">
             <prism:PopupWindowAction IsModal="True" CenterOverAssociatedObject="True">
                 <prism:PopupWindowAction.WindowContent>
@@ -33,6 +32,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="FileSharePane.xaml"/>
+                <ResourceDictionary Source="ParameterTabPane.xaml"/>
                 <ResourceDictionary>
 
                     <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
@@ -95,7 +95,8 @@
                 </avalonDock:DockingManager.Theme>
 
                 <avalonDock:DockingManager.LayoutItemTemplateSelector>
-                    <local:PanesTemplateSelector FileShareTemplate="{StaticResource KeyFileSharePaneTemplate}">
+                    <local:PanesTemplateSelector FileShareTemplate="{StaticResource KeyFileSharePaneTemplate}"
+                                                 ParameterTab2Template="{StaticResource KeyParameterTabPaneTemplate}">
                         <local:PanesTemplateSelector.FileViewTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>
@@ -161,70 +162,6 @@
                         </local:PanesTemplateSelector.IdInfoTableTemplate>
                         <local:PanesTemplateSelector.ParameterTabTemplate>
                             <DataTemplate>
-                                <ItemsControl ItemsSource="{Binding ParameterCollection}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Vertical"
-                                                        ScrollViewer.VerticalScrollBarVisibility="Auto" 
-                                                        ScrollViewer.CanContentScroll="False"
-                                                        ScrollViewer.HorizontalScrollBarVisibility="Auto">
-                                            </StackPanel>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplateSelector>
-                                        <local:ParameterTabContentTemplateSelector>
-                                            <local:ParameterTabContentTemplateSelector.BooleanTemplate>
-                                                <DataTemplate>
-                                                    <Expander>
-                                                        <Expander.Header>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="150"/>
-                                                                    <ColumnDefinition Width="100"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                                                                <CheckBox Grid.Column="1" IsChecked="{Binding Object, Converter={StaticResource ObjectToTypeConverter}}" />
-                                                            </Grid>
-                                                        </Expander.Header>
-                                                    </Expander>
-                                                </DataTemplate>
-                                            </local:ParameterTabContentTemplateSelector.BooleanTemplate>
-                                            <local:ParameterTabContentTemplateSelector.EditableValueTemplate>
-                                                <DataTemplate>
-                                                    <Expander>
-                                                        <Expander.Header>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="150"/>
-                                                                    <ColumnDefinition Width="100"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                                                                <TextBox Grid.Column="1" Text="{Binding Object}" />
-                                                            </Grid>
-                                                        </Expander.Header>
-                                                    </Expander>
-                                                </DataTemplate>
-                                            </local:ParameterTabContentTemplateSelector.EditableValueTemplate>
-                                            <local:ParameterTabContentTemplateSelector.ClassTemplate>
-                                                <DataTemplate>
-                                                    <Expander>
-                                                        <Expander.Header>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="150"/>
-                                                                    <ColumnDefinition Width="150"/>
-                                                                    <ColumnDefinition Width="100"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                                                                <TextBlock Grid.Column="1" Text="{Binding Object}" />
-                                                            </Grid>
-                                                        </Expander.Header>
-                                                    </Expander>
-                                                </DataTemplate>
-                                            </local:ParameterTabContentTemplateSelector.ClassTemplate>
-                                        </local:ParameterTabContentTemplateSelector>
-                                    </ItemsControl.ItemTemplateSelector>
-                                </ItemsControl>
                             </DataTemplate>
                         </local:PanesTemplateSelector.ParameterTabTemplate>
                         <local:PanesTemplateSelector.FileStatsViewTemplate>
@@ -269,20 +206,6 @@
                 <avalonDock:LayoutRoot>
                     <avalonDock:LayoutPanel Orientation="Horizontal">
                         <avalonDock:LayoutDocumentPane DockWidth="1" />
-                        <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal">
-                            <avalonDock:LayoutAnchorablePane DockWidth="200">
-                                <avalonDock:LayoutAnchorable Title="ababa" />
-                                <avalonDock:LayoutAnchorable Title="ab" />
-                            </avalonDock:LayoutAnchorablePane>
-                            <avalonDock:LayoutAnchorablePane DockWidth="300">
-                                <avalonDock:LayoutAnchorable Title="ibibi" />
-                                <avalonDock:LayoutAnchorable Title="uehh" />
-                            </avalonDock:LayoutAnchorablePane>
-                            <avalonDock:LayoutAnchorablePane DockWidth="300">
-                                <avalonDock:LayoutAnchorable Title="23233" />
-                                <avalonDock:LayoutAnchorable Title="3333" />
-                            </avalonDock:LayoutAnchorablePane>
-                        </avalonDock:LayoutAnchorablePaneGroup>
                         <!--<avalonDock:LayoutDocumentPaneGroup Orientation="Horizontal">
                             <avalonDock:LayoutDocumentPane DockWidth="300">
                             </avalonDock:LayoutDocumentPane>

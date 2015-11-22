@@ -24,6 +24,22 @@ namespace WpfApplication1
 {
     class PaneViewModel : ViewModelBase
     {
+        private bool m_doFloating = false;
+        /// <summary>
+        /// 初期化時に設定するとフロート状態で出現させられる
+        /// </summary>
+        public bool DoFloating
+        {
+            get
+            {
+                return m_doFloating;
+            }
+            set
+            {
+                SetProperty(ref m_doFloating, value);
+            }
+        }
+
         public PaneViewModel()
         { }
 
@@ -36,7 +52,7 @@ namespace WpfApplication1
         #region Title
 
         private string _title = null;
-        public string Title
+        public virtual string Title
         {
             get { return _title; }
             set

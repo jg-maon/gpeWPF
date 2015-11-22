@@ -26,7 +26,7 @@ namespace WpfApplication1
         {
             InitializeComponent();
             //this.DataContext = new MainWindowViewModel();
-            this.DataContext = Workspace.This;
+            this.DataContext = Workspace.Instance;
         }
 
 

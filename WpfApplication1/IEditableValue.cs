@@ -9,18 +9,25 @@ namespace WpfApplication1
 {
     public interface IEditableValue
     {
+
+        /// <summary>
+        /// パラメータ名(DirLight0Angle的な)
+        /// </summary>
+        string Name { get; set; }
+        /// <summary>
+        /// 実際の値
+        /// </summary>
         dynamic Value { get; set; }
     }
     /// <summary>
     /// パラメータ
     /// </summary>
-    /// <typeparam name="ValueType"></typeparam>
-    public class EditableValue<ValueType> : ViewModelBase, IEditableValue
+    public class EditableValue : ViewModelBase
     {
+        private string m_name;
         /// <summary>
         /// パラメータ名(DirLight0Angle的な)
         /// </summary>
-        private string m_name;
         public string Name 
         {
             get
@@ -34,7 +41,7 @@ namespace WpfApplication1
         }
 
 
-        private ValueType m_value;
+        private dynamic m_value;
         public dynamic Value
         {
             get
@@ -56,6 +63,15 @@ namespace WpfApplication1
     /// </remarks>
     public class ParametersViewModel : ViewModelBase
     {
+        private readonly string m_categoryName;
+        public string CategoryName
+        {
+            get
+            {
+                return m_categoryName;
+            }
+        }
+
         private int m_id;
         public int ID
         {
@@ -102,20 +118,25 @@ namespace WpfApplication1
         }
 
 
-        ObservableCollection<IEditableValue> m_slots;
+        ObservableCollection<EditableValue> m_slots;
         /// <summary>
         /// 編集可能パラメータ(表示名と実値)
         /// </summary>
-        public ObservableCollection<IEditableValue> Slots
+        public ObservableCollection<EditableValue> Slots
         {
             get
             {
-                return m_slots = m_slots ?? new ObservableCollection<IEditableValue>();
+                return m_slots = m_slots ?? new ObservableCollection<EditableValue>();
             }
             set
             {
                 SetProperty(ref m_slots, value);
             }
+        }
+
+        public ParametersViewModel(string categoryName)
+        {
+            m_categoryName = categoryName;
         }
     }
 
@@ -124,14 +145,15 @@ namespace WpfApplication1
     /// </summary>
     /// <remarks>
     /// カテゴリ1つあたりの情報
-    /// ParamSet配列は外部でObservableCollection<ParameterCollection>で定義
+    /// ParamSet配列は外部で定義
     /// </remarks>
+    /// <see cref="ObservableCollection ParameterCollection"/>
     public class ParameterCollectionViewModel : ViewModelBase
     {
+        private string m_name;
         /// <summary>
         /// カテゴリ名
         /// </summary>
-        private string m_name;
         public string Name
         {
             get
@@ -160,6 +182,30 @@ namespace WpfApplication1
             }
         }
 
+        /// <summary>
+        /// 情報が空のIDの作成
+        /// </summary>
+        /// <returns>
+        /// 作成したID
+        /// </returns>
+        public ParametersViewModel CreateId()
+        {
+            return new ParametersViewModel(Name);
+        }
+
+        /// <summary>
+        /// 情報付きIDの作成
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <param name="name">固有名</param>
+        /// <param name="comment">コメント</param>
+        /// <returns>
+        /// 作成したID
+        /// </returns>
+        public ParametersViewModel CreateId(int id, string name, string comment)
+        {
+            return new ParametersViewModel(Name) { ID = id, Name = name, Comment = comment };
+        }
     }
 
 
