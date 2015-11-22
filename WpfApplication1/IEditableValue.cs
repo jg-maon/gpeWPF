@@ -7,23 +7,12 @@ using System.Threading.Tasks;
 
 namespace WpfApplication1
 {
-    public interface IEditableValue
-    {
-
-        /// <summary>
-        /// パラメータ名(DirLight0Angle的な)
-        /// </summary>
-        string Name { get; set; }
-        /// <summary>
-        /// 実際の値
-        /// </summary>
-        dynamic Value { get; set; }
-    }
     /// <summary>
     /// パラメータ
     /// </summary>
     public class EditableValue : ViewModelBase
     {
+
         private string m_name;
         /// <summary>
         /// パラメータ名(DirLight0Angle的な)
@@ -51,6 +40,98 @@ namespace WpfApplication1
             set
             {
                 this.SetProperty(ref m_value, value);
+            }
+        }
+
+        private bool m_isExpanded;
+        public bool IsExpanded
+        {
+            get
+            {
+                return m_isExpanded;
+            }
+            set
+            {
+                this.SetProperty(ref m_isExpanded, value);
+            }
+        }
+
+        private int m_tabIndex = 0;
+        public int TabIndex
+        {
+            get
+            {
+                return m_tabIndex;
+            }
+            set
+            {
+                this.SetProperty(ref m_tabIndex, value);
+            }
+        }
+
+        private string m_filter;
+        public string Filter
+        {
+            get
+            {
+                return m_filter;
+            }
+            set
+            {
+                this.SetProperty(ref m_filter, value);
+            }
+        }
+
+        private bool m_isDirty = false;
+        /// <summary>
+        /// パラメータの値が変更されたか
+        /// </summary>
+        public virtual bool IsDirty
+        {
+            get
+            {
+                return m_isDirty;
+            }
+            set
+            {
+                this.SetProperty(ref m_isDirty, value);
+            }
+        }
+
+    }
+
+    public class EditableValueGroup : EditableValue
+    {
+        public EditableValueGroup()
+        {
+            Value = new ObservableCollection<EditableValue>();
+        }
+
+        /// <summary>
+        /// パラメータの値が変更されたか
+        /// </summary>
+        public override bool IsDirty
+        {
+            get
+            {
+                // 自身に登録されている子の変更状態を確認
+                foreach (var value in this.Value)
+                {
+                    // 一つでも変更されているものがあれば
+                    if (value.IsDirty)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            set
+            {
+                // 自身に登録されている子の変更状態を設定
+                foreach (var v in this.Value)
+                {
+                    v.Value = value;
+                }
             }
         }
     }
@@ -166,7 +247,7 @@ namespace WpfApplication1
             }
         }
 
-        ObservableCollection<ParametersViewModel> m_parameters;
+        private ObservableCollection<ParametersViewModel> m_parameters = null;
         /// <summary>
         /// ID群
         /// </summary>

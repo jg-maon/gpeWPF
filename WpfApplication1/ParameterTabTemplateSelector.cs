@@ -15,6 +15,7 @@ namespace WpfApplication1
         public DataTemplate ValueTemplate { get; set; }
         public DataTemplate BoolTemplate { get; set; }
         public DataTemplate GroupTemplate { get; set; }
+        public DataTemplate Float2Template { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
@@ -32,6 +33,10 @@ namespace WpfApplication1
                 else if (value.Value is bool)
                 {
                     return BoolTemplate;
+                }
+                else if(value.Value is float[])
+                {
+                    return Float2Template;
                 }
             }
             return base.SelectTemplate(item, container);

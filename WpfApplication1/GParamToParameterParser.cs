@@ -48,11 +48,12 @@ namespace WpfApplication1
                     Console.WriteLine(json.ToString());
 
                     
-                    int n = 0;
+                    int n = 0;  // #TODO: IDのName用
                     foreach (var paramset in gparam.ParamSet)
                     {
                         string categoryName = paramset.DispName;
 
+                        int tabIndex = 0;  // TextBox.TabIndex用カウンタ
 
                         // グループ情報の格納
                         #region グループ情報の格納
@@ -148,9 +149,10 @@ namespace WpfApplication1
                                         if(groupCollection.Count == paramset.Slot.Count)
                                         {
                                             // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
-                                            EditableValue value = new EditableValue();
+                                            EditableValueGroup value = new EditableValueGroup();
                                             value.Name = pattern.Names[0];
                                             value.Value = groupCollection;
+                                            value.TabIndex = tabIndex++;
                                             slots.Add(value);
                                         }
                                         isAdded = true;
@@ -204,9 +206,10 @@ namespace WpfApplication1
                                         if (targetCollection.Count == pattern.Args.Count)
                                         {
                                             // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
-                                            EditableValue value = new EditableValue();
+                                            EditableValueGroup value = new EditableValueGroup();
                                             value.Name = pattern.Names[(groupList.Count - 1) % pattern.Names.Count];
                                             value.Value = targetCollection;
+                                            value.TabIndex = tabIndex++;
                                             slots.Add(value);
                                         }
                                     }
@@ -214,6 +217,7 @@ namespace WpfApplication1
 
                                 if (!isAdded)
                                 {
+                                    slotValue.TabIndex = tabIndex++;
                                     slots.Add(slotValue);
                                 }
                             }

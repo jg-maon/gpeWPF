@@ -4,9 +4,8 @@
     
     <DataTemplate x:Key="KeyParameterTabPaneTemplate">
         <DataTemplate.Resources>
-
             <DataTemplate x:Key="KeyValueTemplate">
-                <Expander>
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -14,34 +13,60 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding Name}"/>
-                            <TextBox Grid.Column="1" Text="{Binding Value}"/>
+                            <TextBox Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </Expander.Header>
+                    <Slider Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Expander>
             </DataTemplate>
 
             <DataTemplate x:Key="KeyBoolTemplate">
-                <Grid>
+                <Grid Margin="25,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{Binding Name}"/>
-                    <CheckBox Grid.Column="1" IsChecked="{Binding Value}"/>
+                    <CheckBox Grid.Column="1" TabIndex="{Binding TabIndex}" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </DataTemplate>
 
-            <HierarchicalDataTemplate x:Key="KeyGroupTemplate2" ItemsSource="{Binding Value}">
-                <HierarchicalDataTemplate.ItemTemplateSelector>
-                    <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
-                                                        ValueTemplate="{StaticResource KeyValueTemplate}"
-                                                        GroupTemplate="{StaticResource KeyValueTemplate}"
-                                                    />
-                </HierarchicalDataTemplate.ItemTemplateSelector>
-            </HierarchicalDataTemplate>
+
+            <DataTemplate x:Key="KeyFloat2Template">
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                            <TextBox x:Name="box1" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox x:Name="box2" Grid.Column="2" Margin="10,0,0,0" TabIndex="{Binding TabIndex}" Text="{Binding Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
+                    </Expander.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="X"/>
+                        <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=box1}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Y"/>
+                        <Slider Grid.Row="1" Grid.Column="1" Value="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=box2}"/>
+                    </Grid>
+                </Expander>
+            </DataTemplate>
+            
 
             <DataTemplate x:Key="KeyGroupTemplate">
-                <Expander Content="{Binding}">
+                <Expander Content="{Binding}"
+                          IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -54,6 +79,7 @@
                     <Expander.ContentTemplateSelector>
                         <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
                                                             ValueTemplate="{StaticResource KeyValueTemplate}"
+                                                            Float2Template="{StaticResource KeyFloat2Template}"
                                                             >
                             <local:ParameterTabTemplateSelector.GroupTemplate>
                                 <DataTemplate>
@@ -61,6 +87,7 @@
                                         <ItemsControl.ItemTemplateSelector>
                                             <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
                                                                                 ValueTemplate="{StaticResource KeyValueTemplate}"
+                                                                                Float2Template="{StaticResource KeyFloat2Template}"
                                                                                 />
                                         </ItemsControl.ItemTemplateSelector>
                                     </ItemsControl>
@@ -79,8 +106,11 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <TextBox Grid.Row="0" x:Name="SearchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <DockPanel Grid.Row="0">
+                <Button DockPanel.Dock="Left" Command="{Binding ExpandCommand}" ToolTip="{Binding ButtonToolTip}" Width="15"/>
+                <TextBox  x:Name="SearchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+            </DockPanel>
 
             <ScrollViewer Grid.Row="1"
                           CanContentScroll="False"
@@ -90,7 +120,7 @@
 
                 <StackPanel >
 
-                    <Expander Header="情報" IsExpanded="{Binding IsInfoGroupExpanded}">
+                    <Expander Header="情報" IsExpanded="{Binding IsInfoGroupExpanded, Mode=TwoWay}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -123,11 +153,13 @@
                     </Expander>
 
                     <ItemsControl ItemsSource="{Binding Parameters.Slots}"
+                                  KeyboardNavigation.TabNavigation="Local"
                           >
                         <ItemsControl.ItemTemplateSelector>
                             <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
-                                                        ValueTemplate="{StaticResource KeyValueTemplate}"
-                                                        GroupTemplate="{StaticResource KeyGroupTemplate}">
+                                                                ValueTemplate="{StaticResource KeyValueTemplate}"
+                                                                GroupTemplate="{StaticResource KeyGroupTemplate}"
+                                                                Float2Template="{StaticResource KeyFloat2Template}">
 
                             </local:ParameterTabTemplateSelector>
 

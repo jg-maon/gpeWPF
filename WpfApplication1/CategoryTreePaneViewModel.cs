@@ -15,6 +15,40 @@ namespace WpfApplication1
     /// </summary>
     class CategoryTreePaneViewModel : DocumentViewModel
     {
+        public bool IsDirty
+        {
+            get
+            {
+                foreach (var parameters in Collection)
+                {
+                    foreach (var parameter in parameters.Parameters)
+                    {
+                        foreach (var slot in parameter.Slots)
+                        {
+                            if (slot.IsDirty)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
+            set
+            {
+                foreach (var parameters in Collection)
+                {
+                    foreach (var parameter in parameters.Parameters)
+                    {
+                        foreach (var slot in parameter.Slots)
+                        {
+                            slot.IsDirty = value;
+                        }
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// コンストラクタ
         /// </summary>
@@ -22,7 +56,7 @@ namespace WpfApplication1
         public CategoryTreePaneViewModel(string name)
             : base(name)
         {
-        
+            Title = Path.GetFileNameWithoutExtension(name);
             // パラメータファイルの読み込み
             if(!string.IsNullOrEmpty(name) && File.Exists(name))
             {
@@ -47,6 +81,23 @@ namespace WpfApplication1
                 }
             }
 
+            foreach(var parameters in m_collection)
+            {
+                foreach(var parameter in parameters.Parameters)
+                {
+                    foreach(var slot in parameter.Slots)
+                    {
+                        slot.PropertyChanged += (sender, e) =>
+                        {
+                            if(e.PropertyName == "IsDirty")
+                            {
+                                OnPropertyChanged(() => this.IsDirty);
+                            }
+                        };
+                    }
+                }
+            }
+
         }
 
         private IdInfoTablePaneViewModel m_idInfoTable;
@@ -62,22 +113,7 @@ namespace WpfApplication1
             }
         }
 
-
-        private ObservableCollection<ParameterViewModelBase> m_parameters = new ObservableCollection<ParameterViewModelBase>();
-        private ReadOnlyObservableCollection<ParameterViewModelBase> m_readonlyParameters = null;
-        public ReadOnlyObservableCollection<ParameterViewModelBase> Parameters
-        {
-            get
-            {
-                if (m_readonlyParameters == null)
-                {
-                    m_readonlyParameters = new ReadOnlyObservableCollection<ParameterViewModelBase>(m_parameters);
-                }
-                return m_readonlyParameters;
-            }
-        }
-
-
+        
 
         private ObservableCollection<ParameterCollectionViewModel> m_collection = new ObservableCollection<ParameterCollectionViewModel>();
         private ReadOnlyObservableCollection<ParameterCollectionViewModel> m_readonlyCollection = null;
