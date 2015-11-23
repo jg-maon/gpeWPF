@@ -48,6 +48,11 @@ namespace WpfApplication1
 
         public void AfterInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableShown)
         {
+            var content = anchorableShown.Content as PaneViewModel;
+            if(content != null && content.DoFloating)
+            {
+                anchorableShown.Float();
+            }
         }
 
 

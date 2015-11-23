@@ -29,12 +29,12 @@ namespace WpfApplication1
             }
         }
 
-        private readonly ParametersViewModel m_parameter;
+        private readonly ParametersViewModel m_parameters;
         public ParametersViewModel Parameters
         {
             get
             {
-                return m_parameter;
+                return m_parameters;
             }
         }
 
@@ -237,9 +237,9 @@ namespace WpfApplication1
         {
             m_file = categoryTreePaneViewModel;
 
-            m_parameter = parameterIdViewModel;
-            
-            _AddPropertyChangedEvent(m_parameter.Slots);
+            m_parameters = parameterIdViewModel;
+
+            _AddPropertyChangedEvent(m_parameters.Slots);
         }
 
         /// <summary>
@@ -268,11 +268,12 @@ namespace WpfApplication1
             {
                 value.PropertyChanged += (s, ev) =>
                 {
+                    var v = s as EditableValue;
                     if (ev.PropertyName == "IsExpanded")
                     {
                         this.OnPropertyChanged(() => this.ButtonToolTip);
                     }
-                    else if(ev.PropertyName == "Value")
+                    else if(ev.PropertyName != "IsDirty")
                     {
                         value.IsDirty = true;
                     }
@@ -284,7 +285,7 @@ namespace WpfApplication1
         {
             if (m_file != other.m_file)
             { return false; }
-            if (m_parameter != other.m_parameter)
+            if (m_parameters != other.m_parameters)
             {
                 return false;
             }

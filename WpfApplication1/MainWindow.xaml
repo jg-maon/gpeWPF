@@ -33,6 +33,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="FileSharePane.xaml"/>
                 <ResourceDictionary Source="ParameterTabPane.xaml"/>
+                <ResourceDictionary Source="IdInfoTablePane.xaml"/>
                 <ResourceDictionary>
 
                     <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
@@ -86,9 +87,10 @@
             <avalonDock:DockingManager x:Name="dockManager" 
                                        AnchorablesSource="{Binding Tools}" 
                                        DocumentsSource="{Binding Files}"
-                                       ActiveContent="{Binding ActiveDocument, Mode=TwoWay, Converter={StaticResource ActiveDocumentConverter}}"
                                        Grid.Row="1"
+                                       ActiveContent="{Binding ActiveDocument, Mode=TwoWay}"
                                        >
+                                       <!--ActiveContent="{Binding ActiveDocument, Mode=TwoWay, Converter={StaticResource ActiveDocumentConverter}}"-->
                 <avalonDock:DockingManager.Theme>
                     <local:DarkTheme />
                     <!--<avalonDock:ExpressionDarkTheme />-->
@@ -96,7 +98,8 @@
 
                 <avalonDock:DockingManager.LayoutItemTemplateSelector>
                     <local:PanesTemplateSelector FileShareTemplate="{StaticResource KeyFileSharePaneTemplate}"
-                                                 ParameterTab2Template="{StaticResource KeyParameterTabPaneTemplate}">
+                                                 ParameterTab2Template="{StaticResource KeyParameterTabPaneTemplate}"
+                                                 IdInfoTablePaneTemplate="{StaticResource KeyIdInfoTablePaneTemplate}">
                         <local:PanesTemplateSelector.FileViewTemplate>
                             <DataTemplate>
                                 <TextBox Text="{Binding TextContent, UpdateSourceTrigger=PropertyChanged}"/>

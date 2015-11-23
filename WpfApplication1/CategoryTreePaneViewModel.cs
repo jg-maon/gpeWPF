@@ -113,6 +113,19 @@ namespace WpfApplication1
             }
         }
 
+        private IdInfoTablePane2ViewModel m_idInfoTablePane;
+        public IdInfoTablePane2ViewModel IdInfoTablePane
+        {
+            get
+            {
+                if(null == m_idInfoTablePane)
+                {
+                    m_idInfoTablePane = new IdInfoTablePane2ViewModel(this);
+                }
+                return m_idInfoTablePane;
+            }
+        }
+
         
 
         private ObservableCollection<ParameterCollectionViewModel> m_collection = new ObservableCollection<ParameterCollectionViewModel>();
@@ -160,6 +173,10 @@ namespace WpfApplication1
                         }
 
                         Workspace.Instance.UpdateParameterTab(this, SelectedItem, doFloating);
+
+                        // ID詳細タブオープン
+                        IdInfoTablePane.Content.OpenParameterTab(Collection.FirstOrDefault((category=>category.Parameters.Contains(SelectedItem))));
+
                     }
                 }
             }

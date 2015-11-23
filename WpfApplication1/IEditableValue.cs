@@ -136,96 +136,12 @@ namespace WpfApplication1
         }
     }
 
-    /// <summary>
-    /// IDとそのIDで登録されるパラメータ群
-    /// </summary>
-    /// <remarks>
-    /// ID1つあたりの情報
-    /// </remarks>
-    public class ParametersViewModel : ViewModelBase
-    {
-        private readonly string m_categoryName;
-        public string CategoryName
-        {
-            get
-            {
-                return m_categoryName;
-            }
-        }
-
-        private int m_id;
-        public int ID
-        {
-            get
-            {
-                return m_id;
-            }
-            set
-            {
-                SetProperty(ref m_id, value);
-            }
-        }
-
-        private string m_name;
-        /// <summary>
-        /// 固有名
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return m_name;
-            }
-            set
-            {
-                this.SetProperty(ref m_name, value);
-            }
-        }
-
-        private string m_comment;
-        /// <summary>
-        /// コメント
-        /// </summary>
-        public string Comment
-        {
-            get
-            {
-                return m_comment;
-            }
-            set
-            {
-                this.SetProperty(ref m_comment, value);
-            }
-        }
-
-
-        ObservableCollection<EditableValue> m_slots;
-        /// <summary>
-        /// 編集可能パラメータ(表示名と実値)
-        /// </summary>
-        public ObservableCollection<EditableValue> Slots
-        {
-            get
-            {
-                return m_slots = m_slots ?? new ObservableCollection<EditableValue>();
-            }
-            set
-            {
-                SetProperty(ref m_slots, value);
-            }
-        }
-
-        public ParametersViewModel(string categoryName)
-        {
-            m_categoryName = categoryName;
-        }
-    }
 
     /// <summary>
-    /// Slot配列 + Edited(ID配列)
-    /// </summary>
-    /// <remarks>
     /// カテゴリ1つあたりの情報
+    /// </summary>
+    /// <remarks>
+    /// Slot配列 + Edited(ID配列)
     /// ParamSet配列は外部で定義
     /// </remarks>
     /// <see cref="ObservableCollection ParameterCollection"/>

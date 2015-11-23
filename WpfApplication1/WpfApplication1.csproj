@@ -114,6 +114,8 @@
     </Compile>
     <Compile Include="CreateNewIdWindowContentViewModel.cs" />
     <Compile Include="DarkTheme.cs" />
+    <Compile Include="DataGridBehavior.cs" />
+    <Compile Include="DataGridItemTemplateSelector.cs" />
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="DynamicJson.cs" />
     <Compile Include="Extensions.cs" />
@@ -121,7 +123,10 @@
     <Compile Include="FileStatsViewModel.cs" />
     <Compile Include="GParam.cs" />
     <Compile Include="GParamToParameterParser.cs" />
+    <Compile Include="IdInfoTablePane2ViewModel.cs" />
     <Compile Include="IdInfoTablePaneViewModel.cs" />
+    <Compile Include="IdInfoTableTabPageViewModel.cs" />
+    <Compile Include="IdInfoTableTemplateSelector.cs" />
     <Compile Include="IEditableValue.cs" />
     <Compile Include="LayoutDocumentPaneEx.cs" />
     <Compile Include="LightSetViewModel.cs" />
@@ -129,6 +134,7 @@
     <Compile Include="MouseDoubleClickBehavior.cs" />
     <Compile Include="ObjectToTypeConverter.cs" />
     <Compile Include="ParameterBase.cs" />
+    <Compile Include="ParametersViewModel.cs" />
     <Compile Include="ParameterTab2ViewModel.cs" />
     <Compile Include="ParameterTabTemplateSelector.cs" />
     <Compile Include="ParameterTabViewModel.cs" />
@@ -160,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FileSharePane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IdInfoTablePane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

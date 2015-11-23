@@ -15,6 +15,7 @@ namespace WpfApplication1
         static readonly string s_groupLabel = "group";
         static readonly string s_argumentsLabel = "Args";
         static readonly string s_namesLabel = "Names";
+        static readonly string s_isExpandedLabel = "IsExpanded";
 
         //static Dictionary<string, GroupPattern> s_groupDefinitions = null;
 
@@ -29,10 +30,15 @@ namespace WpfApplication1
             /// グループ名
             /// </summary>
             public List<string> Names { get; set; }
+            /// <summary>
+            /// 初期展開状態
+            /// </summary>
+            public List<bool> IsExpanded { get; set; }
             public GroupPattern()
             {
                 Args = new List<string>();
                 Names = new List<string>();
+                IsExpanded = new List<bool>();
             }
         }
 
@@ -81,6 +87,10 @@ namespace WpfApplication1
                                         foreach (string arg in groupObject[s_namesLabel])
                                         {
                                             groupPattern.Names.Add(arg);
+                                        }
+                                        foreach(bool arg in groupObject[s_isExpandedLabel])
+                                        {
+                                            groupPattern.IsExpanded.Add(arg);
                                         }
                                         groupPatterns.Add(groupPattern);
                                     }
@@ -153,6 +163,7 @@ namespace WpfApplication1
                                             value.Name = pattern.Names[0];
                                             value.Value = groupCollection;
                                             value.TabIndex = tabIndex++;
+                                            value.IsExpanded = pattern.IsExpanded[0];
                                             slots.Add(value);
                                         }
                                         isAdded = true;
@@ -207,9 +218,11 @@ namespace WpfApplication1
                                         {
                                             // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
                                             EditableValueGroup value = new EditableValueGroup();
-                                            value.Name = pattern.Names[(groupList.Count - 1) % pattern.Names.Count];
+                                            int groupCount = (groupList.Count - 1);
+                                            value.Name = pattern.Names[groupCount % pattern.Names.Count];
                                             value.Value = targetCollection;
                                             value.TabIndex = tabIndex++;
+                                            value.IsExpanded = pattern.IsExpanded[groupCount % pattern.IsExpanded.Count];
                                             slots.Add(value);
                                         }
                                     }
@@ -240,5 +253,6 @@ namespace WpfApplication1
 
             return true;
         }
+
     }
 }

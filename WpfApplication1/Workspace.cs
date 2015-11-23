@@ -45,7 +45,7 @@ namespace WpfApplication1
         }
 
 
-        ObservableCollection<DocumentViewModel> _files = new ObservableCollection<DocumentViewModel>();
+        ObservableCollection<DocumentViewModel> m_documents = new ObservableCollection<DocumentViewModel>();
         ReadOnlyObservableCollection<DocumentViewModel> _readonyFiles = null;
         public ReadOnlyObservableCollection<DocumentViewModel> Files
         {
@@ -53,9 +53,10 @@ namespace WpfApplication1
             {
                 if (_readonyFiles == null)
                 {
-                    _files.Add(ParameterFileTree);
-                    _files.Add(FileSharePane);
-                    _readonyFiles = new ReadOnlyObservableCollection<DocumentViewModel>(_files);
+                    m_documents.Add(ParameterFileTree);
+                    m_documents.Add(FileSharePane);
+                    m_documents.Add(IdInfoTablePane);
+                    _readonyFiles = new ReadOnlyObservableCollection<DocumentViewModel>(m_documents);
                 }
                 return _readonyFiles;
             }
@@ -141,16 +142,16 @@ namespace WpfApplication1
 
         public DocumentViewModel Open(string filepath)
         {
-            //var fileViewModel = _files.OfType<FileViewModel>().FirstOrDefault(fm => fm.FilePath == filepath);
+            //var fileViewModel = m_documents.OfType<FileViewModel>().FirstOrDefault(fm => fm.FilePath == filepath);
             //if (fileViewModel != null)
             //    return fileViewModel;
 
             //fileViewModel = new FileViewModel(filepath);
-            //_files.Add(fileViewModel);
+            //m_documents.Add(fileViewModel);
 
             
             var fileViewModel = new CategoryTreePaneViewModel(filepath);
-            _files.Add(fileViewModel);
+            m_documents.Add(fileViewModel);
             fileViewModel.IsSelected = true;
             fileViewModel.IsActive = true;
             return fileViewModel;
@@ -196,15 +197,15 @@ namespace WpfApplication1
         }
         private void OnNew(object parameter)
         {
-            //_files.Add(new FileViewModel());
-            _files.Add(CategoryTree);
-            _files.Add(IdInfoTable);
+            //m_documents.Add(new FileViewModel());
+            //m_documents.Add(CategoryTree);
+            //m_documents.Add(IdInfoTable);
             IdInfoTable.SelectedItemChanged += IdInfoTable_SelectedItemChanged;
 
 
             ParameterFileTree.Add(null);
 
-            ActiveDocument = _files.Last();
+            ActiveDocument = m_documents.Last();
 
 
         }
@@ -252,8 +253,8 @@ namespace WpfApplication1
 
         #region ActiveDocument
 
-        private DocumentViewModel _activeDocument = null;
-        public DocumentViewModel ActiveDocument
+        private PaneViewModel _activeDocument = null;
+        public PaneViewModel ActiveDocument
         {
             get { return _activeDocument; }
             set
@@ -264,6 +265,12 @@ namespace WpfApplication1
                     RaisePropertyChanged("ActiveDocument");
                     if (ActiveDocumentChanged != null)
                         ActiveDocumentChanged(this, EventArgs.Empty);
+
+                    var categoryTree = _activeDocument as CategoryTreePaneViewModel;
+                    if(categoryTree != null)
+                    {
+                        ActiveFile = categoryTree;
+                    }
                 }
             }
         }
@@ -271,6 +278,25 @@ namespace WpfApplication1
         public event EventHandler ActiveDocumentChanged;
 
         #endregion
+
+        private CategoryTreePaneViewModel m_activeFile = null;
+        public CategoryTreePaneViewModel ActiveFile
+        {
+            get
+            {
+                return m_activeFile;
+            }
+            private set
+            {
+                SetProperty(ref m_activeFile, value);
+                // ファイル変更時
+                if(null != value)
+                {
+                    // ID詳細タブの中身を変更
+                    IdInfoTablePane.Content = m_activeFile.IdInfoTablePane.Content;
+                }
+            }
+        }
 
 
         internal void Close(FileViewModel fileToClose)
@@ -286,7 +312,7 @@ namespace WpfApplication1
                 }
             }
 
-            _files.Remove(fileToClose);
+            m_documents.Remove(fileToClose);
         }
 
         internal void Save(FileViewModel fileToSave, bool saveAsFlag = false)
@@ -300,6 +326,76 @@ namespace WpfApplication1
 
             File.WriteAllText(fileToSave.FilePath, fileToSave.TextContent);
             fileToSave.IsDirty = false;
+        }
+
+
+
+        /// <summary>
+        /// パラメータ編集タブの更新
+        /// </summary>
+        /// <param name="categoryTreePaneViewModel">開くファイル</param>
+        /// <param name="parameterIdViewModel">開くID</param>
+        /// <param name="doFloating">フローティングさせるか</param>
+        internal void UpdateParameterTab(CategoryTreePaneViewModel categoryTreePaneViewModel, ParametersViewModel parameterIdViewModel, bool doFloating)
+        {
+            var tab = new ParameterTab2ViewModel(categoryTreePaneViewModel, parameterIdViewModel) { DoFloating = doFloating };
+                        
+
+            var first = _tools.FirstOrDefault(t => t == tab);
+            // 既に追加されている場合
+            if (null != first)
+            {
+                first.IsActive = true;
+                first.IsSelected = true;
+            }
+            else
+            {
+                // 1タブも開いていない場合か、フローティングさせたい時
+                if (_tools.Count == 0 || doFloating)
+                {
+                    // 開く
+                    _tools.Add(tab);
+                    return;
+                }
+                else
+                {
+                    // 1タブ開いている場合 パラメータ部分のみ変更
+                    _tools[0] = tab;
+                    OnPropertyChanged(() => this.Tools);
+                    //_tools[0].Parameter = tab.Parameter;
+                }
+            }
+
+        }
+
+        private IdInfoTablePane2ViewModel m_idInfoTablePane;
+        /// <summary>
+        /// ID詳細情報
+        /// </summary>
+        public IdInfoTablePane2ViewModel IdInfoTablePane
+        {
+            get
+            {
+                return m_idInfoTablePane = m_idInfoTablePane ?? new IdInfoTablePane2ViewModel(null);
+            }
+            set
+            {
+                // 旧IdInfoTableを探す
+                int idInfoTableIndex = 0;
+                foreach(var doc in m_documents)
+                {
+                    if(doc == m_idInfoTablePane)
+                    {
+                        break;
+                    }
+                    ++idInfoTableIndex;
+                }
+                SetProperty(ref m_idInfoTablePane, value);
+                if(idInfoTableIndex < m_documents.Count)
+                {
+                    m_documents[idInfoTableIndex] = m_idInfoTablePane;
+                }
+            }
         }
 
 
@@ -525,42 +621,5 @@ namespace WpfApplication1
             }
         }
 
-
-        /// <summary>
-        /// パラメータ編集タブの更新
-        /// </summary>
-        /// <param name="categoryTreePaneViewModel">開くファイル</param>
-        /// <param name="parameterIdViewModel"></param>
-        /// <param name="doFloating"></param>
-        internal void UpdateParameterTab(CategoryTreePaneViewModel categoryTreePaneViewModel, ParametersViewModel parameterIdViewModel, bool doFloating)
-        {
-            var tab = new ParameterTab2ViewModel(categoryTreePaneViewModel, parameterIdViewModel) { DoFloating = doFloating };
-
-            var first = _tools.FirstOrDefault(t => t == tab);
-            // 既に追加されている場合
-            if(null != first)
-            {
-                first.IsActive = true;
-                first.IsSelected = true;
-            }
-            else
-            {
-                // 1タブも開いていない場合か、フローティングさせたい時
-                if (_tools.Count == 0 || doFloating)
-                {
-                    // 開く
-                    _tools.Add(tab);
-                    return;
-                }
-                else
-                {
-                    // 1タブ開いている場合 パラメータ部分のみ変更
-                    _tools[0] = tab;
-                    OnPropertyChanged(() => this.Tools);
-                    //_tools[0].Parameter = tab.Parameter;
-                }
-            }
-
-        }
     }
 }

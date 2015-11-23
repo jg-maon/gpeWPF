@@ -51,9 +51,14 @@ namespace WpfApplication1
         public DataTemplate ParameterTabTemplate { get; set; }
 
         public DataTemplate ParameterTab2Template { get; set; }
+        public DataTemplate IdInfoTablePaneTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
+            if(item is IdInfoTablePane2ViewModel)
+            {
+                return IdInfoTablePaneTemplate;
+            }
             if(item is ParameterTab2ViewModel)
             {
                 return ParameterTab2Template;
