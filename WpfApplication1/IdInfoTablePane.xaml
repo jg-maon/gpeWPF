@@ -1,0 +1,85 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
+                    xmlns:local="clr-namespace:WpfApplication1"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    >
+    <DataTemplate x:Key="KeyIdInfoTablePaneTemplate">
+        <DataTemplate.Resources>
+
+            <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
+            <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+
+            <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
+                <Setter Property="ItemsSource" Value="{Binding Parameters}"/>
+                <Setter Property="SelectedItem" Value="{Binding SelectedItem, Mode=TwoWay}"/>
+                <Setter Property="SelectionUnit" Value="FullRow"/>
+                <Setter Property="Tag" Value="{Binding Parameters}"/>
+                <Setter Property="AutoGenerateColumns" Value="False" />
+            </Style>
+        </DataTemplate.Resources>
+
+        <avalonDock:DockingManager DocumentsSource="{Binding Content.ParameterTabPages}">
+            <avalonDock:DockingManager.LayoutItemContainerStyleSelector>
+                <local:PanesStyleSelector>
+                    <local:PanesStyleSelector.ToolStyle>
+                        <Style TargetType="{x:Type avalonDock:LayoutAnchorableItem}">
+                            <Setter Property="Title" Value="{Binding Model.Title}"/>
+                            <Setter Property="IconSource" Value="{Binding Model.IconSource}"/>
+                            <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}"/>
+                            <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
+                            <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>
+                            <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>
+                        </Style>
+                    </local:PanesStyleSelector.ToolStyle>
+                    <local:PanesStyleSelector.FileStyle>
+                        <Style TargetType="{x:Type avalonDock:LayoutItem}">
+                            <Setter Property="Title" Value="{Binding Model.Title}"/>
+                            <Setter Property="ToolTip" Value="{Binding Model.FilePath}"/>
+                            <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}"/>
+                            <Setter Property="IconSource" Value="{Binding Model.IconSource}"/>
+                            <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
+                        </Style>
+                    </local:PanesStyleSelector.FileStyle>
+                </local:PanesStyleSelector>
+            </avalonDock:DockingManager.LayoutItemContainerStyleSelector>
+            
+            <avalonDock:DockingManager.LayoutItemTemplateSelector>
+                <local:IdInfoTableTemplateSelector>
+                    <local:IdInfoTableTemplateSelector.LightSetTemplate>
+                        <DataTemplate>
+                            <DataGrid >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Comment"  Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Angle"  Binding="{Binding Angle[0], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Angle"  Binding="{Binding Angle[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridCheckBoxColumn Header="EnableLocalLight1" Binding="{Binding EnableLocalLight1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridCheckBoxColumn Header="EnableLocalLight2" Binding="{Binding EnableLocalLight2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DataTemplate>
+                    </local:IdInfoTableTemplateSelector.LightSetTemplate>
+                    <local:IdInfoTableTemplateSelector.FogTemplate>
+                        <DataTemplate>
+                            <DataGrid >
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Comment"  Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="FogHeight"  Binding="{Binding FogHeight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridCheckBoxColumn Header="check1" Binding="{Binding check1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </DataTemplate>
+                    </local:IdInfoTableTemplateSelector.FogTemplate>
+                </local:IdInfoTableTemplateSelector>
+            </avalonDock:DockingManager.LayoutItemTemplateSelector>
+            
+            
+        </avalonDock:DockingManager>
+    </DataTemplate>
+    
+</ResourceDictionary>
