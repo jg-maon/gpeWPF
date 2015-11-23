@@ -54,7 +54,7 @@ namespace FindEditableValuePropertyGenerator
                         foreach (var slot in paramset.Slot)
                         {
                             string paramName = slot.DispName;
-                            cate.Properties.Add(new ParameterProperty(paramName));
+                            cate.Properties.Add(new ParameterProperty(paramName, slot.Type));
                         }
                         Categories.Add(cate);
                     }
@@ -93,45 +93,62 @@ namespace FindEditableValuePropertyGenerator
         public class ParameterProperty : BindableBase
         {
             private readonly string m_propertyName;
+            private readonly int m_type;
+            public string Type
+            {
+                get
+                {
+                    switch(m_type)
+                    {
+                        case 1:
+                            return "float";
+                        case 2:
+                            return "bool";
+                    }
+                    return "dynamic";
+                }
+            }
 
             public string Code
             {
                 get
                 {
                     return string.Format(
-"        #region {0}\n"+
-"        bool m_is{0}EventAdded = false;\n"+
-"        public dynamic {0}\n"+
-"        {{\n"+
-"            get\n"+
-"            {{\n"+
-"                var result = _FindValue(Slots, \"{0}\");\n"+
-"                if (null != result)\n"+
-"                {{\n"+
-"                    if (!m_is{0}EventAdded)\n"+
-"                    {{\n"+
-"                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.{0});\n"+
-"                        m_is{0}EventAdded = true;\n"+
-"                    }}\n"+
-"                }}\n"+
-"                return result.Value;\n"+
-"            }}\n"+
-"            set\n"+
-"            {{\n"+
-"                var result = _FindValue(Slots, \"{0}\");\n"+
-"                if (null != result)\n"+
-"                {{\n"+
-"                    result.Value = value;\n"+
-"                }}\n"+
-"            }}\n"+
-"        }}\n"+
-"        #endregion  // {0}\n", m_propertyName);
+"        #region {0}\r\n"+
+"        bool m_is{0}EventAdded = false;\r\n"+
+"        public {1} {0}\r\n"+
+"        {{\r\n"+
+"            get\r\n"+
+"            {{\r\n"+
+"                var result = _FindValue(Slots, \"{0}\");\r\n"+
+"                if (null != result)\r\n"+
+"                {{\r\n"+
+"                    if (!m_is{0}EventAdded)\r\n"+
+"                    {{\r\n"+
+"                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.{0});\r\n"+
+"                        m_is{0}EventAdded = true;\r\n"+
+"                    }}\r\n"+
+"                }}\r\n"+
+"                return result.Value;\r\n"+
+"            }}\r\n"+
+"            set\r\n"+
+"            {{\r\n"+
+"                var result = _FindValue(Slots, \"{0}\");\r\n"+
+"                if (null != result)\r\n"+
+"                {{\r\n"+
+"                    result.Value = value;\r\n"+
+"                }}\r\n"+
+"            }}\r\n"+
+"        }}\r\n"+
+"        #endregion  // {0}\r\n", m_propertyName, Type);
                 }
             }
-            public ParameterProperty(string name)
+            public ParameterProperty(string name, int type)
             {
                 m_propertyName = name;
+                m_type = type;
             }
+
         }
 
         public class Category : BindableBase
