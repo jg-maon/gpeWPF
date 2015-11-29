@@ -6,7 +6,7 @@ type
 2	: bool
 4	: float2	
 -->
-	<ParamSet dispname="LightSet">
+	<ParamSet dispname="LightSet" name="LightSet Parameter">
 		<edited>
 			<id>1</id>
 			<id>2</id>
@@ -111,14 +111,14 @@ type
 		</slot>		
 		
 		
-		<slot dispname="EnableLocalLight1" name="EnableLocalLight1" type="2">
+		<slot dispname="EnableLocalLight1" type="2" name="EnableLocalLight1">
 			<value id="1" index="0">true</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">true</value>
 			<value id="4" index="3">true</value>
 			<value id="5" index="4">false</value>
 		</slot>
-		<slot dispname="EnableLocalLight2" name="EnableLocalLight2" type="2">
+		<slot dispname="EnableLocalLight2" type="2" name="EnableLocalLight2">
 			<value id="1" index="0">false</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">false</value>
@@ -132,7 +132,7 @@ type
 		</idset>
 	</idSets>
 	
-	<ParamSet dispname="Fog">
+	<ParamSet dispname="Fog" name="Fog Parameter">
 		<edited>
 			<id>1</id>
 			<id>2</id>
@@ -144,12 +144,12 @@ type
 			<value id="2" index="1">こめ２</value>
 			<value id="3" index="2">※3</value>
 		</comments>
-		<slot dispname="FogHeight" type="1">
+		<slot dispname="FogHeight" type="1" name="fog-height parameter">
 			<value id="1" index="0">5.0</value>
 			<value id="2" index="0">1.0</value>
 			<value id="3" index="0">34.0</value>
 		</slot>
-		<slot dispname="check1" type="2">
+		<slot dispname="check1" type="2" name="fog-check parameter">
 			<value id="1" index="0">false</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">true</value>

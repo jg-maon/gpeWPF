@@ -103,7 +103,14 @@ namespace WpfApplication1
         private void OnDumpToConsole(object sender, RoutedEventArgs e)
         {
             // Uncomment when TRACE is activated on AvalonDock project
-            //dockManager.Layout.ConsoleDump(0);
+            dockManager.Layout.ConsoleDump(0);
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+
+            var layoutSerializer = new XmlLayoutSerializer(dockManager);
+            layoutSerializer.Serialize(@".\AvalonDock.Layout.config");
         }
 
     }

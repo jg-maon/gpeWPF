@@ -97,7 +97,7 @@ namespace WpfApplication1
         {
             foreach (var value in valueCollection)
             {
-                if (value.Name == name)
+                if (value.DispName == name)
                 {
                     return value;
                 }

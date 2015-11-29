@@ -15,6 +15,9 @@ namespace WpfApplication1
             [XmlAttribute("dispname")]
             public string DispName { get; set; }
 
+            [XmlAttribute("name")]
+            public string Name { get; set; }
+
             public class _Edited
             {
                 [XmlElement("id")]

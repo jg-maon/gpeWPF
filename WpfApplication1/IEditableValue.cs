@@ -13,11 +13,27 @@ namespace WpfApplication1
     public class EditableValue : ViewModelBase
     {
 
+        private string m_dispName;
+        /// <summary>
+        /// パラメータ名(Angle的な)
+        /// </summary>
+        public string DispName 
+        {
+            get
+            {
+                return m_dispName;
+            }
+            set
+            {
+                SetProperty(ref m_dispName, value);
+            }
+        }
+
         private string m_name;
         /// <summary>
-        /// パラメータ名(DirLight0Angle的な)
+        /// パラメータ固有名(DirLight0Angle的な)
         /// </summary>
-        public string Name 
+        public string Name
         {
             get
             {
@@ -26,6 +42,22 @@ namespace WpfApplication1
             set
             {
                 SetProperty(ref m_name, value);
+            }
+        }
+
+        private int m_type;
+        /// <summary>
+        /// パラメータのタイプ(gparamxmlから引っ張ってきた値そのまま)
+        /// </summary>
+        public int Type 
+        {
+            get
+            {
+                return m_type;
+            }
+            set
+            {
+                SetProperty(ref m_type, value);
             }
         }
 
@@ -147,6 +179,7 @@ namespace WpfApplication1
     /// <see cref="ObservableCollection ParameterCollection"/>
     public class ParameterCollectionViewModel : ViewModelBase
     {
+
         private string m_name;
         /// <summary>
         /// カテゴリ名
@@ -160,6 +193,21 @@ namespace WpfApplication1
             set
             {
                 SetProperty(ref m_name, value);
+            }
+        }
+        private string m_dispName;
+        /// <summary>
+        /// カテゴリ名
+        /// </summary>
+        public string DispName
+        {
+            get
+            {
+                return m_dispName;
+            }
+            set
+            {
+                SetProperty(ref m_dispName, value);
             }
         }
 
@@ -187,7 +235,7 @@ namespace WpfApplication1
         /// </returns>
         public ParametersViewModel CreateId()
         {
-            return new ParametersViewModel(Name);
+            return new ParametersViewModel(DispName);
         }
 
         /// <summary>
@@ -201,7 +249,7 @@ namespace WpfApplication1
         /// </returns>
         public ParametersViewModel CreateId(int id, string name, string comment)
         {
-            return new ParametersViewModel(Name) { ID = id, Name = name, Comment = comment };
+            return new ParametersViewModel(DispName) { ID = id, Name = name, Comment = comment };
         }
     }
 

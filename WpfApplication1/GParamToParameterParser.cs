@@ -57,7 +57,8 @@ namespace WpfApplication1
                     int n = 0;  // #TODO: IDのName用
                     foreach (var paramset in gparam.ParamSet)
                     {
-                        string categoryName = paramset.DispName;
+                        string categoryDispName = paramset.DispName;
+                        string categoryName = paramset.Name;
 
                         int tabIndex = 0;  // TextBox.TabIndex用カウンタ
 
@@ -67,9 +68,9 @@ namespace WpfApplication1
                         // グループのグループ化するパラメータとグループ後の名前のコレクション
                         List<GroupPattern> groupPatterns = new List<GroupPattern>();
 
-                        if (json.IsDefined(categoryName) && json[categoryName].IsObject)
+                        if (json.IsDefined(categoryDispName) && json[categoryDispName].IsObject)
                         {
-                            var jsonCategory = json[categoryName];
+                            var jsonCategory = json[categoryDispName];
                             // カテゴリ(Object)内にグループがあり、Arrayの場合
                             if (jsonCategory.IsDefined(s_groupLabel) && jsonCategory[s_groupLabel].IsArray)
                             {
@@ -99,7 +100,7 @@ namespace WpfApplication1
                         }
                         #endregion
 
-                        var parameterCollection = new ParameterCollectionViewModel() { Name = categoryName };
+                        var parameterCollection = new ParameterCollectionViewModel() { DispName = categoryDispName, Name = categoryName };
                         var parameters = parameterCollection.Parameters;
                         paramset.Edited.Id.Sort(); // 昇順ソート
                         foreach (var id in paramset.Edited.Id)
@@ -121,10 +122,13 @@ namespace WpfApplication1
                             {
                                 // パラメータ名
                                 string parameterName = gparamSlot.DispName;
+                                // 固有名
+                                string uniqueName = gparamSlot.Name;
                                 // IDが一致している値部
                                 string gparamTextById = gparamSlot.Value.FirstOrDefault(v => v.Id == id).Text;
                                 // パラメータコレクションに追加させる値
                                 var slotValue = new EditableValue();
+                                slotValue.Type = gparamSlot.Type;
                                 switch (gparamSlot.Type)
                                 {
                                     case 1:
@@ -145,7 +149,8 @@ namespace WpfApplication1
                                         break;
                                 }
 
-                                slotValue.Name = parameterName;
+                                slotValue.DispName = parameterName;
+                                slotValue.Name = uniqueName;
 
                                 // patternのargsを蓄積したものを一気に追加させる
                                 bool isAdded = false;
@@ -160,7 +165,7 @@ namespace WpfApplication1
                                         {
                                             // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
                                             EditableValueGroup value = new EditableValueGroup();
-                                            value.Name = pattern.Names[0];
+                                            value.DispName = pattern.Names[0];
                                             value.Value = groupCollection;
                                             value.TabIndex = tabIndex++;
                                             value.IsExpanded = pattern.IsExpanded[0];
@@ -184,7 +189,7 @@ namespace WpfApplication1
                                             foreach(var groupCollectionValue in group)
                                             {
                                                 // 既にあるコレクションの中で自身と同じ名前のパラメータが登録されていたら
-                                                if(parameterName == groupCollectionValue.Name)
+                                                if(parameterName == groupCollectionValue.DispName)
                                                 {
                                                     // このグループには追加させないようにしてパラメータ検索終了
                                                     targetCollection = null;
@@ -219,7 +224,7 @@ namespace WpfApplication1
                                             // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
                                             EditableValueGroup value = new EditableValueGroup();
                                             int groupCount = (groupList.Count - 1);
-                                            value.Name = pattern.Names[groupCount % pattern.Names.Count];
+                                            value.DispName = pattern.Names[groupCount % pattern.Names.Count];
                                             value.Value = targetCollection;
                                             value.TabIndex = tabIndex++;
                                             value.IsExpanded = pattern.IsExpanded[groupCount % pattern.IsExpanded.Count];
@@ -252,6 +257,126 @@ namespace WpfApplication1
             destCollection = tempCollection;
 
             return true;
+        }
+
+
+        internal static bool TryDeserialize(ReadOnlyObservableCollection<ParameterCollectionViewModel> parameterCollection, out GparamRoot outGparam)
+        {
+            GparamRoot gparam = new GparamRoot();
+            try
+            {
+                gparam.ParamSet = new List<GparamRoot._ParamSet>();
+                foreach (var categories in parameterCollection)
+                {
+                    string categoryDispName = categories.DispName;
+                    string categoryName = categories.Name;
+
+                    GparamRoot._ParamSet._Comment gparamComments = new GparamRoot._ParamSet._Comment() { Value = new List<GparamRoot._ParamSet._Value>() };
+                    GparamRoot._ParamSet._Edited gparamIds = new GparamRoot._ParamSet._Edited() { Id = new List<int>() };
+                    
+                    // @name, スロット
+                    Dictionary<string, GparamRoot._ParamSet._Slot> gparamSlotDictionary = new Dictionary<string, GparamRoot._ParamSet._Slot>();
+                    int slotCount = 0;
+                    foreach(var paramset in categories.Parameters)
+                    {
+                        int id = paramset.ID;
+                        string comment = paramset.Comment;
+                        gparamIds.Id.Add(id);
+                        gparamComments.Value.Add(new GparamRoot._ParamSet._Value() { Id = id, Text = comment, Index = slotCount });
+
+
+                        // スロットの収拾
+                        _Recursively(id, slotCount, paramset.Slots, ref gparamSlotDictionary);
+
+                        ++slotCount;
+                    }
+
+                    GparamRoot._ParamSet gparamParamset = new GparamRoot._ParamSet()
+                    {
+                        DispName = categoryDispName,
+                        Name = categoryName,
+                        Comment = gparamComments,
+                        Edited = gparamIds,
+                        Slot = gparamSlotDictionary.Values.ToList()
+                    };
+
+                    gparam.ParamSet.Add(gparamParamset);
+
+                }
+            }
+            catch(Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message + Environment.NewLine + Environment.NewLine + e.StackTrace, "");
+                Console.WriteLine(e.StackTrace);
+                outGparam = new GparamRoot();
+                return false;
+            }
+            outGparam = gparam;
+            return true;
+
+        }
+
+        private static void _Recursively(int id, int slotCount, ObservableCollection<EditableValue> paramsetSlots, ref Dictionary<string, GparamRoot._ParamSet._Slot> gparamSlotDictionary)
+        {
+            foreach (var slot in paramsetSlots)
+            {
+                // パラメータ配列の場合
+                var group = slot as EditableValueGroup;
+                if (null != group)
+                {
+                    _Recursively(id, slotCount, group.Value, ref gparamSlotDictionary);
+                }
+                else
+                {
+                    // 通常のパラメータ
+                    string paramName = slot.Name;
+                    string paramDispName = slot.DispName;
+                    int paramType = slot.Type;
+
+                    GparamRoot._ParamSet._Slot gparamSlot;
+                    // 名前に対応したスロット配列の取得
+                    if (!gparamSlotDictionary.TryGetValue(paramName, out gparamSlot))
+                    {
+                        // 取得できなかった場合、新規作成
+                        gparamSlot = new GparamRoot._ParamSet._Slot();
+                        gparamSlot.Value = new List<GparamRoot._ParamSet._Value>();
+                        gparamSlotDictionary.Add(paramName, gparamSlot);
+                    }
+
+                    gparamSlot.DispName = paramDispName;
+                    gparamSlot.Name = paramName;
+                    gparamSlot.Type = paramType;
+                    var value = new GparamRoot._ParamSet._Value() { Id = id, Index = slotCount };
+                    
+
+                    switch (gparamSlot.Type)
+                    {
+                        case 4: // float2
+                        case 5: // float3
+                        case 6: // float4   (とする)
+                            {
+                                var array = slot.Value as object[];
+                                if(null != array)
+                                {
+                                    value.Text = string.Join(",", array);
+                                }
+                                else
+                                {
+                                    value.Text = string.Join(",", slot.Value);
+                                }
+                                //slotValue.Value = Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s)));
+                            }
+                            break;
+                        default:
+                            value.Text = slot.Value.ToString(); // #TODO: 配列の変換
+                            break;
+                    }
+
+
+                    gparamSlot.Value.Add(value);
+
+                }
+            }
         }
 
     }

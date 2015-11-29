@@ -183,6 +183,59 @@ namespace WpfApplication1
         }
 
 
+        #region SaveCommand
+
+        private DelegateCommand m_saveCommand = null;
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return m_saveCommand = m_saveCommand ?? new DelegateCommand(_OnSave, _DoesSave);
+            }
+        }
+
+        private bool _DoesSave()
+        {
+            return true;
+
+            //return IsDirty;
+        }
+
+        private void _OnSave()
+        {
+            Workspace.Instance.Save(this, false);
+        }
+
+        #endregion
+
+        #region SaveAsCommand
+        DelegateCommand _saveAsCommand = null;
+        public ICommand SaveAsCommand
+        {
+            get
+            {
+                if (_saveAsCommand == null)
+                {
+                    _saveAsCommand = new DelegateCommand(OnSaveAs, CanSaveAs);
+                }
+
+                return _saveAsCommand;
+            }
+        }
+
+        private bool CanSaveAs()
+        {
+            //return IsDirty;
+            return true;
+        }
+
+        private void OnSaveAs()
+        {
+            Workspace.Instance.Save(this, true);
+        }
+
+        #endregion
+
 
 
 

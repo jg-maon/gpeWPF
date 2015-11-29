@@ -46,6 +46,8 @@
     <Window.InputBindings>
         <KeyBinding Gesture="Ctrl+N" Command="{Binding NewCommand}" />
         <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenCommand}" />
+        <KeyBinding x:Name="MenuSaveCommand" Gesture="Ctrl+S" Command="{Binding SaveCommand}"/>
+        <KeyBinding x:Name="MenuSaveAsCommand" Gesture="Ctrl+Shift+S" Command="{Binding SaveAsCommand}"/>
     </Window.InputBindings>
     <Border BorderBrush="Gray" BorderThickness="1">
         <Grid>
@@ -68,8 +70,8 @@
                     <MenuItem Header="_New" Command="{Binding NewCommand}" />
                     <MenuItem Header="_Open" Command="{Binding OpenCommand}"/>
                     <Separator/>
-                    <MenuItem Header="Save" Command="{Binding ActiveDocument.SaveCommand}"/>
-                    <MenuItem Header="Save As..." Command="{Binding ActiveDocument.SaveAsCommand}"/>
+                    <MenuItem Header="Save" InputGestureText="Ctrl+S" Command="{Binding Command, ElementName=MenuSaveCommand}"/>
+                    <MenuItem Header="Save As..." InputGestureText="Ctrl+Shift+S" Command="{Binding Command, ElementName=MenuSaveAsCommand}"/>
                     <Separator/>
                     <MenuItem Header="Close" Command="{Binding ActiveDocument.CloseCommand}"/>
                 </MenuItem>
@@ -77,7 +79,7 @@
                     <MenuItem Header="Properties" IsChecked="{Binding FileStats.IsVisible, Mode=TwoWay}" IsCheckable="True"/>
                 </MenuItem>
                 <MenuItem Header="Layout">
-                    <MenuItem Header="Load" Command="{Binding LoadLayoutCommand, ElementName=mainWindow}"/>
+                    <MenuItem Header="Load" Click="MenuItem_Click"/>
                     <MenuItem Header="Save" Command="{Binding SaveLayoutCommand, ElementName=mainWindow}"/>
                     <MenuItem Header="Dump to Console" Click="OnDumpToConsole"/>
                     <MenuItem Header="CreateNewId" Command="{Binding CreateCommand}" />
@@ -208,8 +210,39 @@
 
                 <avalonDock:LayoutRoot>
                     <avalonDock:LayoutPanel Orientation="Horizontal">
-                        <avalonDock:LayoutDocumentPane DockWidth="1" />
-                        <!--<avalonDock:LayoutDocumentPaneGroup Orientation="Horizontal">
+                        <avalonDock:LayoutPanel Orientation="Vertical" DockWidth="1000">
+                            <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" DockWidth="200" DockHeight="1.64963503649635*">
+                                <avalonDock:LayoutAnchorablePaneGroup Orientation="Vertical">
+                                    <avalonDock:LayoutAnchorablePane Name="Ava">
+                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Abc" IsSelected="True" LastActivationTimeStamp="11/26/2015 02:26:16" />
+                                    </avalonDock:LayoutAnchorablePane>
+                                    <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" FloatingWidth="825" FloatingHeight="67" FloatingLeft="-152" FloatingTop="199">
+                                        <avalonDock:LayoutAnchorablePane FloatingWidth="825" FloatingHeight="67" FloatingLeft="-152" FloatingTop="199">
+                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Bcd" IsSelected="True" FloatingLeft="-152" FloatingTop="199" FloatingWidth="825" FloatingHeight="67" LastActivationTimeStamp="11/26/2015 02:26:19" />
+                                        </avalonDock:LayoutAnchorablePane>
+                                    </avalonDock:LayoutAnchorablePaneGroup>
+                                </avalonDock:LayoutAnchorablePaneGroup>
+                                <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" FloatingWidth="126" FloatingHeight="278" FloatingLeft="447" FloatingTop="143">
+                                    <avalonDock:LayoutAnchorablePane FloatingWidth="126" FloatingHeight="278" FloatingLeft="447" FloatingTop="143">
+                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Autohidden Content" IsSelected="True" FloatingLeft="447" FloatingTop="143" FloatingWidth="126" FloatingHeight="278" LastActivationTimeStamp="11/26/2015 02:26:15" />
+                                    </avalonDock:LayoutAnchorablePane>
+                                </avalonDock:LayoutAnchorablePaneGroup>
+                            </avalonDock:LayoutAnchorablePaneGroup>
+                            <avalonDock:LayoutAnchorablePane DockHeight="0.35036496350365*">
+                                <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ID詳細" IsSelected="True" />
+                            </avalonDock:LayoutAnchorablePane>
+                        </avalonDock:LayoutPanel>
+                        <avalonDock:LayoutDocumentPane DockWidth="0.00001*" DockHeight="0.001*" />
+                    </avalonDock:LayoutPanel>
+                </avalonDock:LayoutRoot>
+            </avalonDock:DockingManager>
+
+        </Grid>
+    </Border>
+</Window>
+
+
+<!--<avalonDock:LayoutDocumentPaneGroup Orientation="Horizontal">
                             <avalonDock:LayoutDocumentPane DockWidth="300">
                             </avalonDock:LayoutDocumentPane>
                             <local:LayoutDocumentPaneEx Name="CategoryTreePane"/>
@@ -247,19 +280,4 @@
                                 </avalonDock:LayoutDocument>
                             </avalonDock:LayoutDocumentPane>
                         </avalonDock:LayoutDocumentPaneGroup>-->
-                    </avalonDock:LayoutPanel>
-                    <avalonDock:LayoutRoot.LeftSide>
-                        <avalonDock:LayoutAnchorSide>
-                            <avalonDock:LayoutAnchorGroup>
-                                <avalonDock:LayoutAnchorable Title="Autohidden Content">
-                                    <TextBox/>
-                                </avalonDock:LayoutAnchorable>
-                            </avalonDock:LayoutAnchorGroup>
-                        </avalonDock:LayoutAnchorSide>
-                    </avalonDock:LayoutRoot.LeftSide>
-                </avalonDock:LayoutRoot>
-            </avalonDock:DockingManager>
-
-        </Grid>
-    </Border>
-</Window>
+                        

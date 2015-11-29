@@ -27,6 +27,7 @@ using Xceed.Wpf.AvalonDock.Layout;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using WpfApplication1.Controls;
+using System.Xml.Serialization;
 
 namespace WpfApplication1
 {
@@ -225,7 +226,7 @@ namespace WpfApplication1
             get
             { return m_confirmationRequest; }
         }
-
+        #region CreateCommand
         DelegateCommand m_createCommand;
         public ICommand CreateCommand
         { 
@@ -238,8 +239,14 @@ namespace WpfApplication1
         private void _OnCreateNewId()
         {
             if(!RaiseConfirm())
-            { return; }
+            {
+                // キャンセル
+                return; 
+            }
+            // パラメータの取得
+            //uint id = CreateNewIdWindowContentViewModel.Instance.InputId;
         }
+        #endregion  // CreateCommand
 
         public bool RaiseConfirm()
         {
@@ -294,6 +301,10 @@ namespace WpfApplication1
                 {
                     // ID詳細タブの中身を変更
                     IdInfoTablePane.Content = m_activeFile.IdInfoTablePane.Content;
+
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)SaveAsCommand).RaiseCanExecuteChanged();
+
                 }
             }
         }
@@ -328,6 +339,79 @@ namespace WpfApplication1
             fileToSave.IsDirty = false;
         }
 
+        internal void Save(CategoryTreePaneViewModel categoryTreePaneViewModel, bool saveAsFlag = false)
+        {
+            string filePath = categoryTreePaneViewModel.Title;
+            if (categoryTreePaneViewModel.Title == null || saveAsFlag)
+            {
+                var dlg = new SaveFileDialog();
+                if (dlg.ShowDialog().GetValueOrDefault())
+                    filePath = dlg.FileName;
+                else
+                    return;
+            }
+
+
+            GparamRoot gparamRoot;
+
+            if (GParamToParameterParser.TryDeserialize(categoryTreePaneViewModel.Collection, out gparamRoot))
+            {
+                try
+                {
+                    using (var writer = new StreamWriter(filePath))
+                    {
+                        var serializer = new XmlSerializer(typeof(GparamRoot));
+
+                        //空の名前空間宣言を生成 
+                        XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                        ns.Add("", "");
+
+                        //オブジェクトをXMLファイルにシリアライズ 
+                        serializer.Serialize(writer, gparamRoot, ns);
+                        
+                    }
+                    MessageBox.Show("保存先:" + filePath, "");
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.Message + Environment.NewLine + Environment.NewLine + e.StackTrace, "保存失敗");
+                    Console.WriteLine(e.StackTrace);
+                }
+
+            }
+            else
+            {
+                MessageBox.Show("パース失敗", "パース失敗");
+            }
+        }
+
+        private static readonly DelegateCommand s_emptyCommand = new DelegateCommand(() => { }, () => false); 
+        #region SaveCommand
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                if(null != ActiveFile)
+                {
+                    return ActiveFile.SaveCommand;
+                }
+                return s_emptyCommand;
+            }
+        }
+
+        #endregion
+
+        #region SaveAsCommand
+
+        public ICommand SaveAsCommand
+        {
+            get
+            {
+                return (null != ActiveFile) ? ActiveFile.SaveAsCommand : s_emptyCommand;
+            }
+        }
+        #endregion
 
 
         /// <summary>
@@ -360,6 +444,7 @@ namespace WpfApplication1
                 else
                 {
                     // 1タブ開いている場合 パラメータ部分のみ変更
+                    //_tools[0].Parameters = tab.Parameters;
                     _tools[0] = tab;
                     OnPropertyChanged(() => this.Tools);
                     //_tools[0].Parameter = tab.Parameter;
@@ -620,6 +705,7 @@ namespace WpfApplication1
                 return m_parameterFileTree = m_parameterFileTree ?? new ParameterFileTreePaneViewModel();
             }
         }
+
 
     }
 }

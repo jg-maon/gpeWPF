@@ -100,7 +100,7 @@ namespace WpfApplication1
             {
                 foreach(EditableValue v in value.Value)
                 {
-                    if(v.Name.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                    if(v.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
                         return true;
                     }
@@ -108,7 +108,7 @@ namespace WpfApplication1
             }
 
 
-            return (value.Name.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0);
+            return (value.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         #region ExpandCommand

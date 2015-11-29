@@ -23,7 +23,7 @@ namespace WpfApplication1
         {
             get
             {
-                return m_categoryViewModel.Name;
+                return m_categoryViewModel.DispName;
             }
         }
 
@@ -61,7 +61,7 @@ namespace WpfApplication1
         /// <param name="file">ファイル</param>
         /// <param name="categoryViewModel">カテゴリ</param>
         public IdInfoTableTabPageViewModel(CategoryTreePaneViewModel file, ParameterCollectionViewModel categoryViewModel)
-            : base(categoryViewModel.Name)
+            : base(categoryViewModel.DispName)
         {
             this.m_file = file;
             this.m_categoryViewModel = categoryViewModel;

@@ -34,7 +34,7 @@ namespace WpfApplication1
                 destinationContainer.FindParent<LayoutFloatingWindow>() != null)
                 return false;
 
-            var toolsPane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == "ToolsPane");
+            var toolsPane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == "Ava");
             if (toolsPane != null)
             {
                 toolsPane.Children.Add(anchorableToShow);
