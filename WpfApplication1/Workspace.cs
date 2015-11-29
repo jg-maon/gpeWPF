@@ -227,24 +227,17 @@ namespace WpfApplication1
             { return m_confirmationRequest; }
         }
         #region CreateCommand
-        DelegateCommand m_createCommand;
         public ICommand CreateCommand
         { 
             get
             {
-                return m_createCommand = m_createCommand ?? new DelegateCommand(_OnCreateNewId);
+                //return (null != ActiveFile) ? ActiveFile.CreateNewIdCommand : s_emptyCommand;
+                if(null != ActiveFile)
+                {
+                    return ActiveFile.CreateNewIdCommand;
+                }
+                return s_emptyCommand;
             }
-        }
-
-        private void _OnCreateNewId()
-        {
-            if(!RaiseConfirm())
-            {
-                // キャンセル
-                return; 
-            }
-            // パラメータの取得
-            //uint id = CreateNewIdWindowContentViewModel.Instance.InputId;
         }
         #endregion  // CreateCommand
 
@@ -304,7 +297,8 @@ namespace WpfApplication1
 
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)SaveAsCommand).RaiseCanExecuteChanged();
-
+                    ((DelegateCommand)CreateCommand).RaiseCanExecuteChanged();
+                    
                 }
             }
         }

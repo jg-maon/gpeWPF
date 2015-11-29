@@ -321,10 +321,11 @@ namespace WpfApplication1
             foreach (var slot in paramsetSlots)
             {
                 // パラメータ配列の場合
-                var group = slot as EditableValueGroup;
+                //var group = slot as EditableValueGroup;
+                var group = slot.Value as ObservableCollection<EditableValue>;
                 if (null != group)
                 {
-                    _Recursively(id, slotCount, group.Value, ref gparamSlotDictionary);
+                    _Recursively(id, slotCount, group, ref gparamSlotDictionary);
                 }
                 else
                 {

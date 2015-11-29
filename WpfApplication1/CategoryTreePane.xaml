@@ -45,6 +45,11 @@
                     <TextBlock Text="{Binding Name}" />
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
+            <TreeView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="CreateID" Command="{Binding CreateNewIdCommand}"/>
+                </ContextMenu>
+            </TreeView.ContextMenu>
 
             <i:Interaction.Behaviors>
                 <local:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay}" />

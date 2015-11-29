@@ -142,11 +142,11 @@ namespace WpfApplication1
             }
         }
 
-        private ParametersViewModel m_selectedItem;
+        private ViewModelBase m_selectedItem;
         /// <summary>
         /// 選択中のID
         /// </summary>
-        public ParametersViewModel SelectedItem
+        public ViewModelBase SelectedItem
         {
             get
             {
@@ -156,8 +156,16 @@ namespace WpfApplication1
             {
                 if (SetProperty(ref m_selectedItem, value))
                 {
-                    if(value != null)
+                    var categoryNode = value as ParameterCollectionViewModel;
+                    if(null != categoryNode)
                     {
+                        m_createNewIdCommand.RaiseCanExecuteChanged();
+                        return;
+                    }
+                    var idNode = value as ParametersViewModel;
+                    if(null != idNode)
+                    {
+                        m_createNewIdCommand.RaiseCanExecuteChanged();
                         // パラメータビューの更新
                         bool doFloating = false;
                         var modifiers = Keyboard.Modifiers;
@@ -172,10 +180,10 @@ namespace WpfApplication1
                             doFloating = false;
                         }
 
-                        Workspace.Instance.UpdateParameterTab(this, SelectedItem, doFloating);
+                        Workspace.Instance.UpdateParameterTab(this, idNode, doFloating);
 
                         // ID詳細タブオープン
-                        IdInfoTablePane.Content.OpenParameterTab(Collection.FirstOrDefault((category=>category.Parameters.Contains(SelectedItem))));
+                        IdInfoTablePane.Content.OpenParameterTab(Collection.FirstOrDefault((category=>category.Parameters.Contains(idNode))));
 
                     }
                 }
@@ -240,5 +248,90 @@ namespace WpfApplication1
 
 
 
+        #region CreateCommand
+        DelegateCommand m_createNewIdCommand;
+        public ICommand CreateNewIdCommand
+        {
+            get
+            {
+                return m_createNewIdCommand = m_createNewIdCommand ?? new DelegateCommand(_OnCreateNewId, _DoesCreateNewId);
+            }
+        }
+
+        private bool _DoesCreateNewId()
+        {
+            return null != SelectedItem;
+        }
+
+        private void _OnCreateNewId()
+        {
+            ParameterCollectionViewModel categoryNode = null;
+            var idNode = SelectedItem as ParametersViewModel;
+            if (null != idNode)
+            {
+                // IDの場合コレクション一覧からカテゴリの選択
+                foreach(var categoryParameters in m_collection)
+                {
+                    if(categoryParameters.Parameters.Contains(idNode))
+                    {
+                        categoryNode = categoryParameters;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                categoryNode = SelectedItem as ParameterCollectionViewModel;
+            }
+
+            if(null != categoryNode)
+            {
+                CreateNewIdWindowContentViewModel.Instance.Category = categoryNode.DispName;
+            }
+            
+
+            if (!Workspace.Instance.RaiseConfirm())
+            {
+                // キャンセル
+                return;
+            }
+            // パラメータの取得
+
+            var id = CreateNewIdWindowContentViewModel.Instance.InputId;
+            var comment = CreateNewIdWindowContentViewModel.Instance.InputComment;
+            var name = CreateNewIdWindowContentViewModel.Instance.InputName;
+            var category = CreateNewIdWindowContentViewModel.Instance.Category;
+
+            if(null != categoryNode)
+            {
+                // #TODO:デフォルトファイルの読み込み&デフォルトIDの作成
+
+                var newId = new ParametersViewModel(category) { ID = id, Comment = comment, Name = name };
+                foreach(var slot in categoryNode.Parameters[0].Slots)
+                {
+                    var value = new EditableValue()
+                    {
+                        DispName = slot.DispName,
+                        Name = slot.Name,
+                        TabIndex = slot.TabIndex,
+                        Type = slot.Type,
+                        Filter = slot.Filter,
+                        IsDirty = slot.IsDirty,
+                        IsExpanded = slot.IsExpanded,
+                        Value = slot.Value
+                    };
+                    
+                    newId.Slots.Add(value);
+                }
+
+                categoryNode.Parameters.Add(newId);
+            }
+            else
+            {
+                // #TODO: カテゴリ名からカテゴリノードの取得
+            }
+
+        }
+        #endregion  // CreateCommand
     }
 }

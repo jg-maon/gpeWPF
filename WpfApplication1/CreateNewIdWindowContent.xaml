@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="516.919" d:DesignWidth="441.549">
+             d:DesignHeight="163.188" d:DesignWidth="441.549">
 
     <DockPanel MinWidth="400">
         <DockPanel DockPanel.Dock="Bottom" Background="#F0F0F0" >
@@ -30,17 +30,20 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="ID:" />
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InputId}" />
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Name:" />
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InputName}" />
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Comment:" />
-            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InputComment}" />
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="作成するカテゴリ:"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Path=Category, Mode=TwoWay}"/>
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="ID:" />
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InputId}" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Name:" />
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InputName}" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Comment:" />
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding InputComment}" />
         </Grid>
     </DockPanel>
 </UserControl>

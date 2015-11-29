@@ -35,9 +35,23 @@ namespace WpfApplication1
             get { return (Confirmation)this.Notification; }
         }
 
+        private string m_category;
+        public string Category 
+        {
+            get
+            {
+                return m_category;
+            }
+            set
+            {
+                SetProperty(ref m_category, value);
+            }
+        }
+
+
         public string InputComment { get; set; }
         public string InputName { get; set; }
-        public uint InputId { get; set; }
+        public int InputId { get; set; }
 
 
         public DelegateCommand OkCommand { get; set; }
@@ -63,5 +77,6 @@ namespace WpfApplication1
             this.CancelCommand = new DelegateCommand(this.OnCancel);
 
         }
+
     }
 }
