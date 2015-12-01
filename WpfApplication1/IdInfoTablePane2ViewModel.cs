@@ -10,7 +10,7 @@ namespace WpfApplication1
     /// <summary>
     /// ID詳細タブVM
     /// </summary>
-    class IdInfoTablePane2ViewModel : DocumentViewModel
+    class IdInfoTablePane2ViewModel : ToolViewModel
     {
         IdInfoTablePaneContentViewModel m_content;
         public IdInfoTablePaneContentViewModel Content

@@ -10,6 +10,7 @@
     xmlns:prism="http://www.codeplex.com/prism"
     mc:Ignorable="d"
     Title="MainWindow" Height="350" Width="1000" 
+    
     >
     <!--Style="{StaticResource {x:Type Window}}"-->
     <!--
@@ -191,6 +192,8 @@
                                 <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
                                 <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>
                                 <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>
+                                <Setter Property="local:LayoutItemBehavior.FloatingWidth" Value="{Binding Model.FloatingWidth, Mode=TwoWay}"/>
+                                <Setter Property="local:LayoutItemBehavior.FloatingHeight" Value="{Binding Model.FloatingHeight, Mode=TwoWay}"/>
                             </Style>
                         </local:PanesStyleSelector.ToolStyle>
                         <local:PanesStyleSelector.FileStyle>
@@ -209,30 +212,35 @@
                 </avalonDock:DockingManager.LayoutUpdateStrategy>
 
                 <avalonDock:LayoutRoot>
-                    <avalonDock:LayoutPanel Orientation="Horizontal">
-                        <avalonDock:LayoutPanel Orientation="Vertical" DockWidth="1000">
-                            <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" DockWidth="200" DockHeight="1.64963503649635*">
-                                <avalonDock:LayoutAnchorablePaneGroup Orientation="Vertical">
-                                    <avalonDock:LayoutAnchorablePane Name="Ava">
-                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Abc" IsSelected="True" LastActivationTimeStamp="11/26/2015 02:26:16" />
-                                    </avalonDock:LayoutAnchorablePane>
-                                    <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" FloatingWidth="825" FloatingHeight="67" FloatingLeft="-152" FloatingTop="199">
-                                        <avalonDock:LayoutAnchorablePane FloatingWidth="825" FloatingHeight="67" FloatingLeft="-152" FloatingTop="199">
-                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Bcd" IsSelected="True" FloatingLeft="-152" FloatingTop="199" FloatingWidth="825" FloatingHeight="67" LastActivationTimeStamp="11/26/2015 02:26:19" />
+                    <avalonDock:LayoutPanel Orientation="Vertical">
+                        <avalonDock:LayoutPanel Orientation="Horizontal">
+                            <avalonDock:LayoutPanel Orientation="Vertical" DockWidth="1000">
+                                <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" DockWidth="200" DockHeight="1.80398270852526*">
+                                    <avalonDock:LayoutAnchorablePaneGroup Orientation="Vertical" DockWidth="0.555516714360042*">
+                                        <avalonDock:LayoutAnchorablePane Name="ConnectionPane" DockWidth="300" DockHeight="0.60059386636169*" >
+                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ファイル共有" FloatingLeft="127" FloatingTop="220" FloatingWidth="247" FloatingHeight="155" LastActivationTimeStamp="12/02/2015 01:26:44" ContentId="00043241-cc2c-4ab9-aa78-36bb71e30705" PreviousContainerIndex="1" />
+                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="実機接続" IsSelected="True" FloatingLeft="122" FloatingTop="223" FloatingWidth="247" FloatingHeight="155" LastActivationTimeStamp="12/02/2015 01:27:06" ContentId="00043241-cc2c-4ab9-aa78-36bb71e30705" PreviousContainerIndex="0" />
+                                        </avalonDock:LayoutAnchorablePane>
+                                        <avalonDock:LayoutAnchorablePane DockHeight="1.39940613363831*" FloatingWidth="253" FloatingHeight="510" FloatingLeft="139" FloatingTop="386" Name="ParameterFileTreePane">
+                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ファイルツリー" IsSelected="True" FloatingLeft="139" FloatingTop="386" FloatingWidth="253" FloatingHeight="510" LastActivationTimeStamp="12/02/2015 01:26:38" />
                                         </avalonDock:LayoutAnchorablePane>
                                     </avalonDock:LayoutAnchorablePaneGroup>
-                                </avalonDock:LayoutAnchorablePaneGroup>
-                                <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" FloatingWidth="126" FloatingHeight="278" FloatingLeft="447" FloatingTop="143">
-                                    <avalonDock:LayoutAnchorablePane FloatingWidth="126" FloatingHeight="278" FloatingLeft="447" FloatingTop="143">
-                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="Autohidden Content" IsSelected="True" FloatingLeft="447" FloatingTop="143" FloatingWidth="126" FloatingHeight="278" LastActivationTimeStamp="11/26/2015 02:26:15" />
+                                    <avalonDock:LayoutAnchorablePane Name="CategoryTreePane" DockWidth="0.619634495317377*" FloatingWidth="126" FloatingHeight="278" FloatingLeft="447" FloatingTop="143">
+                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="sample" IsSelected="True" FloatingLeft="414" FloatingTop="345" FloatingWidth="339" FloatingHeight="625" LastActivationTimeStamp="12/02/2015 01:27:42" ContentId="a205d359-528b-438d-bef4-fdfb9496ae6d" PreviousContainerIndex="1" />
+                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="カテゴリツリー" FloatingLeft="447" FloatingTop="143" FloatingWidth="126" FloatingHeight="278" LastActivationTimeStamp="12/02/2015 01:27:06" />
+                                    </avalonDock:LayoutAnchorablePane>
+                                    <avalonDock:LayoutAnchorablePane DockWidth="1.31073588709677*" FloatingWidth="331" FloatingHeight="741" FloatingLeft="809" FloatingTop="335" Name="ParameterTabPane">
+                                        <avalonDock:LayoutAnchorable Title="" FloatingLeft="809" FloatingTop="335" FloatingWidth="331" FloatingHeight="741" />                                                                     
                                     </avalonDock:LayoutAnchorablePane>
                                 </avalonDock:LayoutAnchorablePaneGroup>
-                            </avalonDock:LayoutAnchorablePaneGroup>
-                            <avalonDock:LayoutAnchorablePane DockHeight="0.35036496350365*">
-                                <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ID詳細" IsSelected="True" />
-                            </avalonDock:LayoutAnchorablePane>
+                            </avalonDock:LayoutPanel>
+                            <avalonDock:LayoutDocumentPane DockHeight="1" />
                         </avalonDock:LayoutPanel>
-                        <avalonDock:LayoutDocumentPane DockWidth="0.00001*" DockHeight="0.001*" />
+                        <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" DockHeight="164.965865458455" FloatingWidth="1000" FloatingHeight="164" FloatingLeft="115" FloatingTop="694">
+                            <avalonDock:LayoutAnchorablePane Name="IdInfoTablePane" DockHeight="164.965865458455" FloatingWidth="1000" FloatingHeight="164" FloatingLeft="115" FloatingTop="694">
+                                
+                            </avalonDock:LayoutAnchorablePane>
+                        </avalonDock:LayoutAnchorablePaneGroup>
                     </avalonDock:LayoutPanel>
                 </avalonDock:LayoutRoot>
             </avalonDock:DockingManager>
@@ -241,6 +249,33 @@
     </Border>
 </Window>
 
+<!--<avalonDock:LayoutPanel Orientation="Horizontal">
+    <avalonDock:LayoutPanel Orientation="Vertical" DockWidth="1000">
+        <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" DockWidth="200" DockHeight="1.64963503649635*">
+            <avalonDock:LayoutAnchorablePaneGroup Orientation="Vertical" DockWidth="300">
+                <avalonDock:LayoutAnchorablePane Name="ConnectionPane" DockWidth="300">
+                    <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="実機接続" IsSelected="True" LastActivationTimeStamp="11/26/2015 02:26:16" />
+                </avalonDock:LayoutAnchorablePane>
+                <avalonDock:LayoutAnchorablePane FloatingWidth="825" FloatingHeight="67" FloatingLeft="-152" FloatingTop="199" DockWidth="300" Name="ParameterFileTreePane">
+                    <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ファイルツリー" IsSelected="True" FloatingLeft="-152" FloatingTop="199" FloatingWidth="825" FloatingHeight="67" LastActivationTimeStamp="11/26/2015 02:26:19" />
+                </avalonDock:LayoutAnchorablePane>
+            </avalonDock:LayoutAnchorablePaneGroup>
+            <avalonDock:LayoutAnchorablePane FloatingWidth="126" FloatingHeight="278" FloatingLeft="447" FloatingTop="143" Name="CategoryTreePane">
+                <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="カテゴリツリー" IsSelected="True" FloatingLeft="447" FloatingTop="143" FloatingWidth="126" FloatingHeight="278" LastActivationTimeStamp="11/26/2015 02:26:15" />
+            </avalonDock:LayoutAnchorablePane>
+            <avalonDock:LayoutAnchorablePaneGroup Orientation="Horizontal" DockWidth="400">
+                <avalonDock:LayoutAnchorablePane Name="ParameterTabPane" DockWidth="100">
+                    <avalonDock:LayoutAnchorable Title="a"/>
+                </avalonDock:LayoutAnchorablePane>
+            </avalonDock:LayoutAnchorablePaneGroup>
+        </avalonDock:LayoutAnchorablePaneGroup>
+        --><!--<avalonDock:LayoutAnchorablePane DockHeight="0.35036496350365*" Name="IdInfoTablePane">--><!--
+        <avalonDock:LayoutAnchorablePane DockHeight="100" Name="IdInfoTablePane">
+            --><!--<avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ID詳細" IsSelected="True" />--><!--
+        </avalonDock:LayoutAnchorablePane>
+    </avalonDock:LayoutPanel>
+    <avalonDock:LayoutDocumentPane DockWidth="1" DockHeight="1" />
+</avalonDock:LayoutPanel>-->
 
 <!--<avalonDock:LayoutDocumentPaneGroup Orientation="Horizontal">
                             <avalonDock:LayoutDocumentPane DockWidth="300">

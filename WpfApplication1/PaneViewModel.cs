@@ -127,6 +127,30 @@ namespace WpfApplication1
 
         #endregion
 
+        private double m_floatingWidth = 100.0;
+        public double FloatingWidth
+        {
+            get
+            {
+                return m_floatingWidth;
+            }
+            set
+            {
+                SetProperty(ref m_floatingWidth, value);
+            }
+        }
 
+        private double m_floatingHeight = 100.0;
+        public double FloatingHeight
+        {
+            get
+            {
+                return m_floatingHeight;
+            }
+            set
+            {
+                SetProperty(ref m_floatingHeight, value);
+            }
+        }
     }
 }

@@ -129,6 +129,7 @@
     <Compile Include="IdInfoTableTemplateSelector.cs" />
     <Compile Include="IEditableValue.cs" />
     <Compile Include="LayoutDocumentPaneEx.cs" />
+    <Compile Include="LayoutItemBehavior.cs" />
     <Compile Include="LightSetViewModel.cs" />
     <Compile Include="MainWindowBehavior.cs" />
     <Compile Include="MouseDoubleClickBehavior.cs" />

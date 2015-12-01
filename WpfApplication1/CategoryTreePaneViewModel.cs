@@ -13,7 +13,7 @@ namespace WpfApplication1
     /// <summary>
     /// カテゴリツリーに表示するファイル1タブごと 
     /// </summary>
-    class CategoryTreePaneViewModel : DocumentViewModel
+    class CategoryTreePaneViewModel : ToolViewModel
     {
         public bool IsDirty
         {
@@ -56,6 +56,8 @@ namespace WpfApplication1
         public CategoryTreePaneViewModel(string name)
             : base(name)
         {
+            FloatingHeight = 1000.0;
+            FloatingWidth = 1000.0;
             Title = Path.GetFileNameWithoutExtension(name);
             // パラメータファイルの読み込み
             if(!string.IsNullOrEmpty(name) && File.Exists(name))

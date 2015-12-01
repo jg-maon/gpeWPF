@@ -69,7 +69,7 @@ namespace WpfApplication1
         }
 
     }
-    class FileSharePaneViewModel : DocumentViewModel, ITreeContent<Node>
+    class FileSharePaneViewModel : ToolViewModel, ITreeContent<Node>
     {
 
 

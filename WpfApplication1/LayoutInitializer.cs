@@ -29,12 +29,37 @@ namespace WpfApplication1
             //AD wants to add the anchorable into destinationContainer
             //just for test provide a new anchorablepane 
             //if the pane is floating let the manager go ahead
-            LayoutAnchorablePane destPane = destinationContainer as LayoutAnchorablePane;
+            //LayoutAnchorablePane destPane = destinationContainer as LayoutAnchorablePane;
             if (destinationContainer != null &&
                 destinationContainer.FindParent<LayoutFloatingWindow>() != null)
                 return false;
 
-            var toolsPane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == "Ava");
+            var content = anchorableToShow.Content;
+            string destPaneName = "";
+            if(content is IdInfoTablePane2ViewModel)
+            {
+                destPaneName = "IdInfoTablePane";
+            }
+            else if(content is CategoryTreePaneViewModel)
+            {
+                destPaneName = "CategoryTreePane";
+            }
+            else if (content is WpfApplication1.Workspace.ParameterFileTreePaneViewModel)
+            {
+                destPaneName = "ParameterFileTreePane";
+            }
+            else if(content is FileSharePaneViewModel)
+            {
+                destPaneName = "FileSharePane";
+            }
+            else if(content is ParameterTab2ViewModel)
+            {
+                destPaneName = "ParameterTabPane";
+            }
+            else
+            { return false; }
+
+            var toolsPane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == destPaneName);
             if (toolsPane != null)
             {
                 toolsPane.Children.Add(anchorableToShow);

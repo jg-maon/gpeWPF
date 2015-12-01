@@ -46,6 +46,8 @@ namespace WpfApplication1
         }
 
 
+
+
         ObservableCollection<DocumentViewModel> m_documents = new ObservableCollection<DocumentViewModel>();
         ReadOnlyObservableCollection<DocumentViewModel> _readonyFiles = null;
         public ReadOnlyObservableCollection<DocumentViewModel> Files
@@ -54,9 +56,9 @@ namespace WpfApplication1
             {
                 if (_readonyFiles == null)
                 {
-                    m_documents.Add(ParameterFileTree);
-                    m_documents.Add(FileSharePane);
-                    m_documents.Add(IdInfoTablePane);
+                    //m_documents.Add(ParameterFileTree);
+                    //m_documents.Add(FileSharePane);
+                    //m_documents.Add(IdInfoTablePane);
                     _readonyFiles = new ReadOnlyObservableCollection<DocumentViewModel>(m_documents);
                 }
                 return _readonyFiles;
@@ -72,16 +74,20 @@ namespace WpfApplication1
             }
         }
 
-
-        ObservableCollection<ParameterTab2ViewModel> _tools = new ObservableCollection<ParameterTab2ViewModel>();
-        ReadOnlyObservableCollection<ParameterTab2ViewModel> _readonyTools = null;
-        public ReadOnlyObservableCollection<ParameterTab2ViewModel> Tools
+        
+        ObservableCollection<ToolViewModel> m_tools = new ObservableCollection<ToolViewModel>();
+        ReadOnlyObservableCollection<ToolViewModel> _readonyTools = null;
+        public ReadOnlyObservableCollection<ToolViewModel> Tools
         {
             get
             {
                 if (_readonyTools == null)
-                    _readonyTools = new ReadOnlyObservableCollection<ParameterTab2ViewModel>(_tools);
-
+                {
+                    m_tools.Add(ParameterFileTree);
+                    m_tools.Add(FileSharePane);
+                    m_tools.Add(IdInfoTablePane);
+                    _readonyTools = new ReadOnlyObservableCollection<ToolViewModel>(m_tools);
+                }
                 return _readonyTools;
             }
         }
@@ -141,7 +147,7 @@ namespace WpfApplication1
             }
         }
 
-        public DocumentViewModel Open(string filepath)
+        public ToolViewModel Open(string filepath)
         {
             //var fileViewModel = m_documents.OfType<FileViewModel>().FirstOrDefault(fm => fm.FilePath == filepath);
             //if (fileViewModel != null)
@@ -152,7 +158,8 @@ namespace WpfApplication1
 
             
             var fileViewModel = new CategoryTreePaneViewModel(filepath);
-            m_documents.Add(fileViewModel);
+            //m_documents.Add(fileViewModel);
+            m_tools.Add(fileViewModel);
             fileViewModel.IsSelected = true;
             fileViewModel.IsActive = true;
             return fileViewModel;
@@ -206,7 +213,7 @@ namespace WpfApplication1
 
             ParameterFileTree.Add(null);
 
-            ActiveDocument = m_documents.Last();
+            //ActiveDocument = m_documents.Last();
 
 
         }
@@ -419,7 +426,7 @@ namespace WpfApplication1
             var tab = new ParameterTab2ViewModel(categoryTreePaneViewModel, parameterIdViewModel) { DoFloating = doFloating };
                         
 
-            var first = _tools.FirstOrDefault(t => t == tab);
+            var first = m_tools.FirstOrDefault(t => t == tab);
             // 既に追加されている場合
             if (null != first)
             {
@@ -429,17 +436,17 @@ namespace WpfApplication1
             else
             {
                 // 1タブも開いていない場合か、フローティングさせたい時
-                if (_tools.Count == 0 || doFloating)
+                if (m_tools.Count == 0 || doFloating)
                 {
                     // 開く
-                    _tools.Add(tab);
+                    m_tools.Add(tab);
                     return;
                 }
                 else
                 {
                     // 1タブ開いている場合 パラメータ部分のみ変更
                     //_tools[0].Parameters = tab.Parameters;
-                    _tools[0] = tab;
+                    m_tools[0] = tab;
                     OnPropertyChanged(() => this.Tools);
                     //_tools[0].Parameter = tab.Parameter;
                 }
@@ -461,9 +468,9 @@ namespace WpfApplication1
             {
                 // 旧IdInfoTableを探す
                 int idInfoTableIndex = 0;
-                foreach(var doc in m_documents)
+                foreach(var pane in m_tools)
                 {
-                    if(doc == m_idInfoTablePane)
+                    if(pane == m_idInfoTablePane)
                     {
                         break;
                     }
@@ -472,7 +479,7 @@ namespace WpfApplication1
                 SetProperty(ref m_idInfoTablePane, value);
                 if(idInfoTableIndex < m_documents.Count)
                 {
-                    m_documents[idInfoTableIndex] = m_idInfoTablePane;
+                    m_tools[idInfoTableIndex] = m_idInfoTablePane;
                 }
             }
         }
@@ -548,7 +555,7 @@ namespace WpfApplication1
         /// <summary>
         /// パラメータファイルツリーのVM
         /// </summary>
-        public class ParameterFileTreePaneViewModel : DocumentViewModel, ITreeContent<NodeContent>
+        public class ParameterFileTreePaneViewModel : ToolViewModel, ITreeContent<NodeContent>
         {
             int count = 0;
             NodeBase<NodeContent> m_rootNode;
@@ -585,7 +592,7 @@ namespace WpfApplication1
                     {
                         SetProperty(ref m_selectedItem, value);
                         m_selectedItem.IsSelected = true;
-                        m_upCommand.RaiseCanExecuteChanged();
+                        ((DelegateCommand)UpCommand).RaiseCanExecuteChanged();
                     }
                 }
             }
