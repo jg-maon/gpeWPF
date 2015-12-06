@@ -109,7 +109,7 @@
 
             <DockPanel Grid.Row="0">
                 <Button DockPanel.Dock="Left" Command="{Binding ExpandCommand}" ToolTip="{Binding ButtonToolTip}" Width="15"/>
-                <TextBox  x:Name="SearchBox" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox  x:Name="SearchBox" TabIndex="0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>
 
             <ScrollViewer Grid.Row="1"

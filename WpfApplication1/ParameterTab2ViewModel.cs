@@ -76,29 +76,34 @@ namespace WpfApplication1
                 if(null == m_collectionView)
                 {
                     m_collectionView = (System.Windows.Data.CollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(Parameters.Slots);
-                    m_collectionView.Filter = _OnFilter;
+                    m_collectionView.Filter = _OnGroupFilter;
                 }
                 return m_collectionView;
             }
 
         }
 
+
+        /// <summary>
+        /// 末端のパラメータDispNameと入力文字のフィルター
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         private bool _OnFilter(object obj)
         {
-            // 未記入の場合はすべて表示
-            if(string.IsNullOrEmpty(SearchText))
-            {
-                return true;
-            }
             var value = obj as EditableValue;
             if(null == value)
             {
                 return true;
             }
 
-            if(value.Value is ObservableCollection<EditableValue>)
+
+            var collection = value.Value as ObservableCollection<EditableValue>;
+            if(null != collection)
             {
-                foreach(EditableValue v in value.Value)
+                System.Windows.Data.CollectionView cv = (System.Windows.Data.CollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(collection);
+                cv.Filter = _OnFilter;
+                foreach(EditableValue v in collection)
                 {
                     if(v.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
@@ -107,8 +112,66 @@ namespace WpfApplication1
                 }
             }
 
+            // 未記入の場合はすべて表示
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                return true;
+            }
 
             return (value.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0);
+        }
+
+        /// <summary>
+        /// グループに文字が含まれていたら子要素全てを表示させるフィルタ
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private bool _OnGroupFilter(object obj)
+        {
+            // フィルターにかけないオブジェクトの場合
+            var value = obj as EditableValue;
+            if (null == value)
+            {
+                return true;
+            }
+
+            var result = value.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+
+            // 自身がグループ用オブジェクトの場合
+            var collection = value.Value as ObservableCollection<EditableValue>;
+            if (null != collection)
+            {
+
+                System.Windows.Data.CollectionView cv = (System.Windows.Data.CollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(collection);
+                // グループ名に文字を含む場合
+                if(result)
+                {
+                    // 子は全て表示
+                    cv.Filter = null;
+                }
+                else
+                {
+                    // 子にフィルタをかける
+                    cv.Filter = _OnGroupFilter;
+                }
+                // 子要素にフィルタがかかるものがあれば自身の表示を行う
+                foreach (EditableValue v in collection)
+                {
+                    if (v.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            // 未記入の場合はすべて表示
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                return true;
+            }
+
+            // パラメータ名のフィルタ結果を返す
+            return result;
         }
 
         #region ExpandCommand
