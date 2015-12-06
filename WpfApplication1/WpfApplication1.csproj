@@ -113,6 +113,7 @@
       <DependentUpon>CreateNewIdWindowContent.xaml</DependentUpon>
     </Compile>
     <Compile Include="CreateNewIdWindowContentViewModel.cs" />
+    <Compile Include="CustomPropertyDescriptor.cs" />
     <Compile Include="DarkTheme.cs" />
     <Compile Include="DataGridBehavior.cs" />
     <Compile Include="DataGridItemTemplateSelector.cs" />

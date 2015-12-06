@@ -34,7 +34,7 @@ namespace WpfApplication1
                 {
                     return BoolTemplate;
                 }
-                else if(value.Value is float[])
+                else if(value.Value is float[] || value.Value is IEnumerable<float>)
                 {
                     return Float2Template;
                 }

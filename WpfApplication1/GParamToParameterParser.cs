@@ -16,6 +16,7 @@ namespace WpfApplication1
         static readonly string s_argumentsLabel = "Args";
         static readonly string s_namesLabel = "Names";
         static readonly string s_isExpandedLabel = "IsExpanded";
+        static readonly string s_spaceReplaceLabel = "SpaceReplace";
 
         //static Dictionary<string, GroupPattern> s_groupDefinitions = null;
 
@@ -53,14 +54,24 @@ namespace WpfApplication1
                     var json = DynamicJson.Parse(reader.ReadToEnd());
                     Console.WriteLine(json.ToString());
 
+                    string spaceReplace = "";
+
+                    if (json.IsDefined(s_spaceReplaceLabel))
+                    {
+                        spaceReplace = json[s_spaceReplaceLabel];
+                    }
+
                     
                     int n = 0;  // #TODO: IDのName用
                     foreach (var paramset in gparam.ParamSet)
                     {
                         string categoryDispName = paramset.DispName;
                         string categoryName = paramset.Name;
+                        string categoryBindableName = categoryDispName.Trim();
 
                         int tabIndex = 0;  // TextBox.TabIndex用カウンタ
+
+                        categoryBindableName = categoryBindableName.Replace(" ", spaceReplace);
 
                         // グループ情報の格納
                         #region グループ情報の格納
@@ -100,7 +111,8 @@ namespace WpfApplication1
                         }
                         #endregion
 
-                        var parameterCollection = new ParameterCollectionViewModel() { DispName = categoryDispName, Name = categoryName };
+                        var parameterCollection = new ParameterCollectionViewModel() {
+                            DispName = categoryDispName, Name = categoryName, BindableName = categoryBindableName };
                         var parameters = parameterCollection.Parameters;
                         paramset.Edited.Id.Sort(); // 昇順ソート
                         foreach (var id in paramset.Edited.Id)
@@ -118,10 +130,17 @@ namespace WpfApplication1
                             var groupCollection = new ObservableCollection<EditableValue>();
                             // グループ配列用リスト
                             var groupList = new List<ObservableCollection<EditableValue>>();
+
+                            // 追加済みグループカウンタ
+                            var addedGroupCountDictionary = new Dictionary<GroupPattern, int>();
+
                             foreach (var gparamSlot in paramset.Slot)
                             {
                                 // パラメータ名
-                                string parameterName = gparamSlot.DispName;
+                                string parameterDispName = gparamSlot.DispName;
+                                // バインディング用
+                                string parameterBindableName = parameterDispName.Trim();
+                                parameterBindableName = parameterBindableName.Replace(" ", spaceReplace);
                                 // 固有名
                                 string uniqueName = gparamSlot.Name;
                                 // IDが一致している値部
@@ -141,7 +160,8 @@ namespace WpfApplication1
                                         {
                                             var values = gparamTextById.Split(',');
 
-                                            slotValue.Value = Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s)));
+                                            //slotValue.Value = new ArrayValueViewModel<float>(Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s))));
+                                            slotValue.Value = new ObservableCollection<float>(Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s))));
                                         }
                                         break;
                                     default:
@@ -149,8 +169,9 @@ namespace WpfApplication1
                                         break;
                                 }
 
-                                slotValue.DispName = parameterName;
+                                slotValue.DispName = parameterDispName;
                                 slotValue.Name = uniqueName;
+                                slotValue.BindableName = parameterBindableName;
 
                                 // patternのargsを蓄積したものを一気に追加させる
                                 bool isAdded = false;
@@ -166,6 +187,7 @@ namespace WpfApplication1
                                             // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
                                             EditableValueGroup value = new EditableValueGroup();
                                             value.DispName = pattern.Names[0];
+                                            value.BindableName = pattern.Names[0].Replace(" ", spaceReplace);
                                             value.Value = groupCollection;
                                             value.TabIndex = tabIndex++;
                                             value.IsExpanded = pattern.IsExpanded[0];
@@ -174,7 +196,7 @@ namespace WpfApplication1
                                         isAdded = true;
                                     }
                                     // patternのArgsに同じparamNameが存在する場合
-                                    else if(pattern.Args.Contains(parameterName))
+                                    else if(pattern.Args.Contains(parameterDispName))
                                     {
                                         // group用のコレクションに追加する
                                         // その際、既にコレクション内にparamNameの値が追加されていたら
@@ -189,7 +211,7 @@ namespace WpfApplication1
                                             foreach(var groupCollectionValue in group)
                                             {
                                                 // 既にあるコレクションの中で自身と同じ名前のパラメータが登録されていたら
-                                                if(parameterName == groupCollectionValue.DispName)
+                                                if(parameterDispName == groupCollectionValue.DispName)
                                                 {
                                                     // このグループには追加させないようにしてパラメータ検索終了
                                                     targetCollection = null;
@@ -223,8 +245,14 @@ namespace WpfApplication1
                                         {
                                             // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
                                             EditableValueGroup value = new EditableValueGroup();
-                                            int groupCount = (groupList.Count - 1);
+                                            
+                                            if(!addedGroupCountDictionary.ContainsKey(pattern))
+                                            {
+                                                addedGroupCountDictionary[pattern] = 0;
+                                            }
+                                            int groupCount = addedGroupCountDictionary[pattern]++;
                                             value.DispName = pattern.Names[groupCount % pattern.Names.Count];
+                                            value.BindableName = value.DispName.Replace(" ", spaceReplace);
                                             value.Value = targetCollection;
                                             value.TabIndex = tabIndex++;
                                             value.IsExpanded = pattern.IsExpanded[groupCount % pattern.IsExpanded.Count];

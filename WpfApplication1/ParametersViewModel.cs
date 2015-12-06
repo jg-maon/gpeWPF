@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,10 @@ namespace WpfApplication1
     /// <remarks>
     /// ID1つあたりの情報
     /// </remarks>
-    public class ParametersViewModel : ViewModelBase
+    public class ParametersViewModel : ViewModelBase, ICustomTypeDescriptor
     {
+        List<PropertyDescriptor> m_slotProperties = new List<PropertyDescriptor>();
+
         private readonly string m_categoryName;
         public string CategoryName
         {
@@ -90,6 +93,40 @@ namespace WpfApplication1
         public ParametersViewModel(string categoryName)
         {
             m_categoryName = categoryName;
+
+            PropertyChanged += (sender, e) =>
+            {
+                if(e.PropertyName == "Slots")
+                {
+                    foreach(var slot in Slots)
+                    {
+                        m_slotProperties.Add(new CustomPropertyDescriptor<EditableValue>(slot.BindableName, slot, typeof(ParametersViewModel)));
+                    }
+                }
+            };
+
+            Slots.CollectionChanged += (sender, e) =>
+            {
+                if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                {
+                    foreach(EditableValue item in e.NewItems)
+                    {
+                        m_slotProperties.Add(new CustomPropertyDescriptor<EditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
+                    }
+                }
+                else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                { 
+                    foreach(EditableValue item in e.NewItems)
+                    {
+                        m_slotProperties.Remove(new CustomPropertyDescriptor<EditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
+                    }
+                }
+                else
+                {
+                    var a = e.Action;
+                }
+            };
+
         }
 
 
@@ -321,5 +358,69 @@ namespace WpfApplication1
 
         #endregion
 
+
+        #region ICustomTypeDescriptor メンバー
+
+        public AttributeCollection GetAttributes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetClassName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetComponentName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TypeConverter GetConverter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public EventDescriptor GetDefaultEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PropertyDescriptor GetDefaultProperty()
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetEditor(Type editorBaseType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public EventDescriptorCollection GetEvents(Attribute[] attributes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public EventDescriptorCollection GetEvents()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+        {
+            return GetProperties();
+        }
+
+        public PropertyDescriptorCollection GetProperties()
+        {
+            return new PropertyDescriptorCollection(m_slotProperties.ToArray());
+        }
+
+        public object GetPropertyOwner(PropertyDescriptor pd)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

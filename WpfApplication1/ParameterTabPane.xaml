@@ -12,7 +12,7 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
                             <TextBox Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </Expander.Header>
@@ -26,7 +26,7 @@
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                    <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
                     <CheckBox Grid.Column="1" TabIndex="{Binding TabIndex}" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </DataTemplate>
@@ -41,7 +41,7 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
                             <TextBox x:Name="box1" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <TextBox x:Name="box2" Grid.Column="2" Margin="10,0,0,0" TabIndex="{Binding TabIndex}" Text="{Binding Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
@@ -73,7 +73,7 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding Name}"/>
+                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
                         </Grid>
                     </Expander.Header>
                     <Expander.ContentTemplateSelector>

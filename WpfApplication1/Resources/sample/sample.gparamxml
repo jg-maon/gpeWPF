@@ -111,14 +111,14 @@ type
 		</slot>		
 		
 		
-		<slot dispname="EnableLocalLight1" type="2" name="EnableLocalLight1">
+		<slot dispname="Enable LocalLight1" type="2" name="EnableLocalLight1">
 			<value id="1" index="0">true</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">true</value>
 			<value id="4" index="3">true</value>
 			<value id="5" index="4">false</value>
 		</slot>
-		<slot dispname="EnableLocalLight2" type="2" name="EnableLocalLight2">
+		<slot dispname="Enable LocalLight2" type="2" name="EnableLocalLight2">
 			<value id="1" index="0">false</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">false</value>

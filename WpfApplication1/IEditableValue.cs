@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,16 @@ namespace WpfApplication1
     /// </summary>
     public class EditableValue : ViewModelBase
     {
+
+        private string m_bindableName;
+        public string BindableName
+        {
+            get { return m_bindableName; }
+            set
+            {
+                SetProperty(ref m_bindableName, value);
+            }
+        }
 
         private string m_dispName;
         /// <summary>
@@ -71,7 +82,7 @@ namespace WpfApplication1
             }
             set
             {
-                this.SetProperty(ref m_value, value);
+                this.SetProperty(ref m_value, value, "Value");
             }
         }
 
@@ -132,11 +143,47 @@ namespace WpfApplication1
 
     }
 
-    public class EditableValueGroup : EditableValue
+    public class EditableValueGroup : EditableValue, System.ComponentModel.ICustomTypeDescriptor
     {
+
+        private List<System.ComponentModel.PropertyDescriptor> m_extendProperties = new List<System.ComponentModel.PropertyDescriptor>();
+
         public EditableValueGroup()
         {
-            Value = new ObservableCollection<EditableValue>();
+            var collection = new ObservableCollection<EditableValue>();
+            Value = collection;
+            PropertyChanged += (sender, e) =>
+            {
+                if (e.PropertyName == "Value")
+                {
+                    foreach(EditableValue value in Value)
+                    {
+                        m_extendProperties.Add(new CustomPropertyDescriptor<EditableValue>(value.BindableName, value, typeof(EditableValueGroup)));
+                    }
+                }
+            };
+            collection.CollectionChanged += (sender, e) =>
+            {
+
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                {
+                    foreach (EditableValue item in e.NewItems)
+                    {
+                        m_extendProperties.Add(new CustomPropertyDescriptor<EditableValue>(item.BindableName, item, typeof(EditableValueGroup)));
+                    }
+                }
+                else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                {
+                    foreach (EditableValue item in e.NewItems)
+                    {
+                        m_extendProperties.Remove(new CustomPropertyDescriptor<EditableValue>(item.BindableName, item, typeof(EditableValueGroup)));
+                    }
+                }
+                else
+                {
+                    var a = e.Action;
+                }
+            };
         }
 
         /// <summary>
@@ -166,6 +213,75 @@ namespace WpfApplication1
                 }
             }
         }
+
+        #region ICustomTypeDescriptor メンバー
+
+        public System.ComponentModel.AttributeCollection GetAttributes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetClassName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetComponentName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.ComponentModel.TypeConverter GetConverter()
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.ComponentModel.EventDescriptor GetDefaultEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.ComponentModel.PropertyDescriptor GetDefaultProperty()
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetEditor(Type editorBaseType)
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.ComponentModel.EventDescriptorCollection GetEvents(Attribute[] attributes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.ComponentModel.EventDescriptorCollection GetEvents()
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.ComponentModel.PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+        {
+            return GetProperties();
+        }
+
+        public System.ComponentModel.PropertyDescriptorCollection GetProperties()
+        {
+            Type t = typeof(EditableValueGroup);
+            var properties = t.GetProperties();
+
+           
+            return new System.ComponentModel.PropertyDescriptorCollection(
+                                (m_extendProperties).ToArray());
+        }
+
+        public object GetPropertyOwner(System.ComponentModel.PropertyDescriptor pd)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 
 
@@ -179,6 +295,7 @@ namespace WpfApplication1
     /// <see cref="ObservableCollection ParameterCollection"/>
     public class ParameterCollectionViewModel : ViewModelBase
     {
+        
 
         private string m_name;
         /// <summary>
@@ -210,6 +327,17 @@ namespace WpfApplication1
                 SetProperty(ref m_dispName, value);
             }
         }
+
+        private string m_bindableName;
+        public string BindableName
+        {
+            get { return m_bindableName; }
+            set
+            {
+                SetProperty(ref m_bindableName, value);
+            }
+        }
+
 
         private ObservableCollection<ParametersViewModel> m_parameters = null;
         /// <summary>

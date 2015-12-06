@@ -54,10 +54,15 @@
                                     <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                     <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                     <DataGridTextColumn Header="Comment"  Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="Angle"  Binding="{Binding Angle[0], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="Angle"  Binding="{Binding Angle[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridCheckBoxColumn Header="EnableLocalLight1" Binding="{Binding EnableLocalLight1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <DataGridCheckBoxColumn Header="EnableLocalLight2" Binding="{Binding EnableLocalLight2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="AngleX"  Binding="{Binding DirLight0.Angle.Value.X, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="AngleY"  Binding="{Binding DirLight0.Angle.Value.Y, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Sharpness"  Binding="{Binding DirLight0.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Sharpness1"  Binding="{Binding DirLight1.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    
+                                    <DataGridTextColumn Header="Angle1X"  Binding="{Binding DirLight1.Angle.Value[0], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="Angle1Y"  Binding="{Binding DirLight1.Angle.Value[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridCheckBoxColumn Header="EnableLocalLight1" Binding="{Binding Enable_LocalLight1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridCheckBoxColumn Header="EnableLocalLight2" Binding="{Binding Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DataTemplate>
