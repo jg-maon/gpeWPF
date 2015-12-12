@@ -14,7 +14,7 @@ namespace WpfApplication1
 
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
-            if(item is EditableValue)
+            if(item is IEditableValue)
             { return ValueTemplate; }
             return base.SelectTemplate(item, container);
         }

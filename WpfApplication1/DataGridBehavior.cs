@@ -18,7 +18,6 @@ namespace WpfApplication1
 
         void AssociatedObject_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            var t = 0;
         }
         protected override void OnDetaching()
         {

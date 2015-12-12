@@ -127,9 +127,9 @@ namespace WpfApplication1
                             var parameter = parameterCollection.CreateId(id, "name" + (++n).ToString(), comment);
                             var slots = parameter.Slots;
                             // 全追加用グループコレクション
-                            var groupCollection = new ObservableCollection<EditableValue>();
+                            var groupCollection = new ObservableCollection<IEditableValue>();
                             // グループ配列用リスト
-                            var groupList = new List<ObservableCollection<EditableValue>>();
+                            var groupList = new List<ObservableCollection<IEditableValue>>();
 
                             // 追加済みグループカウンタ
                             var addedGroupCountDictionary = new Dictionary<GroupPattern, int>();
@@ -146,29 +146,52 @@ namespace WpfApplication1
                                 // IDが一致している値部
                                 string gparamTextById = gparamSlot.Value.FirstOrDefault(v => v.Id == id).Text;
                                 // パラメータコレクションに追加させる値
-                                var slotValue = new EditableValue();
-                                slotValue.Type = gparamSlot.Type;
+                                IEditableValue slotValue = null;
                                 switch (gparamSlot.Type)
                                 {
                                     case 1:
-                                        slotValue.Value = float.Parse(gparamTextById);
+                                        {
+                                            var unitValue = new TUnitValue<float>();
+                                            unitValue.Value = float.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
                                         break;
                                     case 2:
-                                        slotValue.Value = bool.Parse(gparamTextById);
+                                        {
+                                            var unitValue = new TUnitValue<bool>();
+                                            unitValue.Value = bool.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
                                         break;
                                     case 4:
+                                        //{
+                                        //    var unitValue = new TUnitValue<ObservableCollection<float>>();
+                                        //    var values = gparamTextById.Split(',');
+
+                                        //    //slotValue.Value = new ArrayValueViewModel<float>(Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s))));
+                                        //    unitValue.Value = new ObservableCollection<float>(Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s))));
+                                        //    slotValue = unitValue;
+                                        //}
                                         {
                                             var values = gparamTextById.Split(',');
-
-                                            //slotValue.Value = new ArrayValueViewModel<float>(Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s))));
-                                            slotValue.Value = new ObservableCollection<float>(Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s))));
+                                            //nitValue.Value = arrayValue;
+                                            var unitValue = new TUnitValue<TArrayValue<float>>();
+                                            var arrayValue = new TArrayValue<float>(Array.ConvertAll<string, float>(values, (s => float.Parse(s))));
+                                            unitValue.Value = arrayValue;
+                                            slotValue = unitValue;
                                         }
                                         break;
                                     default:
-                                        slotValue.Value = gparamTextById;
+                                        {
+                                            var unitValue = new TUnitValue<string>();
+                                            unitValue.Value = gparamTextById;
+
+                                            slotValue = unitValue;
+                                        }
                                         break;
                                 }
-
+                                slotValue.Type = gparamSlot.Type;
+                                
                                 slotValue.DispName = parameterDispName;
                                 slotValue.Name = uniqueName;
                                 slotValue.BindableName = parameterBindableName;
@@ -203,7 +226,7 @@ namespace WpfApplication1
                                         // 別のコレクションを探す
                                         
                                         // 追加先コレクション
-                                        ObservableCollection<EditableValue> targetCollection = null;
+                                        ObservableCollection<IEditableValue> targetCollection = null;
                                         // グループコレクションの確認
                                         foreach(var group in groupList)
                                         {
@@ -234,7 +257,7 @@ namespace WpfApplication1
                                         // 全てのコレクションに存在していたら新しいコレクションを作成し、追加を行う
                                         if(null == targetCollection)
                                         {
-                                            targetCollection = new ObservableCollection<EditableValue>();
+                                            targetCollection = new ObservableCollection<IEditableValue>();
                                             groupList.Add(targetCollection);
                                         }
 
@@ -344,13 +367,13 @@ namespace WpfApplication1
 
         }
 
-        private static void _Recursively(int id, int slotCount, ObservableCollection<EditableValue> paramsetSlots, ref Dictionary<string, GparamRoot._ParamSet._Slot> gparamSlotDictionary)
+        private static void _Recursively(int id, int slotCount, ObservableCollection<IEditableValue> paramsetSlots, ref Dictionary<string, GparamRoot._ParamSet._Slot> gparamSlotDictionary)
         {
             foreach (var slot in paramsetSlots)
             {
                 // パラメータ配列の場合
                 //var group = slot as EditableValueGroup;
-                var group = slot.Value as ObservableCollection<EditableValue>;
+                var group = slot.Value as ObservableCollection<IEditableValue>;
                 if (null != group)
                 {
                     _Recursively(id, slotCount, group, ref gparamSlotDictionary);

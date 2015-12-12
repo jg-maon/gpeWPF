@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -19,10 +20,10 @@ namespace WpfApplication1
 
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
-            var value = item as EditableValue;
+            var value = item as IEditableValue;
             if (null != value)
             {
-                if (value.Value is ObservableCollection<EditableValue>)
+                if (value.Value is ObservableCollection<IEditableValue>)
                 {
                     return GroupTemplate;
                 }
@@ -34,7 +35,19 @@ namespace WpfApplication1
                 {
                     return BoolTemplate;
                 }
-                else if(value.Value is float[] || value.Value is IEnumerable<float>)
+                else if(value.Value is float[] || value.Value is IEnumerable || value.Value is TArrayValue<object>)
+                {
+                    return Float2Template;
+                }
+                else if(value.Value is TArrayValue<float>)
+                {
+                    return Float2Template;
+                }
+                else if(value.Value is TUnitValue<float>)
+                {
+                    return Float2Template;
+                }
+                else if (value.Value is TUnitValue<TArrayValue<float>>)
                 {
                     return Float2Template;
                 }

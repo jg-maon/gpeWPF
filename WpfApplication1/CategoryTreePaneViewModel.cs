@@ -311,13 +311,12 @@ namespace WpfApplication1
                 var newId = new ParametersViewModel(category) { ID = id, Comment = comment, Name = name };
                 foreach(var slot in categoryNode.Parameters[0].Slots)
                 {
-                    var value = new EditableValue()
+                    var value = new TUnitValue<object>()
                     {
                         DispName = slot.DispName,
                         Name = slot.Name,
                         TabIndex = slot.TabIndex,
                         Type = slot.Type,
-                        Filter = slot.Filter,
                         IsDirty = slot.IsDirty,
                         IsExpanded = slot.IsExpanded,
                         Value = slot.Value

@@ -63,6 +63,11 @@
                                     <DataGridTextColumn Header="Angle1Y"  Binding="{Binding DirLight1.Angle.Value[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                     <DataGridCheckBoxColumn Header="EnableLocalLight1" Binding="{Binding Enable_LocalLight1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                     <DataGridCheckBoxColumn Header="EnableLocalLight2" Binding="{Binding Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                    
+                                    <DataGridTextColumn Header="DirLight0"  Binding="{Binding DirLight0, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="DirLight0.Value"  Binding="{Binding DirLight0.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                    <DataGridTextColumn Header="DirLight0.Value.Angle"  Binding="{Binding DirLight0.Value.Angle, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </DataTemplate>

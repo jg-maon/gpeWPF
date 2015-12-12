@@ -76,7 +76,7 @@ namespace WpfApplication1
                 if(null == m_collectionView)
                 {
                     m_collectionView = (System.Windows.Data.CollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(Parameters.Slots);
-                    m_collectionView.Filter = _OnGroupFilter;
+                    m_collectionView.Filter = _OnParameterFilter;
                 }
                 return m_collectionView;
             }
@@ -91,19 +91,19 @@ namespace WpfApplication1
         /// <returns></returns>
         private bool _OnFilter(object obj)
         {
-            var value = obj as EditableValue;
+            var value = obj as IEditableValue;
             if(null == value)
             {
                 return true;
             }
 
 
-            var collection = value.Value as ObservableCollection<EditableValue>;
+            var collection = value.Value as ObservableCollection<IEditableValue>;
             if(null != collection)
             {
                 System.Windows.Data.CollectionView cv = (System.Windows.Data.CollectionView)System.Windows.Data.CollectionViewSource.GetDefaultView(collection);
                 cv.Filter = _OnFilter;
-                foreach(EditableValue v in collection)
+                foreach(IEditableValue v in collection)
                 {
                     if(v.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
@@ -126,10 +126,10 @@ namespace WpfApplication1
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        private bool _OnGroupFilter(object obj)
+        private bool _OnParameterFilter(object obj)
         {
             // フィルターにかけないオブジェクトの場合
-            var value = obj as EditableValue;
+            var value = obj as IEditableValue;
             if (null == value)
             {
                 return true;
@@ -138,7 +138,7 @@ namespace WpfApplication1
             var result = value.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
 
             // 自身がグループ用オブジェクトの場合
-            var collection = value.Value as ObservableCollection<EditableValue>;
+            var collection = value.Value as ObservableCollection<IEditableValue>;
             if (null != collection)
             {
 
@@ -152,10 +152,10 @@ namespace WpfApplication1
                 else
                 {
                     // 子にフィルタをかける
-                    cv.Filter = _OnGroupFilter;
+                    cv.Filter = _OnParameterFilter;
                 }
                 // 子要素にフィルタがかかるものがあれば自身の表示を行う
-                foreach (EditableValue v in collection)
+                foreach (IEditableValue v in collection)
                 {
                     if (v.DispName.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0)
                     {
@@ -225,14 +225,14 @@ namespace WpfApplication1
         /// </summary>
         /// <param name="collection">コレクション</param>
         /// <param name="isExpanded">展開状態</param>
-        private void _AllExpand(ObservableCollection<EditableValue> collection, bool isExpanded)
+        private void _AllExpand(ObservableCollection<IEditableValue> collection, bool isExpanded)
         {
             foreach (var value in collection)
             {
                 value.IsExpanded = isExpanded;
 
                 // 子の設定
-                var group = value.Value as ObservableCollection<EditableValue>;
+                var group = value.Value as ObservableCollection<IEditableValue>;
                 if (null != group)
                 {
                     _AllExpand(group, isExpanded);
@@ -271,7 +271,7 @@ namespace WpfApplication1
         /// true    : 全て指定した展開状態になっている
         /// false   : 一つでも展開状態が違う
         /// </returns>
-        private static bool _IsAllExpanded(ObservableCollection<EditableValue> collection, bool isExpanded)
+        private static bool _IsAllExpanded(ObservableCollection<IEditableValue> collection, bool isExpanded)
         {
             foreach(var value in collection)
             {
@@ -281,7 +281,7 @@ namespace WpfApplication1
                 }
 
                 // 子の探査
-                var group = value.Value as ObservableCollection<EditableValue>;
+                var group = value.Value as ObservableCollection<IEditableValue>;
                 if (null != group)
                 {
                     // 条件に一致しない場合
@@ -309,14 +309,14 @@ namespace WpfApplication1
         /// 再帰的にプロパティ変更イベントの追加
         /// </summary>
         /// <param name="collection"></param>
-        private void _AddPropertyChangedEvent(ObservableCollection<EditableValue> collection)
+        private void _AddPropertyChangedEvent(ObservableCollection<IEditableValue> collection)
         {
             foreach (var value in collection)
             {
                 value.PropertyChanged += _OnValue_PropertyChanged;
 
                 // 子の設定
-                var group = value.Value as ObservableCollection<EditableValue>;
+                var group = value.Value as ObservableCollection<IEditableValue>;
                 if (null != group)
                 {
                     _AddPropertyChangedEvent(group);
@@ -326,12 +326,12 @@ namespace WpfApplication1
 
         void _OnValue_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            var value = sender as EditableValue;
+            var value = sender as IEditableValue;
             if (null != value)
             {
                 value.PropertyChanged += (s, ev) =>
                 {
-                    var v = s as EditableValue;
+                    var v = s as IEditableValue;
                     if (ev.PropertyName == "IsExpanded")
                     {
                         this.OnPropertyChanged(() => this.ButtonToolTip);

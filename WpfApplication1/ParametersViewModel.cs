@@ -74,15 +74,15 @@ namespace WpfApplication1
         }
 
 
-        ObservableCollection<EditableValue> m_slots;
+        ObservableCollection<IEditableValue> m_slots;
         /// <summary>
         /// 編集可能パラメータ(表示名と実値)
         /// </summary>
-        public ObservableCollection<EditableValue> Slots
+        public ObservableCollection<IEditableValue> Slots
         {
             get
             {
-                return m_slots = m_slots ?? new ObservableCollection<EditableValue>();
+                return m_slots = m_slots ?? new ObservableCollection<IEditableValue>();
             }
             set
             {
@@ -100,7 +100,7 @@ namespace WpfApplication1
                 {
                     foreach(var slot in Slots)
                     {
-                        m_slotProperties.Add(new CustomPropertyDescriptor<EditableValue>(slot.BindableName, slot, typeof(ParametersViewModel)));
+                        m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(slot.BindableName, slot, typeof(ParametersViewModel)));
                     }
                 }
             };
@@ -109,16 +109,16 @@ namespace WpfApplication1
             {
                 if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
                 {
-                    foreach(EditableValue item in e.NewItems)
+                    foreach(IEditableValue item in e.NewItems)
                     {
-                        m_slotProperties.Add(new CustomPropertyDescriptor<EditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
+                        m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
                     }
                 }
                 else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
                 { 
-                    foreach(EditableValue item in e.NewItems)
+                    foreach(IEditableValue item in e.NewItems)
                     {
-                        m_slotProperties.Remove(new CustomPropertyDescriptor<EditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
+                        m_slotProperties.Remove(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
                     }
                 }
                 else
@@ -130,7 +130,7 @@ namespace WpfApplication1
         }
 
 
-        private EditableValue _FindValue(ObservableCollection<EditableValue> valueCollection, string name)
+        private IEditableValue _FindValue(ObservableCollection<IEditableValue> valueCollection, string name)
         {
             foreach (var value in valueCollection)
             {
@@ -138,7 +138,7 @@ namespace WpfApplication1
                 {
                     return value;
                 }
-                var collection = value.Value as ObservableCollection<EditableValue>;
+                var collection = value.Value as ObservableCollection<IEditableValue>;
                 if (null != collection)
                 {
                     var result = _FindValue(collection, name);
@@ -151,212 +151,6 @@ namespace WpfApplication1
             return null;
         }
 
-
-        #region ID詳細用 ParameterTab側からの変更が反映されるように
-
-        #region LightSet
-        #region Angle
-        bool m_isAngleEventAdded = false;
-        public dynamic Angle
-        {
-            get
-            {
-                var result = _FindValue(Slots, "Angle");
-                if (null != result)
-                {
-                    if (!m_isAngleEventAdded)
-                    {
-                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.Angle);
-                        m_isAngleEventAdded = true;
-                    }
-                }
-                return result.Value;
-            }
-            set
-            {
-                var result = _FindValue(Slots, "Angle");
-                if (null != result)
-                {
-                    result.Value = value;
-                }
-            }
-        }
-        #endregion  // Angle
-        #region Sharpness
-        bool m_isSharpnessEventAdded = false;
-        public float Sharpness
-        {
-            get
-            {
-                var result = _FindValue(Slots, "Sharpness");
-                if (null != result)
-                {
-                    if (!m_isSharpnessEventAdded)
-                    {
-                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.Sharpness);
-                        m_isSharpnessEventAdded = true;
-                    }
-                }
-                return result.Value;
-            }
-            set
-            {
-                var result = _FindValue(Slots, "Sharpness");
-                if (null != result)
-                {
-                    result.Value = value;
-                }
-            }
-        }
-        #endregion  // Sharpness
-        #region SsaoWeight
-        bool m_isSsaoWeightEventAdded = false;
-        public float SsaoWeight
-        {
-            get
-            {
-                var result = _FindValue(Slots, "SsaoWeight");
-                if (null != result)
-                {
-                    if (!m_isSsaoWeightEventAdded)
-                    {
-                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.SsaoWeight);
-                        m_isSsaoWeightEventAdded = true;
-                    }
-                }
-                return result.Value;
-            }
-            set
-            {
-                var result = _FindValue(Slots, "SsaoWeight");
-                if (null != result)
-                {
-                    result.Value = value;
-                }
-            }
-        }
-        #endregion  // SsaoWeight
-        #region EnableLocalLight1
-        bool m_isEnableLocalLight1EventAdded = false;
-        public bool EnableLocalLight1
-        {
-            get
-            {
-                var result = _FindValue(Slots, "EnableLocalLight1");
-                if (null != result)
-                {
-                    if (!m_isEnableLocalLight1EventAdded)
-                    {
-                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.EnableLocalLight1);
-                        m_isEnableLocalLight1EventAdded = true;
-                    }
-                }
-                return result.Value;
-            }
-            set
-            {
-                var result = _FindValue(Slots, "EnableLocalLight1");
-                if (null != result)
-                {
-                    result.Value = value;
-                }
-            }
-        }
-        #endregion  // EnableLocalLight1
-        #region EnableLocalLight2
-        bool m_isEnableLocalLight2EventAdded = false;
-        public bool EnableLocalLight2
-        {
-            get
-            {
-                var result = _FindValue(Slots, "EnableLocalLight2");
-                if (null != result)
-                {
-                    if (!m_isEnableLocalLight2EventAdded)
-                    {
-                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.EnableLocalLight2);
-                        m_isEnableLocalLight2EventAdded = true;
-                    }
-                }
-                return result.Value;
-            }
-            set
-            {
-                var result = _FindValue(Slots, "EnableLocalLight2");
-                if (null != result)
-                {
-                    result.Value = value;
-                }
-            }
-        }
-        #endregion  // EnableLocalLight2
-
-
-
-        #endregion  // LightSet
-
-
-        #region Fog
-
-        #region FogHeight
-        bool m_isFogHeightEventAdded = false;
-        public float FogHeight
-        {
-            get
-            {
-                var result = _FindValue(Slots, "FogHeight");
-                if (null != result)
-                {
-                    if (!m_isFogHeightEventAdded)
-                    {
-                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.FogHeight);
-                        m_isFogHeightEventAdded = true;
-                    }
-                }
-                return result.Value;
-            }
-            set
-            {
-                var result = _FindValue(Slots, "FogHeight");
-                if (null != result)
-                {
-                    result.Value = value;
-                }
-            }
-        }
-        #endregion  // FogHeight
-        #region check1
-        bool m_ischeck1EventAdded = false;
-        public bool check1
-        {
-            get
-            {
-                var result = _FindValue(Slots, "check1");
-                if (null != result)
-                {
-                    if (!m_ischeck1EventAdded)
-                    {
-                        result.PropertyChanged += (sender, e) => OnPropertyChanged(() => this.check1);
-                        m_ischeck1EventAdded = true;
-                    }
-                }
-                return result.Value;
-            }
-            set
-            {
-                var result = _FindValue(Slots, "check1");
-                if (null != result)
-                {
-                    result.Value = value;
-                }
-            }
-        }
-        #endregion  // check1
-
-
-        #endregion  // Fog
-
-        #endregion
 
 
         #region ICustomTypeDescriptor メンバー
