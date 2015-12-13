@@ -66,7 +66,7 @@ namespace WpfApplication1
         /// パラメータタブを開く
         /// </summary>
         /// <param name="categoryViewModel">カテゴリ</param>
-        internal void OpenParameterTab(ParameterCollectionViewModel categoryViewModel)
+        internal void OpenParameterTab(CategoryViewModel categoryViewModel)
         {
             var openTabPage = new IdInfoTableTabPageViewModel(m_file, categoryViewModel);
 

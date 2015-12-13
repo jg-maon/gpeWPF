@@ -20,11 +20,21 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using Microsoft.Practices.Prism.Mvvm;
+using System.Runtime.Serialization;
 
 namespace WpfApplication1
 {
-    public class ViewModelBase : BindableBase
+    [Serializable]
+    public class ViewModelBase : BindableBase, ISerializable
     {
+
+        public ViewModelBase()
+        { }
+
+        public ViewModelBase(SerializationInfo info, StreamingContext context)
+        {
+
+        }
 
         protected virtual void RaisePropertyChanged(string propertyName)
         {
@@ -32,5 +42,14 @@ namespace WpfApplication1
         }
 
 
+
+        #region ISerializable メンバー
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+
+        }
+
+        #endregion
     }
 }

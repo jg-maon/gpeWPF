@@ -43,10 +43,10 @@ namespace WpfApplication1
             }
         }
 
-        internal static bool TryParse(GparamRoot gparam, ref System.Collections.ObjectModel.ObservableCollection<ParameterCollectionViewModel> destCollection)
+        internal static bool TryParse(GparamRoot gparam, ref System.Collections.ObjectModel.ObservableCollection<CategoryViewModel> destCollection)
         {
             
-            ObservableCollection<ParameterCollectionViewModel> tempCollection = new ObservableCollection<ParameterCollectionViewModel>();
+            ObservableCollection<CategoryViewModel> tempCollection = new ObservableCollection<CategoryViewModel>();
             try
             {
                 using (var reader = new StreamReader(s_groupDefinitionFile))
@@ -111,7 +111,7 @@ namespace WpfApplication1
                         }
                         #endregion
 
-                        var parameterCollection = new ParameterCollectionViewModel() {
+                        var parameterCollection = new CategoryViewModel() {
                             DispName = categoryDispName, Name = categoryName, BindableName = categoryBindableName };
                         var parameters = parameterCollection.Parameters;
                         paramset.Edited.Id.Sort(); // 昇順ソート
@@ -311,7 +311,7 @@ namespace WpfApplication1
         }
 
 
-        internal static bool TryDeserialize(ReadOnlyObservableCollection<ParameterCollectionViewModel> parameterCollection, out GparamRoot outGparam)
+        internal static bool TryDeserialize(ReadOnlyObservableCollection<CategoryViewModel> parameterCollection, out GparamRoot outGparam)
         {
             GparamRoot gparam = new GparamRoot();
             try

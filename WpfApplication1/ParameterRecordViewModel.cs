@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +16,8 @@ namespace WpfApplication1
     /// <remarks>
     /// ID1つあたりの情報
     /// </remarks>
-    public class ParametersViewModel : ViewModelBase, ICustomTypeDescriptor
+    [Serializable]
+    public class ParameterRecordViewModel : ViewModelBase, ICustomTypeDescriptor, ISerializable
     {
         List<PropertyDescriptor> m_slotProperties = new List<PropertyDescriptor>();
 
@@ -73,6 +75,7 @@ namespace WpfApplication1
             }
         }
 
+        IEditableValue[] m_innerSlots;
 
         ObservableCollection<IEditableValue> m_slots;
         /// <summary>
@@ -90,7 +93,7 @@ namespace WpfApplication1
             }
         }
 
-        public ParametersViewModel(string categoryName)
+        public ParameterRecordViewModel(string categoryName)
         {
             m_categoryName = categoryName;
 
@@ -100,7 +103,8 @@ namespace WpfApplication1
                 {
                     foreach(var slot in Slots)
                     {
-                        m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(slot.BindableName, slot, typeof(ParametersViewModel)));
+                        if(null != slot)
+                            m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(slot.BindableName, slot, typeof(ParameterRecordViewModel)));
                     }
                 }
             };
@@ -111,14 +115,14 @@ namespace WpfApplication1
                 {
                     foreach(IEditableValue item in e.NewItems)
                     {
-                        m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
+                        m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParameterRecordViewModel)));
                     }
                 }
                 else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
                 { 
                     foreach(IEditableValue item in e.NewItems)
                     {
-                        m_slotProperties.Remove(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParametersViewModel)));
+                        m_slotProperties.Remove(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParameterRecordViewModel)));
                     }
                 }
                 else
@@ -129,6 +133,57 @@ namespace WpfApplication1
 
         }
 
+        
+        private ParameterRecordViewModel(SerializationInfo info, StreamingContext context)
+        {
+            //m_slotProperties = (List<PropertyDescriptor>)info.GetValue("m_slotProperties", typeof(List<PropertyDescriptor>));
+            m_categoryName = info.GetString("m_categoryName");
+            m_id = info.GetInt32("m_id");
+            m_name = info.GetString("m_name");
+            m_comment = info.GetString("m_comment");
+            m_slots = (ObservableCollection<IEditableValue>)info.GetValue("m_slots", typeof(ObservableCollection<IEditableValue>));
+
+        }
+        public new void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            //info.AddValue("m_slotProperties", m_slotProperties);
+            info.AddValue("m_categoryName", m_categoryName);
+            info.AddValue("m_id", m_id);
+            info.AddValue("m_name", m_name);
+            info.AddValue("m_comment", m_comment);
+            info.AddValue("m_slots", m_slots, typeof(ObservableCollection<IEditableValue>));
+        }
+
+        public ParameterRecordViewModel CreateCopy()
+        {
+            var ret = new ParameterRecordViewModel(this.CategoryName)
+            { 
+                ID = this.ID,
+                Name = this.Name,
+                Comment = this.Comment,
+                Slots = DeepCopyExtensions.DeepCopy(Slots)
+            };
+
+            foreach (var slot in ret.Slots)
+            {
+                if(null != slot)
+                    ret.m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(slot.BindableName, slot, typeof(ParameterRecordViewModel)));
+            }
+
+            return ret;
+        }
+        [OnDeserialized]
+        private void _SetValuesOnDesesrialized(StreamingContext context)
+        {
+            Slots = new ObservableCollection<IEditableValue>(this.m_innerSlots);
+            m_innerSlots = null;
+            foreach (var slot in Slots)
+            {
+                if (null != slot)
+                    m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(slot.BindableName, slot, typeof(ParameterRecordViewModel)));
+            }
+        }
 
         private IEditableValue _FindValue(ObservableCollection<IEditableValue> valueCollection, string name)
         {

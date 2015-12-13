@@ -29,8 +29,8 @@ namespace WpfApplication1
             }
         }
 
-        private readonly ParametersViewModel m_parameters;
-        public ParametersViewModel Parameters
+        private readonly ParameterRecordViewModel m_parameters;
+        public ParameterRecordViewModel Parameters
         {
             get
             {
@@ -295,7 +295,7 @@ namespace WpfApplication1
         }
 
 
-        public ParameterTab2ViewModel(CategoryTreePaneViewModel categoryTreePaneViewModel, ParametersViewModel parameterIdViewModel)
+        public ParameterTab2ViewModel(CategoryTreePaneViewModel categoryTreePaneViewModel, ParameterRecordViewModel parameterIdViewModel)
             : base("")
         {
             m_file = categoryTreePaneViewModel;

@@ -17,7 +17,7 @@ namespace WpfApplication1
                 return m_file;
             }
         }
-        private readonly ParameterCollectionViewModel m_categoryViewModel;
+        private readonly CategoryViewModel m_categoryViewModel;
 
         public string CategoryName
         {
@@ -28,7 +28,7 @@ namespace WpfApplication1
         }
 
 
-        public ObservableCollection<ParametersViewModel> Parameters
+        public ObservableCollection<ParameterRecordViewModel> Parameters
         {
             get
             {
@@ -38,8 +38,8 @@ namespace WpfApplication1
         }
 
 
-        private ParametersViewModel m_selectedItem;
-        public ParametersViewModel SelectedItem
+        private ParameterRecordViewModel m_selectedItem;
+        public ParameterRecordViewModel SelectedItem
         {
             get
             {
@@ -60,7 +60,7 @@ namespace WpfApplication1
         /// </summary>
         /// <param name="file">ファイル</param>
         /// <param name="categoryViewModel">カテゴリ</param>
-        public IdInfoTableTabPageViewModel(CategoryTreePaneViewModel file, ParameterCollectionViewModel categoryViewModel)
+        public IdInfoTableTabPageViewModel(CategoryTreePaneViewModel file, CategoryViewModel categoryViewModel)
             : base(categoryViewModel.DispName)
         {
             this.m_file = file;

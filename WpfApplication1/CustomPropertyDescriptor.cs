@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +12,8 @@ namespace WpfApplication1
     /// 
     /// </summary>
     /// <typeparam name="T">値の型</typeparam>
-    public class CustomPropertyDescriptor<T> : PropertyDescriptor
+    [Serializable]
+    public class CustomPropertyDescriptor<T> : PropertyDescriptor, ISerializable
     {
         private Type m_propertyType;
         private Type m_componentType;
@@ -26,7 +28,8 @@ namespace WpfApplication1
         public CustomPropertyDescriptor(string propertyName, T value, Type componentType)
             : base(propertyName, new Attribute[] { })
         {
-            this.m_propertyType = typeof(T);
+            //this.m_propertyType = typeof(T);
+            this.m_propertyType = value.GetType();
             this.m_componentType = componentType;
             m_propertyValue = value;
         }
@@ -53,5 +56,16 @@ namespace WpfApplication1
         }
 
         public override bool ShouldSerializeValue(object component) { return true; }
+
+        #region ISerializable メンバー
+
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue("m_propertyType", m_propertyType);
+            info.AddValue("m_componentType", m_componentType);
+            info.AddValue("m_propertyValue", m_propertyValue);
+        }
+
+        #endregion
     }
 }

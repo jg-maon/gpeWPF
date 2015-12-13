@@ -37,7 +37,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Row="0" Grid.Column="0" Text="作成するカテゴリ:"/>
-            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Path=Category, Mode=TwoWay}"/>
+            <ComboBox Grid.Row="0" Grid.Column="1" SelectedItem="{Binding Path=Category, Mode=TwoWay}" ItemsSource="{Binding Path=Categories, Mode=OneWay}"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="ID:" />
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InputId}" />
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Name:" />

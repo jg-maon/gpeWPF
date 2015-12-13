@@ -108,6 +108,7 @@
       <DependentUpon>CategoryTreePane.xaml</DependentUpon>
     </Compile>
     <Compile Include="CategoryTreePaneViewModel.cs" />
+    <Compile Include="ConfigManager.cs" />
     <Compile Include="Controls\TreeViewViewModel.cs" />
     <Compile Include="CreateNewIdWindowContent.xaml.cs">
       <DependentUpon>CreateNewIdWindowContent.xaml</DependentUpon>
@@ -117,6 +118,7 @@
     <Compile Include="DarkTheme.cs" />
     <Compile Include="DataGridBehavior.cs" />
     <Compile Include="DataGridItemTemplateSelector.cs" />
+    <Compile Include="DeepCopyExtensions.cs" />
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="DynamicJson.cs" />
     <Compile Include="Extensions.cs" />
@@ -136,7 +138,7 @@
     <Compile Include="MouseDoubleClickBehavior.cs" />
     <Compile Include="ObjectToTypeConverter.cs" />
     <Compile Include="ParameterBase.cs" />
-    <Compile Include="ParametersViewModel.cs" />
+    <Compile Include="ParameterRecordViewModel.cs" />
     <Compile Include="ParameterTab2ViewModel.cs" />
     <Compile Include="ParameterTabTemplateSelector.cs" />
     <Compile Include="ParameterTabViewModel.cs" />
@@ -234,6 +236,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\config\default.gparamxml" />
     <None Include="Resources\config\group.config" />
     <None Include="Resources\sample\sample.gparamxml" />
   </ItemGroup>

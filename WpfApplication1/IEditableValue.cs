@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WpfApplication1
 {
-
 
     public interface IEditableValue : INotifyPropertyChanged
     {
@@ -55,8 +55,36 @@ namespace WpfApplication1
     /// 単一変数
     /// </summary>
     /// <typeparam name="T">型</typeparam>
-    public class TUnitValue<T> : ViewModelBase, IEditableValue
+    [Serializable]
+    public class TUnitValue<T> : ViewModelBase, IEditableValue, ISerializable
     {
+        public TUnitValue() 
+        { }
+
+        public TUnitValue(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            m_value = (T)info.GetValue("m_value", typeof(T));
+            m_bindableName = info.GetString("m_bindableName");
+            m_name = info.GetString("m_name");
+            m_dispName = info.GetString("m_dispName");
+            m_type = info.GetInt32("m_type");
+            m_isExpanded = info.GetBoolean("m_isExpanded");
+            m_tabIndex = info.GetInt32("m_tabIndex");
+            m_isDirty = info.GetBoolean("m_isDirty");
+        }
+        public new void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("m_value", m_value, m_value.GetType());
+            info.AddValue("m_bindableName", m_bindableName);
+            info.AddValue("m_name", m_name);
+            info.AddValue("m_dispName", m_dispName);
+            info.AddValue("m_type", m_type);
+            info.AddValue("m_isExpanded", m_isExpanded);
+            info.AddValue("m_tabIndex", m_tabIndex);
+            info.AddValue("m_isDirty", m_isDirty);
+        }
 
 
         protected T m_value;
@@ -197,18 +225,20 @@ namespace WpfApplication1
     /// 配列変数
     /// </summary>
     /// <typeparam name="ValueType">型</typeparam>
-    public class TArrayValue<ValueType> : ObservableCollection<ValueType> , IEditableValue
+    [Serializable]
+    public class TArrayValue<ValueType> : ObservableCollection<ValueType>, ISerializable
     {
+        /// <summary>
+        /// 値変更イベント
+        /// </summary>
+        public event EventHandler ValueChanged;
 
-        public ValueType this[int index]
+        public new ValueType this[int index]
         {
             get { return base[index]; }
             set
             {
                 base[index] = value;
-
-                //SetProperty(ref m_values[index], value); 
-                IsDirty = true;
             }
         }
 
@@ -219,7 +249,13 @@ namespace WpfApplication1
         public TArrayValue(int size)
             : base(new ValueType[size])
         {
+            this.PropertyChanged += TArrayValue_PropertyChanged;
+        }
 
+        public TArrayValue(IList<ValueType> values)
+            : base(values)
+        {
+            this.PropertyChanged += TArrayValue_PropertyChanged;
         }
 
         /// <summary>
@@ -229,144 +265,32 @@ namespace WpfApplication1
         public TArrayValue(params ValueType[] values)
             : base(values)
         {
+            this.PropertyChanged += TArrayValue_PropertyChanged;
         }
 
-        /// <summary>
-        /// 値の設定と変更通知
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="newValue"></param>
-        /// <param name="propertyName"></param>
-        /// <returns>値を変更したか</returns>
-        bool SetProperty<T>(ref T source, T newValue, [System.Runtime.CompilerServices.CallerMemberName] string propertyName="")  where T: IEquatable<T>
+        void TArrayValue_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // 値が違う場合
-            if(!source.Equals(newValue))
+            if(e.PropertyName == "Item[]")
             {
-                source = newValue;
-                OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
-                return true;
-            }
-            return false;
-        }
-
-        
-        #region IEditableValue メンバー
-
-        private string m_bindableName;
-        public string BindableName
-        {
-            get { return m_bindableName; }
-            set
-            {
-                SetProperty(ref m_bindableName, value);
-            }
-        }
-
-        private string m_name;
-        /// <summary>
-        /// パラメータ固有名(DirLight0Angle的な)
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return m_name;
-            }
-            set
-            {
-                SetProperty(ref m_name, value);
+                if(null != ValueChanged)
+                {
+                    ValueChanged(this, EventArgs.Empty);
+                }
             }
         }
 
 
-        private string m_dispName;
-        /// <summary>
-        /// パラメータ名(Angle的な)
-        /// </summary>
-        public string DispName
+        #region ISerializable メンバー
+
+        public TArrayValue(SerializationInfo info, StreamingContext context)
+            : this((IList<ValueType>)info.GetValue("this", typeof(IList<ValueType>)))
         {
-            get
-            {
-                return m_dispName;
-            }
-            set
-            {
-                SetProperty(ref m_dispName, value);
-            }
         }
 
 
-        private int m_type;
-        /// <summary>
-        /// パラメータのタイプ(gparamxmlから引っ張ってきた値そのまま)
-        /// </summary>
-        public int Type
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            get
-            {
-                return m_type;
-            }
-            set
-            {
-                SetProperty(ref m_type, value);
-            }
-        }
-
-
-        private bool m_isExpanded;
-        public bool IsExpanded
-        {
-            get
-            {
-                return m_isExpanded;
-            }
-            set
-            {
-                this.SetProperty(ref m_isExpanded, value);
-            }
-        }
-
-
-
-        private int m_tabIndex = 0;
-        public int TabIndex
-        {
-            get
-            {
-                return m_tabIndex;
-            }
-            set
-            {
-                this.SetProperty(ref m_tabIndex, value);
-            }
-        }
-
-
-        object IEditableValue.Value
-        {
-            get
-            {
-                return this;
-            }
-        }
-
-
-        private bool m_isDirty = false;
-        /// <summary>
-        /// パラメータの値が変更されたか
-        /// </summary>
-        public virtual bool IsDirty
-        {
-            get
-            {
-                return m_isDirty;
-            }
-            set
-            {
-                SetProperty(ref m_isDirty, value);
-            }
+            info.AddValue("this", this.Items, Items.GetType());
         }
 
         #endregion
@@ -495,10 +419,12 @@ namespace WpfApplication1
 
     }
 
-    public class EditableValueGroup : TUnitValue<ObservableCollection<IEditableValue>>, System.ComponentModel.ICustomTypeDescriptor
+    [Serializable]
+    public class EditableValueGroup : TUnitValue<ObservableCollection<IEditableValue>>, System.ComponentModel.ICustomTypeDescriptor, ISerializable
     {
 
         private List<System.ComponentModel.PropertyDescriptor> m_extendProperties = new List<System.ComponentModel.PropertyDescriptor>();
+
 
         public EditableValueGroup()
         {
@@ -538,6 +464,41 @@ namespace WpfApplication1
             };
         }
 
+        private EditableValueGroup(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+            //Value = new ObservableCollection<IEditableValue>((IEditableValue[])info.GetValue("Value", typeof(IEditableValue[])));
+            var value = info.GetValue("inner", typeof(IEditableValue[]));
+            m_innerValues = (IEditableValue[])value;
+
+            //m_extendProperties = (List<System.ComponentModel.PropertyDescriptor>)info.GetValue("m_extendProperties", typeof(List<System.ComponentModel.PropertyDescriptor>));
+        }
+        [OnDeserialized]
+        private void _SetValuesOnDeserialized(StreamingContext context)
+        {
+            Value = new ObservableCollection<IEditableValue>(m_innerValues);
+            m_innerValues = null;
+            foreach (IEditableValue value in Value)
+            {
+                if (null != value)
+                    m_extendProperties.Add(new CustomPropertyDescriptor<IEditableValue>(value.BindableName, value, typeof(EditableValueGroup)));
+            }
+        }
+
+        public new void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            base.GetObjectData(info, context);
+            info.AddValue("inner", this.Value.ToArray());
+            //info.AddValue("Value", Value.ToArray(), Value.ToArray().GetType());
+            //info.AddValue("m_value", m_value, m_value.GetType());
+            //var values = Value as ISerializable;
+            //if(null != values)
+            //{
+            //    values.GetObjectData(info, context);
+            //}
+            //info.AddValue("m_extendProperties", m_extendProperties);
+        }
+
         /// <summary>
         /// パラメータの値が変更されたか
         /// </summary>
@@ -565,6 +526,8 @@ namespace WpfApplication1
                 }
             }
         }
+
+        private IEditableValue[] m_innerValues;
 
         #region ICustomTypeDescriptor メンバー
 
@@ -644,8 +607,8 @@ namespace WpfApplication1
     /// Slot配列 + Edited(ID配列)
     /// ParamSet配列は外部で定義
     /// </remarks>
-    /// <see cref="ObservableCollection ParameterCollection"/>
-    public class ParameterCollectionViewModel : ViewModelBase
+    [Serializable]
+    public class CategoryViewModel : ViewModelBase
     {
         
 
@@ -691,15 +654,15 @@ namespace WpfApplication1
         }
 
 
-        private ObservableCollection<ParametersViewModel> m_parameters = null;
+        private ObservableCollection<ParameterRecordViewModel> m_parameters = null;
         /// <summary>
         /// ID群
         /// </summary>
-        public ObservableCollection<ParametersViewModel> Parameters
+        public ObservableCollection<ParameterRecordViewModel> Parameters
         {
             get
             {
-                return m_parameters = m_parameters ?? new ObservableCollection<ParametersViewModel>();
+                return m_parameters = m_parameters ?? new ObservableCollection<ParameterRecordViewModel>();
             }
             set
             {
@@ -713,9 +676,9 @@ namespace WpfApplication1
         /// <returns>
         /// 作成したID
         /// </returns>
-        public ParametersViewModel CreateId()
+        public ParameterRecordViewModel CreateId()
         {
-            return new ParametersViewModel(DispName);
+            return new ParameterRecordViewModel(DispName);
         }
 
         /// <summary>
@@ -727,9 +690,9 @@ namespace WpfApplication1
         /// <returns>
         /// 作成したID
         /// </returns>
-        public ParametersViewModel CreateId(int id, string name, string comment)
+        public ParameterRecordViewModel CreateId(int id, string name, string comment)
         {
-            return new ParametersViewModel(DispName) { ID = id, Name = name, Comment = comment };
+            return new ParameterRecordViewModel(DispName) { ID = id, Name = name, Comment = comment };
         }
     }
 
@@ -737,7 +700,7 @@ namespace WpfApplication1
     /// <summary>
     /// ParamSet配例
     /// </summary>
-    public class _Collection : ObservableCollection<ParameterCollectionViewModel>
+    public class _Collection : ObservableCollection<CategoryViewModel>
     { }
 
 }

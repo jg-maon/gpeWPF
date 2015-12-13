@@ -2,6 +2,7 @@
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +50,14 @@ namespace WpfApplication1
         }
 
 
+        public IEnumerable<string> Categories
+        {
+            get
+            {
+                return _GetCategoriesString();
+            }
+        }
+
         public string InputComment { get; set; }
         public string InputName { get; set; }
         public int InputId { get; set; }
@@ -75,7 +84,20 @@ namespace WpfApplication1
         {
             this.OkCommand = new DelegateCommand(this.OnOk);
             this.CancelCommand = new DelegateCommand(this.OnCancel);
+        }
 
+
+
+        /// <summary>
+        /// デフォルトファイルに記述されているカテゴリ一覧の取得
+        /// </summary>
+        /// <returns>カテゴリ一覧</returns>
+        private IEnumerable<string> _GetCategoriesString()
+        {
+            foreach (var category in ConfigManager.Instance.DefaultGParam.Categories)
+            {
+                yield return category.DispName;
+            }
         }
 
     }

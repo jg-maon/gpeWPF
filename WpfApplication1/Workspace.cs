@@ -421,7 +421,7 @@ namespace WpfApplication1
         /// <param name="categoryTreePaneViewModel">開くファイル</param>
         /// <param name="parameterIdViewModel">開くID</param>
         /// <param name="doFloating">フローティングさせるか</param>
-        internal void UpdateParameterTab(CategoryTreePaneViewModel categoryTreePaneViewModel, ParametersViewModel parameterIdViewModel, bool doFloating)
+        internal void UpdateParameterTab(CategoryTreePaneViewModel categoryTreePaneViewModel, ParameterRecordViewModel parameterIdViewModel, bool doFloating)
         {
             var tab = new ParameterTab2ViewModel(categoryTreePaneViewModel, parameterIdViewModel) { DoFloating = doFloating };
                         

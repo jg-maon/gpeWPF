@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
+
 namespace WpfApplication1
 {
     /// <summary>
@@ -130,15 +131,15 @@ namespace WpfApplication1
 
         
 
-        private ObservableCollection<ParameterCollectionViewModel> m_collection = new ObservableCollection<ParameterCollectionViewModel>();
-        private ReadOnlyObservableCollection<ParameterCollectionViewModel> m_readonlyCollection = null;
-        public ReadOnlyObservableCollection<ParameterCollectionViewModel> Collection
+        private ObservableCollection<CategoryViewModel> m_collection = new ObservableCollection<CategoryViewModel>();
+        private ReadOnlyObservableCollection<CategoryViewModel> m_readonlyCollection = null;
+        public ReadOnlyObservableCollection<CategoryViewModel> Collection
         {
             get
             {
                 if (null == m_readonlyCollection)
                 {
-                    m_readonlyCollection = new ReadOnlyObservableCollection<ParameterCollectionViewModel>(m_collection);
+                    m_readonlyCollection = new ReadOnlyObservableCollection<CategoryViewModel>(m_collection);
                 }
                 return m_readonlyCollection;
             }
@@ -158,13 +159,13 @@ namespace WpfApplication1
             {
                 if (SetProperty(ref m_selectedItem, value))
                 {
-                    var categoryNode = value as ParameterCollectionViewModel;
+                    var categoryNode = value as CategoryViewModel;
                     if(null != categoryNode)
                     {
                         m_createNewIdCommand.RaiseCanExecuteChanged();
                         return;
                     }
-                    var idNode = value as ParametersViewModel;
+                    var idNode = value as ParameterRecordViewModel;
                     if(null != idNode)
                     {
                         m_createNewIdCommand.RaiseCanExecuteChanged();
@@ -267,11 +268,11 @@ namespace WpfApplication1
 
         private void _OnCreateNewId()
         {
-            ParameterCollectionViewModel categoryNode = null;
-            var idNode = SelectedItem as ParametersViewModel;
+            CategoryViewModel categoryNode = null;
+            var idNode = SelectedItem as ParameterRecordViewModel;
             if (null != idNode)
             {
-                // IDの場合コレクション一覧からカテゴリの選択
+                // IDの場合コレクション一覧からカテゴリノードの選択
                 foreach(var categoryParameters in m_collection)
                 {
                     if(categoryParameters.Parameters.Contains(idNode))
@@ -283,7 +284,7 @@ namespace WpfApplication1
             }
             else
             {
-                categoryNode = SelectedItem as ParameterCollectionViewModel;
+                categoryNode = SelectedItem as CategoryViewModel;
             }
 
             if(null != categoryNode)
@@ -304,34 +305,40 @@ namespace WpfApplication1
             var name = CreateNewIdWindowContentViewModel.Instance.InputName;
             var category = CreateNewIdWindowContentViewModel.Instance.Category;
 
-            if(null != categoryNode)
-            {
-                // #TODO:デフォルトファイルの読み込み&デフォルトIDの作成
-
-                var newId = new ParametersViewModel(category) { ID = id, Comment = comment, Name = name };
-                foreach(var slot in categoryNode.Parameters[0].Slots)
-                {
-                    var value = new TUnitValue<object>()
-                    {
-                        DispName = slot.DispName,
-                        Name = slot.Name,
-                        TabIndex = slot.TabIndex,
-                        Type = slot.Type,
-                        IsDirty = slot.IsDirty,
-                        IsExpanded = slot.IsExpanded,
-                        Value = slot.Value
-                    };
+            //var newId = new ParameterRecordViewModel(category) { ID = id, Comment = comment, Name = name };
+            //foreach(var slot in categoryNode.Parameters[0].Slots)
+            //{
+            //    var value = new TUnitValue<object>()
+            //    {
+            //        DispName = slot.DispName,
+            //        Name = slot.Name,
+            //        TabIndex = slot.TabIndex,
+            //        Type = slot.Type,
+            //        IsDirty = slot.IsDirty,
+            //        IsExpanded = slot.IsExpanded,
+            //        Value = slot.Value
+            //    };
                     
-                    newId.Slots.Add(value);
-                }
+            //    newId.Slots.Add(value);
+            //}
 
-                categoryNode.Parameters.Add(newId);
-            }
-            else
+            //categoryNode.Parameters.Add(newId);
+            
+
+            // #TODO:デフォルトファイルの読み込み&デフォルトIDの作成
+
+            var defaultCategory = ConfigManager.Instance.DefaultGParam.GetCategoryFromDispName(category);
+            if (null != defaultCategory)
             {
-                // #TODO: カテゴリ名からカテゴリノードの取得
+                // カテゴリのスロット一覧のコピー
+                //var newRecord = DeepCopyExtensions.DeepCopy(defaultCategory.Parameters[0]);
+                //var newRecord = (ParameterRecordViewModel)defaultCategory.Parameters[0].DeepCopy();
+                var newRecord = defaultCategory.Parameters[0].CreateCopy();
+                newRecord.ID = id;
+                newRecord.Comment = comment;
+                newRecord.Name = name;
+                categoryNode.Parameters.Add(newRecord);
             }
-
         }
         #endregion  // CreateCommand
     }

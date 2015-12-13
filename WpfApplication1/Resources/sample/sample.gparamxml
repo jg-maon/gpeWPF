@@ -11,8 +11,10 @@ type
 			<id>1</id>
 			<id>2</id>
 			<id>3</id>
+			<!--
 			<id>4</id>
 			<id>5</id>
+			-->
 		</edited>
 		<comments>
 			<value id="1" index="0">コメント１</value>
