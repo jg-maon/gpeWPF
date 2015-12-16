@@ -112,6 +112,28 @@ type
 			<value id="5" index="4">5.66</value>
 		</slot>		
 		
+		<!-- LocalLight3 -->
+		<slot dispname="Angle" type="4" name="LocalLight3 Angle">
+			<value id="1" index="0">1.0,0.2</value>
+			<value id="2" index="1">0.0,0.5</value>
+			<value id="3" index="2">0.0,2.8</value>
+			<value id="4" index="3">0.0,1.57</value>
+			<value id="5" index="4">1.57,0.0</value>
+		</slot>
+		<slot dispname="Sharpness" type="1" name="LocalLight3 Sharpness">
+			<value id="1" index="0">5</value>
+			<value id="2" index="1">50</value>
+			<value id="3" index="2">10</value>
+			<value id="4" index="3">0</value>
+			<value id="5" index="4">1</value>
+		</slot>
+		<slot dispname="SsaoWeight" type="1" name="LocalLight3 SsaoWeight">
+			<value id="1" index="0">1.2</value>
+			<value id="2" index="1">2.3</value>
+			<value id="3" index="2">3.4</value>
+			<value id="4" index="3">4.5</value>
+			<value id="5" index="4">5.66</value>
+		</slot>		
 		
 		<slot dispname="Enable LocalLight1" type="2" name="EnableLocalLight1">
 			<value id="1" index="0">true</value>

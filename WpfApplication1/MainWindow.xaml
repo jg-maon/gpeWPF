@@ -36,6 +36,32 @@
                 <ResourceDictionary Source="ParameterTabPane.xaml"/>
                 <ResourceDictionary Source="IdInfoTablePane.xaml"/>
                 <ResourceDictionary>
+                    
+                    <Style TargetType="{x:Type avalonDock:LayoutAnchorableTabItem}">
+                        <Setter Property="BorderThickness" Value="8"/>
+                        <Setter Property="BorderBrush" Value="AntiqueWhite"/>
+                        <Setter Property="Background" Value="Pink"/>
+                    </Style>
+                    <Style TargetType="{x:Type avalonDock:LayoutAnchorableControl}">
+                        <Setter Property="BorderBrush" Value="Yellow"/>
+                        <Setter Property="BorderThickness" Value="20"/>
+                        <Setter Property="Background" Value="Blue"/>
+                    </Style>
+                    <Style TargetType="{x:Type avalonDock:AnchorablePaneTitle}">
+                        <Setter Property="BorderBrush" Value="White"/>
+                        <Setter Property="BorderThickness" Value="23"/>
+                    </Style>
+                    <Style TargetType="{x:Type avalonDock:AnchorablePaneTabPanel}">
+                        <Setter Property="Background" Value="White"/>
+                    </Style>
+                    <Style TargetType="{x:Type avalonDock:DocumentPaneTabPanel}">
+                        <Setter Property="Background" Value="Red"/>
+                    </Style>
+                    <Style TargetType="{x:Type avalonDock:LayoutAnchorablePaneControl}">
+                        <Setter Property="Background" Value="GreenYellow"/>
+                        <Setter Property="BorderBrush" Value="Beige"/>
+                        <Setter Property="BorderThickness" Value="10"/>
+                    </Style>
 
                     <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
                     <local:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>

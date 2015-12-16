@@ -62,7 +62,6 @@
                     </Grid>
                 </Expander>
             </DataTemplate>
-            
 
             <DataTemplate x:Key="KeyGroupTemplate">
                 <Expander Content="{Binding}"
@@ -83,13 +82,7 @@
                                                             >
                             <local:ParameterTabTemplateSelector.GroupTemplate>
                                 <DataTemplate>
-                                    <ItemsControl ItemsSource="{Binding Value}" Margin="20,0,0,0">
-                                        <ItemsControl.ItemTemplateSelector>
-                                            <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
-                                                                                ValueTemplate="{StaticResource KeyValueTemplate}"
-                                                                                Float2Template="{StaticResource KeyFloat2Template}"
-                                                                                />
-                                        </ItemsControl.ItemTemplateSelector>
+                                    <ItemsControl ItemsSource="{Binding Value}" Margin="20,0,0,0" ItemTemplateSelector="{DynamicResource KeyTemplateSelector}">
                                     </ItemsControl>
                                 </DataTemplate>
                             </local:ParameterTabTemplateSelector.GroupTemplate>
@@ -97,7 +90,14 @@
                     </Expander.ContentTemplateSelector>
                 </Expander>
             </DataTemplate>
-            
+
+
+            <local:ParameterTabTemplateSelector x:Key="KeyTemplateSelector"
+                                                BoolTemplate="{StaticResource KeyBoolTemplate}"
+                                                ValueTemplate="{StaticResource KeyValueTemplate}"
+                                                GroupTemplate="{StaticResource KeyGroupTemplate}"
+                                                Float2Template="{StaticResource KeyFloat2Template}"
+                                                />
             
         </DataTemplate.Resources>
         
@@ -154,16 +154,8 @@
 
                     <ItemsControl ItemsSource="{Binding Parameters.Slots}"
                                   KeyboardNavigation.TabNavigation="Local"
-                          >
-                        <ItemsControl.ItemTemplateSelector>
-                            <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
-                                                                ValueTemplate="{StaticResource KeyValueTemplate}"
-                                                                GroupTemplate="{StaticResource KeyGroupTemplate}"
-                                                                Float2Template="{StaticResource KeyFloat2Template}">
-
-                            </local:ParameterTabTemplateSelector>
-
-                        </ItemsControl.ItemTemplateSelector>
+                          
+                                  ItemTemplateSelector="{StaticResource KeyTemplateSelector}">
 
                     </ItemsControl>
                 </StackPanel>

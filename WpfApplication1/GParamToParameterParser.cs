@@ -129,7 +129,12 @@ namespace WpfApplication1
                             // 全追加用グループコレクション
                             var groupCollection = new ObservableCollection<IEditableValue>();
                             // グループ配列用リスト
-                            var groupList = new List<ObservableCollection<IEditableValue>>();
+                            
+                            var groupDic = new Dictionary<GroupPattern, List<ObservableCollection<IEditableValue>>>();
+                            //groupDic[id] = new List<ObservableCollection<IEditableValue>>();
+                            List<ObservableCollection<IEditableValue>> groupList = null;
+
+
 
                             // 追加済みグループカウンタ
                             var addedGroupCountDictionary = new Dictionary<GroupPattern, int>();
@@ -198,91 +203,111 @@ namespace WpfApplication1
 
                                 // patternのargsを蓄積したものを一気に追加させる
                                 bool isAdded = false;
-                                foreach(var pattern in groupPatterns)
+                                bool isGroupChanged = false;
+                                do
                                 {
-                                    // 配列が空の場合、全ての要素を追加する
-                                    if(pattern.Args.Count == 0)
+                                    isAdded = false;
+                                    isGroupChanged = false;
+                                    foreach (var pattern in groupPatterns)
                                     {
-                                        groupCollection.Add(slotValue);
-                                        // 全ての要素を集めきったら
-                                        if(groupCollection.Count == paramset.Slot.Count)
+                                        if(!groupDic.ContainsKey(pattern))
                                         {
-                                            // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
-                                            EditableValueGroup value = new EditableValueGroup();
-                                            value.DispName = pattern.Names[0];
-                                            value.BindableName = pattern.Names[0].Replace(" ", spaceReplace);
-                                            value.Value = groupCollection;
-                                            value.TabIndex = tabIndex++;
-                                            value.IsExpanded = pattern.IsExpanded[0];
-                                            slots.Add(value);
+                                            groupDic[pattern] = new List<ObservableCollection<IEditableValue>>();
                                         }
-                                        isAdded = true;
-                                    }
-                                    // patternのArgsに同じparamNameが存在する場合
-                                    else if(pattern.Args.Contains(parameterDispName))
-                                    {
-                                        // group用のコレクションに追加する
-                                        // その際、既にコレクション内にparamNameの値が追加されていたら
-                                        // 別のコレクションを探す
-                                        
-                                        // 追加先コレクション
-                                        ObservableCollection<IEditableValue> targetCollection = null;
-                                        // グループコレクションの確認
-                                        foreach(var group in groupList)
+                                        groupList = groupDic[pattern];
+                                        // 配列が空の場合、全ての要素を追加する
+                                        if (pattern.Args.Count == 0)
                                         {
-                                            // コレクション内に追加されたパラメータを1つずつ見る
-                                            foreach(var groupCollectionValue in group)
+                                            groupCollection.Add(slotValue);
+                                            // 全ての要素を集めきったら
+                                            if (groupCollection.Count == paramset.Slot.Count)
                                             {
-                                                // 既にあるコレクションの中で自身と同じ名前のパラメータが登録されていたら
-                                                if(parameterDispName == groupCollectionValue.DispName)
+                                                // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
+                                                EditableValueGroup value = new EditableValueGroup();
+                                                value.DispName = pattern.Names[0];
+                                                value.BindableName = pattern.Names[0].Replace(" ", spaceReplace);
+                                                value.Value = groupCollection;
+                                                value.TabIndex = tabIndex++;
+                                                value.IsExpanded = pattern.IsExpanded[0];
+                                                slots.Add(value);
+                                            }
+                                            isAdded = true;
+                                        }
+                                        // patternのArgsに同じparamNameが存在する場合
+                                        else if (pattern.Args.Contains(slotValue.DispName))
+                                        {
+                                            // group用のコレクションに追加する
+                                            // その際、既にコレクション内にparamNameの値が追加されていたら
+                                            // 別のコレクションを探す
+
+                                            // 追加先コレクション
+                                            ObservableCollection<IEditableValue> targetCollection = null;
+                                            // グループコレクションの確認
+                                            foreach (var group in groupList)
+                                            {
+                                                // コレクション内に追加されたパラメータを1つずつ見る
+                                                foreach (var groupCollectionValue in group)
                                                 {
-                                                    // このグループには追加させないようにしてパラメータ検索終了
-                                                    targetCollection = null;
+                                                    // 既にあるコレクションの中で自身と同じ名前のパラメータが登録されていたら
+                                                    if (slotValue.DispName == groupCollectionValue.DispName)
+                                                    {
+                                                        // このグループには追加させないようにしてパラメータ検索終了
+                                                        targetCollection = null;
+                                                        break;
+                                                    }
+                                                    // 同じ名前のパラメータでない場合
+                                                    else if (null == targetCollection)
+                                                    {
+                                                        // このコレクションにパラメータを追加させるように登録
+                                                        targetCollection = group;
+                                                    }
+                                                }
+                                                // 追加先が決まった場合はループ終了
+                                                if (null != targetCollection)
+                                                {
                                                     break;
                                                 }
-                                                    // 同じ名前のパラメータでない場合
-                                                else if (null == targetCollection)
-                                                {
-                                                    // このコレクションにパラメータを追加させるように登録
-                                                    targetCollection = group;
-                                                }
                                             }
-                                            // 追加先が決まった場合はループ終了
-                                            if(null != targetCollection)
+
+                                            // 全てのコレクションに存在していたら新しいコレクションを作成し、追加を行う
+                                            if (null == targetCollection)
                                             {
+                                                targetCollection = new ObservableCollection<IEditableValue>();
+                                                groupList.Add(targetCollection);
+                                            }
+
+                                            targetCollection.Add(slotValue);
+                                            isAdded = true;
+                                            // グループのパラメータ数分集まったら
+                                            if (targetCollection.Count == pattern.Args.Count)
+                                            {
+                                                // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
+                                                EditableValueGroup value = new EditableValueGroup();
+
+                                                if (!addedGroupCountDictionary.ContainsKey(pattern))
+                                                {
+                                                    addedGroupCountDictionary[pattern] = 0;
+                                                }
+                                                int groupCount = addedGroupCountDictionary[pattern]++;
+                                                value.DispName = pattern.Names[groupCount % pattern.Names.Count];
+                                                value.BindableName = value.DispName.Replace(" ", spaceReplace);
+                                                value.Value = targetCollection;
+                                                value.TabIndex = tabIndex++;
+                                                value.IsExpanded = pattern.IsExpanded[groupCount % pattern.IsExpanded.Count];
+                                                //slots.Add(value);
+                                                //targetCollection.Add(slotValue);
+                                                slotValue = value;  // スロットの値をグループにしてからもう一度グループパターンのチェックをする
+                                                isGroupChanged = true;
+
                                                 break;
                                             }
                                         }
-
-                                        // 全てのコレクションに存在していたら新しいコレクションを作成し、追加を行う
-                                        if(null == targetCollection)
-                                        {
-                                            targetCollection = new ObservableCollection<IEditableValue>();
-                                            groupList.Add(targetCollection);
-                                        }
-
-                                        targetCollection.Add(slotValue);
-                                        isAdded = true;
-                                        // グループのパラメータ数分集まったら
-                                        if (targetCollection.Count == pattern.Args.Count)
-                                        {
-                                            // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
-                                            EditableValueGroup value = new EditableValueGroup();
-                                            
-                                            if(!addedGroupCountDictionary.ContainsKey(pattern))
-                                            {
-                                                addedGroupCountDictionary[pattern] = 0;
-                                            }
-                                            int groupCount = addedGroupCountDictionary[pattern]++;
-                                            value.DispName = pattern.Names[groupCount % pattern.Names.Count];
-                                            value.BindableName = value.DispName.Replace(" ", spaceReplace);
-                                            value.Value = targetCollection;
-                                            value.TabIndex = tabIndex++;
-                                            value.IsExpanded = pattern.IsExpanded[groupCount % pattern.IsExpanded.Count];
-                                            slots.Add(value);
-                                        }
                                     }
-                                }
+                                    if(!isGroupChanged)
+                                    {
+                                        //isAdded = false;
+                                    }
+                                } while (isGroupChanged);
 
                                 if (!isAdded)
                                 {

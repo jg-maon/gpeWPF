@@ -230,6 +230,8 @@
         <Setter Property="TabStripPlacement" Value="Bottom"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Yellow"/>
+        <Setter Property="BorderThickness" Value="3"/>
         <Setter Property="Foreground" Value="{Binding Model.Root.Manager.Foreground, RelativeSource={RelativeSource Self}}"/>
         <Setter Property="Background" Value="{DynamicResource AvalonDock_Expression_BaseColor8}"/>
         <Setter Property="Template">
