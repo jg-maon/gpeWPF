@@ -36,6 +36,7 @@ namespace WpfApplication1
         }
 
 
+
         #region IsVisible
 
         private bool _isVisible = true;

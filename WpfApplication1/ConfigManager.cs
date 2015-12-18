@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -57,8 +58,10 @@ namespace WpfApplication1
         /// <summary>
         /// カテゴリ一覧アクセスクラス
         /// </summary>
-        public class CategoriesAccessor
+        public class CategoriesAccessor : ICustomTypeDescriptor
         {
+            List<PropertyDescriptor> m_slotProperties = new List<PropertyDescriptor>();
+
             public CategoriesAccessor()
             { }
 
@@ -119,6 +122,18 @@ namespace WpfApplication1
                     MessageBox.Show(sb.ToString(), "");
                     return false;
                 }
+
+                // カテゴリコレクションからプロパティを生成
+                m_slotProperties.Clear();
+                foreach(var category in m_categories)
+                {
+                    foreach(PropertyDescriptor p in category.Parameters[0].GetProperties())
+                    {
+                        m_slotProperties.Add(p);
+                    }
+                    //m_slotProperties.Add()
+                }
+
                 return true;
             }
             /// <summary>
@@ -140,6 +155,70 @@ namespace WpfApplication1
                 return m_categories.FirstOrDefault(c => c.DispName == categoryDispName);
             }
 
+
+            #region ICustomTypeDescriptor メンバー
+
+            public AttributeCollection GetAttributes()
+            {
+                throw new NotImplementedException();
+            }
+
+            public string GetClassName()
+            {
+                throw new NotImplementedException();
+            }
+
+            public string GetComponentName()
+            {
+                throw new NotImplementedException();
+            }
+
+            public TypeConverter GetConverter()
+            {
+                throw new NotImplementedException();
+            }
+
+            public EventDescriptor GetDefaultEvent()
+            {
+                throw new NotImplementedException();
+            }
+
+            public PropertyDescriptor GetDefaultProperty()
+            {
+                throw new NotImplementedException();
+            }
+
+            public object GetEditor(Type editorBaseType)
+            {
+                throw new NotImplementedException();
+            }
+
+            public EventDescriptorCollection GetEvents(Attribute[] attributes)
+            {
+                throw new NotImplementedException();
+            }
+
+            public EventDescriptorCollection GetEvents()
+            {
+                throw new NotImplementedException();
+            }
+
+            public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+            {
+                return GetProperties();
+            }
+
+            public PropertyDescriptorCollection GetProperties()
+            {
+                return new PropertyDescriptorCollection(m_slotProperties.ToArray());
+            }
+
+            public object GetPropertyOwner(PropertyDescriptor pd)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
         }
         #endregion
 

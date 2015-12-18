@@ -37,6 +37,17 @@ namespace WpfApplication1
 
         }
 
+        /// <summary>
+        /// デフォルトファイルアクセッサ
+        /// </summary>
+        public ConfigManager.CategoriesAccessor DefaultParameters
+        {
+            get
+            {
+                return ConfigManager.Instance.DefaultGParam;
+            }
+        }
+
 
         private ParameterRecordViewModel m_selectedItem;
         public ParameterRecordViewModel SelectedItem

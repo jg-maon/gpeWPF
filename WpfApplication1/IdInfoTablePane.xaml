@@ -29,7 +29,7 @@
                             <Setter Property="IconSource" Value="{Binding Model.IconSource}"/>
                             <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}"/>
                             <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
-                            <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>
+                            <!--<Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>-->
                             <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>
                         </Style>
                     </local:PanesStyleSelector.ToolStyle>
@@ -49,27 +49,37 @@
                 <local:IdInfoTableTemplateSelector>
                     <local:IdInfoTableTemplateSelector.LightSetTemplate>
                         <DataTemplate>
-                            <DataGrid >
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="Comment"  Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="AngleX"  Binding="{Binding DirLight0.Angle.Value.X, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="AngleY"  Binding="{Binding DirLight0.Angle.Value.Y, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="Sharpness"  Binding="{Binding DirLight0.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="Sharpness1"  Binding="{Binding DirLight1.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    
-                                    <DataGridTextColumn Header="Angle1X"  Binding="{Binding DirLight1.Angle.Value[0], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="Angle1Y"  Binding="{Binding DirLight1.Angle.Value[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridCheckBoxColumn Header="EnableLocalLight1" Binding="{Binding Enable_LocalLight1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <DataGridCheckBoxColumn Header="EnableLocalLight2" Binding="{Binding Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DataTemplate.Resources>
+                                <FrameworkElement x:Key="proxy" Tag="{Binding Path=DefaultParameters, Mode=OneWay}"/>
+                            </DataTemplate.Resources>
+                            <Grid>
+                                <ContentControl Visibility="Collapsed" Content="{StaticResource proxy}" />
+                                <DataGrid>
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="ID" Binding="{Binding ID, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridTextColumn Header="Comment"  Binding="{Binding Comment, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridTextColumn Header="AngleX"  Binding="{Binding DirLight0.Angle.Value[0], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridTextColumn Header="AngleY"  Binding="{Binding DirLight0.Angle.Value[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridTextColumn Header="Sharpness"  Binding="{Binding DirLight0.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridTextColumn Header="Sharpness1"  Binding="{Binding DirLight1.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
 
-                                    
-                                    <DataGridTextColumn Header="DirLight0"  Binding="{Binding DirLight0, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="DirLight0.Value"  Binding="{Binding DirLight0.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                    <DataGridTextColumn Header="DirLight0.Value.Angle"  Binding="{Binding DirLight0.Value.Angle, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                                        <DataGridTextColumn Header="Angle1X"  Binding="{Binding DirLight1.Angle.Value[0], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridTextColumn Header="Angle1Y"  Binding="{Binding DirLight1.Angle.Value[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                                        <DataGridCheckBoxColumn Header="{Binding Path=Tag.Enable_LocalLight1.DispName, Source={StaticResource proxy}}" Binding="{Binding Enable_LocalLight1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <DataGridCheckBoxColumn Header="{Binding Path=Tag.Enable_LocalLight2.DispName, Source={StaticResource proxy}}" Binding="{Binding Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <DataGridTemplateColumn Header="{Binding Path=Tag.Enable_LocalLight2.DispName, Source={StaticResource proxy}}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Grid>
+
                         </DataTemplate>
                     </local:IdInfoTableTemplateSelector.LightSetTemplate>
                     <local:IdInfoTableTemplateSelector.FogTemplate>

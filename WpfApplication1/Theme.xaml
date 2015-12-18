@@ -29,6 +29,10 @@
 
     >
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="DarkBrushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
     <avalonDockConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <avalonDockConverters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
     <avalonDockConverters:AnchorSideToOrientationConverter x:Key="AnchorSideToOrientationConverter"/>

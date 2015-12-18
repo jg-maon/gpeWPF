@@ -216,7 +216,7 @@
                                 <Setter Property="IconSource" Value="{Binding Model.IconSource}"/>
                                 <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}"/>
                                 <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
-                                <Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>
+                                <!--<Setter Property="IsSelected" Value="{Binding Model.IsSelected, Mode=TwoWay}"/>-->
                                 <Setter Property="IsActive" Value="{Binding Model.IsActive, Mode=TwoWay}"/>
                                 <Setter Property="local:LayoutItemBehavior.FloatingWidth" Value="{Binding Model.FloatingWidth, Mode=TwoWay}"/>
                                 <Setter Property="local:LayoutItemBehavior.FloatingHeight" Value="{Binding Model.FloatingHeight, Mode=TwoWay}"/>
@@ -245,14 +245,14 @@
                                     <avalonDock:LayoutAnchorablePaneGroup Orientation="Vertical" DockWidth="0.555516714360042*">
                                         <avalonDock:LayoutAnchorablePane Name="ConnectionPane" DockWidth="300" DockHeight="0.60059386636169*" >
                                             <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ファイル共有" FloatingLeft="127" FloatingTop="220" FloatingWidth="247" FloatingHeight="155" LastActivationTimeStamp="12/02/2015 01:26:44" ContentId="00043241-cc2c-4ab9-aa78-36bb71e30705" PreviousContainerIndex="1" />
-                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="実機接続" IsSelected="True" FloatingLeft="122" FloatingTop="223" FloatingWidth="247" FloatingHeight="155" LastActivationTimeStamp="12/02/2015 01:27:06" ContentId="00043241-cc2c-4ab9-aa78-36bb71e30705" PreviousContainerIndex="0" />
+                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="実機接続" FloatingLeft="122" FloatingTop="223" FloatingWidth="247" FloatingHeight="155" LastActivationTimeStamp="12/02/2015 01:27:06" ContentId="00043241-cc2c-4ab9-aa78-36bb71e30705" PreviousContainerIndex="0" />
                                         </avalonDock:LayoutAnchorablePane>
                                         <avalonDock:LayoutAnchorablePane DockHeight="1.39940613363831*" FloatingWidth="253" FloatingHeight="510" FloatingLeft="139" FloatingTop="386" Name="ParameterFileTreePane">
-                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ファイルツリー" IsSelected="True" FloatingLeft="139" FloatingTop="386" FloatingWidth="253" FloatingHeight="510" LastActivationTimeStamp="12/02/2015 01:26:38" />
+                                            <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="ファイルツリー" FloatingLeft="139" FloatingTop="386" FloatingWidth="253" FloatingHeight="510" LastActivationTimeStamp="12/02/2015 01:26:38" />
                                         </avalonDock:LayoutAnchorablePane>
                                     </avalonDock:LayoutAnchorablePaneGroup>
                                     <avalonDock:LayoutAnchorablePane Name="CategoryTreePane" DockWidth="0.619634495317377*" FloatingWidth="126" FloatingHeight="278" FloatingLeft="447" FloatingTop="143">
-                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="sample" IsSelected="True" FloatingLeft="414" FloatingTop="345" FloatingWidth="339" FloatingHeight="625" LastActivationTimeStamp="12/02/2015 01:27:42" ContentId="a205d359-528b-438d-bef4-fdfb9496ae6d" PreviousContainerIndex="1" />
+                                        <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="sample" FloatingLeft="414" FloatingTop="345" FloatingWidth="339" FloatingHeight="625" LastActivationTimeStamp="12/02/2015 01:27:42" ContentId="a205d359-528b-438d-bef4-fdfb9496ae6d" PreviousContainerIndex="1" />
                                         <avalonDock:LayoutAnchorable AutoHideMinWidth="100" AutoHideMinHeight="100" Title="カテゴリツリー" FloatingLeft="447" FloatingTop="143" FloatingWidth="126" FloatingHeight="278" LastActivationTimeStamp="12/02/2015 01:27:06" />
                                     </avalonDock:LayoutAnchorablePane>
                                     <avalonDock:LayoutAnchorablePane DockWidth="1.31073588709677*" FloatingWidth="331" FloatingHeight="741" FloatingLeft="809" FloatingTop="335" Name="ParameterTabPane">
