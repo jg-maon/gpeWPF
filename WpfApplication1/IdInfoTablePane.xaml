@@ -10,6 +10,8 @@
             <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
             <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
+            <local:ColorToStringConverter x:Key="ColorToStringConverter"/>
+            
 
             <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
                 <Setter Property="ItemsSource" Value="{Binding Parameters}"/>
@@ -68,10 +70,30 @@
                                         <DataGridTextColumn Header="Angle1Y"  Binding="{Binding DirLight1.Angle.Value[1], Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                                         <DataGridCheckBoxColumn Header="{Binding Path=Tag.Enable_LocalLight1.DispName, Source={StaticResource proxy}}" Binding="{Binding Enable_LocalLight1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                         <DataGridCheckBoxColumn Header="{Binding Path=Tag.Enable_LocalLight2.DispName, Source={StaticResource proxy}}" Binding="{Binding Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                        <DataGridTextColumn Header="{Binding Path=Tag.DirLight0.Angle.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=DirLight0.Angle.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource ColorToStringConverter}}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.DirLight0.Sharpness.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=DirLight0.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.DirLight0.SsaoWeight.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=DirLight0.SsaoWeight.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.DirLight1.Angle.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=DirLight1.Angle.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource ColorToStringConverter}}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.DirLight1.Sharpness.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=DirLight1.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.DirLight1.SsaoWeight.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=DirLight1.SsaoWeight.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.LocalLight1.Angle.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=LocalLight1.Angle.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource ColorToStringConverter}}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.LocalLight1.Sharpness.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=LocalLight1.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.LocalLight1.SsaoWeight.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=LocalLight1.SsaoWeight.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.LocalLight2.Angle.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=LocalLight2.Angle.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource ColorToStringConverter}}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.LocalLight2.Sharpness.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=LocalLight2.Sharpness.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTextColumn Header="{Binding Path=Tag.LocalLight2.SsaoWeight.DispName, Source={StaticResource proxy}}" Binding="{Binding Path=LocalLight2.SsaoWeight.Value, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                        <DataGridTemplateColumn Header="{Binding Path=Tag.Enable_LocalLight1.DispName, Source={StaticResource proxy}}">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Path=Enable_LocalLight1.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
                                         <DataGridTemplateColumn Header="{Binding Path=Tag.Enable_LocalLight2.DispName, Source={StaticResource proxy}}">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox IsChecked="{Binding Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    <CheckBox IsChecked="{Binding Path=Enable_LocalLight2.Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>

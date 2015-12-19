@@ -24,21 +24,21 @@ type
 			<value id="5" index="4">Comment5</value>
 		</comments>
 		<!-- DirLight0 -->
-		<slot dispname="Angle" type="4" name="DirectionalLight0 Angle">
+		<slot dispname="Angle" type="12" name="DirectionalLight0 Angle">
 			<value id="1" index="0">1.0,0.2</value>
 			<value id="2" index="1">0.0,0.5</value>
 			<value id="3" index="2">0.0,2.8</value>
 			<value id="4" index="3">0.0,1.57</value>
 			<value id="5" index="4">1.57,0.0</value>
 		</slot>
-		<slot dispname="Sharpness" type="1" name="DirectionalLight0 Sharpness">
+		<slot dispname="Sharpness" type="9" name="DirectionalLight0 Sharpness">
 			<value id="1" index="0">5</value>
 			<value id="2" index="1">50</value>
 			<value id="3" index="2">10</value>
 			<value id="4" index="3">0</value>
 			<value id="5" index="4">1</value>
 		</slot>
-		<slot dispname="SsaoWeight" type="1" name="DirectionalLight0 SsaoWeight">
+		<slot dispname="SsaoWeight" type="9" name="DirectionalLight0 SsaoWeight">
 			<value id="1" index="0">1.2</value>
 			<value id="2" index="1">2.3</value>
 			<value id="3" index="2">3.4</value>
@@ -46,21 +46,21 @@ type
 			<value id="5" index="4">5.66</value>
 		</slot>
 		<!-- DirLight1 -->
-		<slot dispname="Angle" type="4" name="DirectionalLight1 Angle">
+		<slot dispname="Angle" type="12" name="DirectionalLight1 Angle">
 			<value id="1" index="0">9.0,10.2</value>
 			<value id="2" index="1">9.0,20.5</value>
 			<value id="3" index="2">9.0,12.8</value>
 			<value id="4" index="3">9.0,11.57</value>
 			<value id="5" index="4">9.57,30.0</value>
 		</slot>
-		<slot dispname="Sharpness" type="1" name="DirectionalLight1 Sharpness">
+		<slot dispname="Sharpness" type="9" name="DirectionalLight1 Sharpness">
 			<value id="1" index="0">6</value>
 			<value id="2" index="1">10</value>
 			<value id="3" index="2">30</value>
 			<value id="4" index="3">4</value>
 			<value id="5" index="4">6</value>
 		</slot>
-		<slot dispname="SsaoWeight" type="1" name="DirectionalLight1 SsaoWeight">
+		<slot dispname="SsaoWeight" type="9" name="DirectionalLight1 SsaoWeight">
 			<value id="1" index="0">12.1</value>
 			<value id="2" index="1">23.2</value>
 			<value id="3" index="2">34.3</value>
@@ -68,21 +68,21 @@ type
 			<value id="5" index="4">56.5</value>
 		</slot>
 		<!-- LocalLight1 -->
-		<slot dispname="Angle" type="4" name="LocalLight1 Angle">
+		<slot dispname="Angle" type="12" name="LocalLight1 Angle">
 			<value id="1" index="0">1.0,0.2</value>
 			<value id="2" index="1">0.0,0.5</value>
 			<value id="3" index="2">0.0,2.8</value>
 			<value id="4" index="3">0.0,1.57</value>
 			<value id="5" index="4">1.57,0.0</value>
 		</slot>
-		<slot dispname="Sharpness" type="1" name="LocalLight1 Sharpness">
+		<slot dispname="Sharpness" type="9" name="LocalLight1 Sharpness">
 			<value id="1" index="0">5</value>
 			<value id="2" index="1">50</value>
 			<value id="3" index="2">10</value>
 			<value id="4" index="3">0</value>
 			<value id="5" index="4">1</value>
 		</slot>
-		<slot dispname="SsaoWeight" type="1" name="LocalLight1 SsaoWeight">
+		<slot dispname="SsaoWeight" type="9" name="LocalLight1 SsaoWeight">
 			<value id="1" index="0">1.2</value>
 			<value id="2" index="1">2.3</value>
 			<value id="3" index="2">3.4</value>
@@ -90,21 +90,21 @@ type
 			<value id="5" index="4">5.66</value>
 		</slot>
 		<!-- LocalLight2 -->
-		<slot dispname="Angle" type="4" name="LocalLight2 Angle">
+		<slot dispname="Angle" type="12" name="LocalLight2 Angle">
 			<value id="1" index="0">1.0,0.2</value>
 			<value id="2" index="1">0.0,0.5</value>
 			<value id="3" index="2">0.0,2.8</value>
 			<value id="4" index="3">0.0,1.57</value>
 			<value id="5" index="4">1.57,0.0</value>
 		</slot>
-		<slot dispname="Sharpness" type="1" name="LocalLight2 Sharpness">
+		<slot dispname="Sharpness" type="9" name="LocalLight2 Sharpness">
 			<value id="1" index="0">5</value>
 			<value id="2" index="1">50</value>
 			<value id="3" index="2">10</value>
 			<value id="4" index="3">0</value>
 			<value id="5" index="4">1</value>
 		</slot>
-		<slot dispname="SsaoWeight" type="1" name="LocalLight2 SsaoWeight">
+		<slot dispname="SsaoWeight" type="9" name="LocalLight2 SsaoWeight">
 			<value id="1" index="0">1.2</value>
 			<value id="2" index="1">2.3</value>
 			<value id="3" index="2">3.4</value>
@@ -113,21 +113,21 @@ type
 		</slot>		
 		
 		<!-- LocalLight3 -->
-		<slot dispname="Angle" type="4" name="LocalLight3 Angle">
+		<slot dispname="Angle" type="12" name="LocalLight3 Angle">
 			<value id="1" index="0">1.0,0.2</value>
 			<value id="2" index="1">0.0,0.5</value>
 			<value id="3" index="2">0.0,2.8</value>
 			<value id="4" index="3">0.0,1.57</value>
 			<value id="5" index="4">1.57,0.0</value>
 		</slot>
-		<slot dispname="Sharpness" type="1" name="LocalLight3 Sharpness">
+		<slot dispname="Sharpness" type="9" name="LocalLight3 Sharpness">
 			<value id="1" index="0">5</value>
 			<value id="2" index="1">50</value>
 			<value id="3" index="2">10</value>
 			<value id="4" index="3">0</value>
 			<value id="5" index="4">1</value>
 		</slot>
-		<slot dispname="SsaoWeight" type="1" name="LocalLight3 SsaoWeight">
+		<slot dispname="SsaoWeight" type="9" name="LocalLight3 SsaoWeight">
 			<value id="1" index="0">1.2</value>
 			<value id="2" index="1">2.3</value>
 			<value id="3" index="2">3.4</value>
@@ -135,14 +135,14 @@ type
 			<value id="5" index="4">5.66</value>
 		</slot>		
 		
-		<slot dispname="Enable LocalLight1" type="2" name="EnableLocalLight1">
+		<slot dispname="Enable LocalLight1" type="11" name="EnableLocalLight1">
 			<value id="1" index="0">true</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">true</value>
 			<value id="4" index="3">true</value>
 			<value id="5" index="4">false</value>
 		</slot>
-		<slot dispname="Enable LocalLight2" type="2" name="EnableLocalLight2">
+		<slot dispname="Enable LocalLight2" type="11" name="EnableLocalLight2">
 			<value id="1" index="0">false</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">false</value>
@@ -168,12 +168,12 @@ type
 			<value id="2" index="1">こめ２</value>
 			<value id="3" index="2">※3</value>
 		</comments>
-		<slot dispname="FogHeight" type="1" name="fog-height parameter">
+		<slot dispname="FogHeight" type="9" name="fog-height parameter">
 			<value id="1" index="0">5.0</value>
 			<value id="2" index="0">1.0</value>
 			<value id="3" index="0">34.0</value>
 		</slot>
-		<slot dispname="check1" type="2" name="fog-check parameter">
+		<slot dispname="check1" type="11" name="fog-check parameter">
 			<value id="1" index="0">false</value>
 			<value id="2" index="1">true</value>
 			<value id="3" index="2">true</value>

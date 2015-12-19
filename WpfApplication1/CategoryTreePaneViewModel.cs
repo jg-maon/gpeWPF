@@ -78,7 +78,7 @@ namespace WpfApplication1
                     
                 }
 
-                if(!GParamToParameterParser.TryParse(gparam, ref this.m_collection))
+                if(!GParamToParameterParser.TryParse(gparam, out this.m_collection))
                 {
                     System.Windows.MessageBox.Show("gparamファイルの読み込みに失敗","");
                 }

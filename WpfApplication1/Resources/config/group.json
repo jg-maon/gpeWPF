@@ -1,0 +1,68 @@
+{
+    "Categories" : [
+        {
+            "Name": "LightSet Parameter",
+            "Group": [
+                {
+                    "Args": [ "DirectionalLight0 Angle", "DirectionalLight0 Sharpness", "DirectionalLight0 SsaoWeight" ],
+                    "Name": "__DirLight0__",
+                    "DispName": "DirLight0",
+                    "IsExpanded": true
+                },
+
+                {
+                    "Args": [ "DirectionalLight1 Angle", "DirectionalLight1 Sharpness", "DirectionalLight1 SsaoWeight" ],
+                    "Name": "__DirLight1__",
+                    "DispName": "DirLight1",
+                    "IsExpanded": true
+                },
+
+                {
+                    "Args": [ "LocalLight1 Angle", "LocalLight1 Sharpness", "LocalLight1 SsaoWeight" ],
+                    "Name": "__LocalLight1__",
+                    "DispName": "LocalLight1",
+                    "IsExpanded": true
+                },
+
+                {
+                    "Args": [ "LocalLight2 Angle", "LocalLight2 Sharpness", "LocalLight2 SsaoWeight" ],
+                    "Name": "__LocalLight2__",
+                    "DispName": "LocalLight2",
+                    "IsExpanded": true
+                }
+            ]
+        },
+        {
+            "Name": "Fog Parameter",
+            "Group": [
+                {
+                    "Args": [ ],
+                    "Name": "__Fog Parameter__",
+                    "DispName": "Fog Parameter",
+                    "IsExpanded": true
+                }
+            ]
+        }
+    ],
+
+    "LightSet": {
+        "group": [
+            {
+                "Args": [ "Angle", "Sharpness", "SsaoWeight" ],
+                "Names": [ "DirLight0", "DirLight1", "LocalLight1", "LocalLight2" ],
+                "IsExpanded": [ true, true, true, true ]
+            }
+        ]
+    },
+
+
+    "Fog": {
+        "group": [
+            {
+                "Args": [ ],
+                "Names": [ "Fog Parameter" ],
+                "IsExpanded": [ true ]
+            }
+        ]
+    }
+}

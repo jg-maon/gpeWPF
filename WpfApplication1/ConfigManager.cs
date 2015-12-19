@@ -106,7 +106,7 @@ namespace WpfApplication1
 
                     }
 
-                    if (!GParamToParameterParser.TryParse(gparam, ref m_categories))
+                    if (!GParamToParameterParser.TryParse(gparam, out m_categories))
                     {
                         System.Windows.MessageBox.Show("gparamファイルのパースに失敗", "");
                         return false;
