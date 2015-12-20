@@ -11,7 +11,7 @@
             <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
             <local:ColorToStringConverter x:Key="ColorToStringConverter"/>
-            
+
 
             <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource {x:Type DataGrid}}">
                 <Setter Property="ItemsSource" Value="{Binding Parameters}"/>
@@ -19,7 +19,25 @@
                 <Setter Property="SelectionUnit" Value="FullRow"/>
                 <Setter Property="Tag" Value="{Binding Parameters}"/>
                 <Setter Property="AutoGenerateColumns" Value="False" />
+                <Setter Property="RowHeaderWidth" Value="10"/>
             </Style>
+            <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource {x:Type DataGridCell}}">
+                <Setter Property="BorderThickness" Value="0 0 1 1"/>
+                <Setter Property="BorderBrush" Value="#FFF0F0F0"/>
+            </Style>
+            <Style TargetType="{x:Type DataGridColumnHeader}" BasedOn="{StaticResource {x:Type DataGridColumnHeader}}">
+                <Setter Property="BorderThickness" Value="0 0 1 1"/>
+                <Setter Property="BorderBrush" Value="#FFF0F0F0"/>
+            </Style>
+            <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                <Setter Property="BorderThickness" Value="1 1 1 1"/>
+                <Setter Property="BorderBrush" Value="#FFF0F0F0"/>
+            </Style>
+            <Style TargetType="{x:Type DataGridRowHeader}" BasedOn="{StaticResource {x:Type DataGridRowHeader}}">
+                <Setter Property="BorderThickness" Value="1 1 1 1"/>
+                <Setter Property="BorderBrush" Value="#FFF0F0F0"/>
+            </Style>
+
         </DataTemplate.Resources>
 
         <avalonDock:DockingManager DocumentsSource="{Binding Content.ParameterTabPages}">

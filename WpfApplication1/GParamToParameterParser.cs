@@ -178,14 +178,68 @@ namespace WpfApplication1
                                 switch (gparamSlot.Type)
                                 {
                                     case (int)GX_META_INFO_TYPE.INT8:
+                                        {
+                                            var unitValue = new TUnitValue<sbyte>();
+                                            unitValue.Value = sbyte.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.INT16:
+                                        {
+                                            var unitValue = new TUnitValue<Int16>();
+                                            unitValue.Value = Int16.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.INT32:
+                                        {
+                                            var unitValue = new TUnitValue<Int32>();
+                                            unitValue.Value = Int32.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.INT64:
+                                        {
+                                            var unitValue = new TUnitValue<Int64>();
+                                            unitValue.Value = Int64.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.UINT8:
+                                        {
+                                            var unitValue = new TUnitValue<byte>();
+                                            unitValue.Value = byte.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.UINT16:
+                                        {
+                                            var unitValue = new TUnitValue<UInt16>();
+                                            unitValue.Value = UInt16.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.UINT32:
+                                        {
+                                            var unitValue = new TUnitValue<UInt32>();
+                                            unitValue.Value = UInt32.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.UINT64:
+                                        {
+                                            var unitValue = new TUnitValue<UInt64>();
+                                            unitValue.Value = UInt64.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.FLOAT32:
+                                        {
+                                            var unitValue = new TUnitValue<float>();
+                                            unitValue.Value = float.Parse(gparamTextById);
+                                            slotValue = unitValue;
+                                        }
+                                        break;
                                     case (int)GX_META_INFO_TYPE.FLOAT64:
                                         {
                                             var unitValue = new TUnitValue<double>();

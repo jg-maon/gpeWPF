@@ -12,6 +12,7 @@ namespace WpfApplication1
 {
     class ParameterTab2ViewModel : ToolViewModel , IEquatable<ParameterTab2ViewModel>
     {
+        public MenuContent MenuContent { get { return Workspace.Instance.MenuContent; } }
         private readonly CategoryTreePaneViewModel m_file;
         public CategoryTreePaneViewModel File
         {
@@ -209,14 +210,12 @@ namespace WpfApplication1
             // 全て展開
             if(_IsAllExpanded(Parameters.Slots, false) && !IsInfoGroupExpanded)
             {
-                this.IsInfoGroupExpanded = true;
-                _AllExpand(Parameters.Slots, true);
+                _OnExpandAll();
             }
             else
             {
                 // 全て畳む
-                this.IsInfoGroupExpanded = false;
-                _AllExpand(Parameters.Slots, false);
+                _OnCollapseAll();
             }
         }
 
@@ -225,7 +224,7 @@ namespace WpfApplication1
         /// </summary>
         /// <param name="collection">コレクション</param>
         /// <param name="isExpanded">展開状態</param>
-        private void _AllExpand(ObservableCollection<IEditableValue> collection, bool isExpanded)
+        private void _AllExpandRecursively(ObservableCollection<IEditableValue> collection, bool isExpanded)
         {
             foreach (var value in collection)
             {
@@ -235,13 +234,37 @@ namespace WpfApplication1
                 var group = value.Value as ObservableCollection<IEditableValue>;
                 if (null != group)
                 {
-                    _AllExpand(group, isExpanded);
+                    _AllExpandRecursively(group, isExpanded);
                 }
             }
         }
 
 
         #endregion
+
+        #region ExpandAllCommand
+
+        private DelegateCommand m_expandAllCommand = null;
+        public ICommand ExpandAllCommand { get { return m_expandAllCommand ?? (m_expandAllCommand = new DelegateCommand(_OnExpandAll)); } }
+
+        private void _OnExpandAll()
+        {
+            this.IsInfoGroupExpanded = true;
+            _AllExpandRecursively(Parameters.Slots, true);
+        }
+        #endregion
+
+        #region CollapseAllCommand
+        private DelegateCommand m_collapseAllCommand = null;
+        public ICommand CollapseAllCommand { get { return m_collapseAllCommand ?? (m_collapseAllCommand = new DelegateCommand(_OnCollapseAll)); } }
+
+        private void _OnCollapseAll()
+        {
+            this.IsInfoGroupExpanded = false;
+            _AllExpandRecursively(Parameters.Slots, false);
+        }
+        #endregion
+
 
         /// <summary>
         /// 展開状態の変更ボタンのtooltip

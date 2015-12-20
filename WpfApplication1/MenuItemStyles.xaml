@@ -1,0 +1,167 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    >
+
+    <Style x:Key="KeyMenuItemEdit" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemEdit}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+
+
+    <Style x:Key="KeyMenuItemUndo" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemUndo}"/>
+        <Setter Property="InputGestureText" Value="Ctrl+Z"/>
+    </Style>
+    <Style x:Key="KeyMenuItemRedo" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemRedo}"/>
+        <Setter Property="InputGestureText" Value="Ctrl+Y"/>
+    </Style>
+    <Style x:Key="KeyMenuItemCopyId" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCopyId}"/>
+        <Setter Property="InputGestureText" Value="Ctrl+C"/>
+    </Style>
+    <Style x:Key="KeyMenuItemCopyParameter" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCopyParameter}"/>
+        <Setter Property="InputGestureText" Value="Ctrl+Shift+C"/>
+    </Style>
+    <Style x:Key="KeyMenuItemPaste" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemPaste}"/>
+        <Setter Property="InputGestureText" Value="Ctrl+V"/>
+    </Style>
+    <Style x:Key="KeyMenuItemCreateNewId" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCreateNewId}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemInstanceCopy" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemInstanceCopy}"/>
+        <Setter Property="InputGestureText" Value="Ctrl+Shift+V"/>
+    </Style>
+    <Style x:Key="KeyMenuItemCancelEdit" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCancelEdit}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemDeleteId" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemDeleteId}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemEditIdInfo" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemEditIdInfo}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemFind" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemFind}"/>
+        <Setter Property="InputGestureText" Value="Ctrl+F"/>
+    </Style>
+
+    <Style x:Key="KeyMenuItemView" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemView}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemExpandAll" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemExpandAll}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemCollapseAll" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCollapseAll}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemFileTreePane" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemFileTreePane}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemConnectionPane" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemConnectionPane}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+
+    <Style x:Key="KeyMenuItemIdInfoTable" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemIdInfoTable}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemIdInfoTablePane" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemIdInfoTablePane}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemIdInfoTableColumns" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemIdInfoTableColumns}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemFileSharePane" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemFileSharePane}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+
+
+    <Style x:Key="KeyMenuItemFileShare" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemFileShare}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemImport" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemImport}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemCheckIn" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCheckIn}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemCancelCheckOut" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCancelCheckOut}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemAcquisition" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemAcquisition}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemCheckInAll" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCheckInAll}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemCheckOutAll" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCheckOutAll}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemCancelCheckOutAll" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemCancelCheckOutAll}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemAcquisitionAll" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemAcquisitionAll}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemUpdate" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemUpdate}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+
+    <Style x:Key="KeyMenuItemSettings" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemSettings}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemSettingFileShare" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemSettingFileShare}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemSettingStyle" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemSettingStyle}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemOption" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemOption}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+
+    <Style x:Key="KeyMenuItemHelp" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemHelp}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+    <Style x:Key="KeyMenuItemHelpDocument" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemHelpDocument}"/>
+        <Setter Property="InputGestureText" Value="F1"/>
+    </Style>
+    <Style x:Key="KeyMenuItemVersionInfo" TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+        <Setter Property="Header" Value="{Binding MenuContent.MenuItemVersionInfo}"/>
+        <Setter Property="InputGestureText" Value=""/>
+    </Style>
+
+
+</ResourceDictionary>

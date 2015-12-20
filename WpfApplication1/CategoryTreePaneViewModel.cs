@@ -16,6 +16,8 @@ namespace WpfApplication1
     /// </summary>
     class CategoryTreePaneViewModel : ToolViewModel
     {
+        public MenuContent MenuContent { get { return Workspace.Instance.MenuContent; } }
+
         public bool IsDirty
         {
             get
@@ -193,6 +195,7 @@ namespace WpfApplication1
             }
         }
 
+        #region Commands
 
         #region SaveCommand
 
@@ -247,19 +250,53 @@ namespace WpfApplication1
 
         #endregion
 
+        #region CopyIdCommand
+        private DelegateCommand m_copyIdCommand = null;
+        public ICommand CopyIdCommand { get { return m_copyIdCommand ?? (m_copyIdCommand = new DelegateCommand(_OnCopyId, _DoesCopyId)); } }
 
-
-
-
-        #region CreateCommand
-        DelegateCommand m_createNewIdCommand;
-        public ICommand CreateNewIdCommand
+        private bool _DoesCopyId()
         {
-            get
-            {
-                return m_createNewIdCommand = m_createNewIdCommand ?? new DelegateCommand(_OnCreateNewId, _DoesCreateNewId);
-            }
+            return false;
         }
+
+        private void _OnCopyId()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        #region CopyParameterCommand
+
+        private DelegateCommand m_copyParameterCommand = null;
+        public ICommand CopyParameterCommand { get { return m_copyParameterCommand ?? (m_copyParameterCommand = new DelegateCommand(_OnCopyParameter, _DoesCopyParameter)); } }
+
+        private bool _DoesCopyParameter()
+        {
+            return false;
+        }
+
+        private void _OnCopyParameter()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+        #region PasteCommand
+        private DelegateCommand m_pasteCommand = null;
+        public ICommand PasteCommand { get { return m_pasteCommand ?? (m_pasteCommand = new DelegateCommand(_OnPaste, _DoesPaste)); } }
+
+        private bool _DoesPaste()
+        {
+            return false;
+        }
+
+        private void _OnPaste()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        #region CreateNewIdCommand
+        DelegateCommand m_createNewIdCommand;
+        public ICommand CreateNewIdCommand { get { return m_createNewIdCommand ?? (m_createNewIdCommand = new DelegateCommand(_OnCreateNewId, _DoesCreateNewId)); } }
 
         private bool _DoesCreateNewId()
         {
@@ -341,5 +378,65 @@ namespace WpfApplication1
             }
         }
         #endregion  // CreateCommand
+
+        #region InstanceCopyCommand
+        private DelegateCommand m_instanceCopyCommand = null;
+        public ICommand InstanceCopyCommand { get { return m_instanceCopyCommand ?? (m_instanceCopyCommand = new DelegateCommand(_OnInstanceCopy, _DoesInstanceCopy)); } }
+
+        private bool _DoesInstanceCopy()
+        {
+            return false;
+        }
+
+        private void _OnInstanceCopy()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+        #region CancelEditCommand
+        private DelegateCommand m_cancelEditCommand = null;
+        public ICommand CancelEditCommand { get { return m_cancelEditCommand ?? (m_cancelEditCommand = new DelegateCommand(_OnCancelEdit, _DoesCancelEdit)); } }
+
+        private bool _DoesCancelEdit()
+        {
+            return false;
+        }
+
+        private void _OnCancelEdit()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        #region DeleteIdCommand
+        private DelegateCommand m_deleteIdCommand = null;
+        public ICommand DeleteIdCommand { get { return m_deleteIdCommand ?? (m_deleteIdCommand = new DelegateCommand(_OnDeleteId, _DoesDeleteId)); } }
+
+        private bool _DoesDeleteId()
+        {
+            return false;
+        }
+
+        private void _OnDeleteId()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        #region EditIdInfoCommand
+        private DelegateCommand m_editIdInfoCommand = null;
+        public ICommand EditIdInfoCommand { get { return m_editIdInfoCommand ?? (m_editIdInfoCommand = new DelegateCommand(_OnEditIdInfo, _DoesEditIdInfo)); } }
+
+        private bool _DoesEditIdInfo()
+        {
+            return false;
+        }
+
+        private void _OnEditIdInfo()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #endregion
     }
 }

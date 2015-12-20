@@ -1,20 +1,4 @@
-﻿/************************************************************************
-
-   AvalonDock
-
-   Copyright (C) 2007-2013 Xceed Software Inc.
-
-   This program is provided to you under the terms of the New BSD
-   License (BSD) as published at http://avalondock.codeplex.com/license 
-
-   For more features, controls, and fast professional support,
-   pick up AvalonDock in Extended WPF Toolkit Plus at http://xceed.com/wpf_toolkit
-
-   Stay informed: follow @datagrid on Twitter or Like facebook.com/datagrids
-
-  **********************************************************************/
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -45,7 +29,14 @@ namespace WpfApplication1
             get { return s_instance; }
         }
 
-
+        private MenuContent m_menuContent = new MenuContent();
+        public MenuContent MenuContent
+        {
+            get
+            {
+                return m_menuContent;
+            }
+        }
 
 
         ObservableCollection<DocumentViewModel> m_documents = new ObservableCollection<DocumentViewModel>();
@@ -305,6 +296,13 @@ namespace WpfApplication1
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)SaveAsCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)CreateCommand).RaiseCanExecuteChanged();
+                    OnPropertyChanged(() => CopyIdCommand);
+                    OnPropertyChanged(() => CopyParameterCommand);
+                    OnPropertyChanged(() => CreateNewIdCommand);
+                    OnPropertyChanged(() => InstanceCopyCommand);
+                    OnPropertyChanged(() => CancelEditCommand);
+                    OnPropertyChanged(() => DeleteIdCommand);
+                    OnPropertyChanged(() => EditIdInfoCommand);
                     
                 }
             }
@@ -386,7 +384,9 @@ namespace WpfApplication1
             }
         }
 
-        private static readonly DelegateCommand s_emptyCommand = new DelegateCommand(() => { }, () => false); 
+        #region Commands
+        public static readonly DelegateCommand s_emptyCommand = new DelegateCommand(() => { }, () => false); 
+
         #region SaveCommand
 
         public ICommand SaveCommand
@@ -413,6 +413,41 @@ namespace WpfApplication1
             }
         }
         #endregion
+
+        public ICommand UndoCommand { get { return s_emptyCommand; } }
+        public ICommand RedoCommand { get { return s_emptyCommand; } }
+        public ICommand CopyIdCommand { get { return (null != ActiveFile) ? ActiveFile.CopyIdCommand : s_emptyCommand; } }
+        public ICommand CopyParameterCommand { get { return (null != ActiveFile) ? ActiveFile.CopyParameterCommand : s_emptyCommand; } }
+        public ICommand PasteCommand { get { return (null != ActiveFile) ? ActiveFile.PasteCommand : s_emptyCommand; } }
+        public ICommand CreateNewIdCommand { get { return (null != ActiveFile) ? ActiveFile.CreateNewIdCommand : s_emptyCommand; } }
+        public ICommand InstanceCopyCommand { get { return (null != ActiveFile) ? ActiveFile.InstanceCopyCommand : s_emptyCommand; } }
+        public ICommand CancelEditCommand { get { return (null != ActiveFile) ? ActiveFile.CancelEditCommand : s_emptyCommand; } }
+        public ICommand DeleteIdCommand { get { return (null != ActiveFile) ? ActiveFile.DeleteIdCommand : s_emptyCommand; } }
+        public ICommand EditIdInfoCommand { get { return (null != ActiveFile) ? ActiveFile.EditIdInfoCommand : s_emptyCommand; } }
+        public ICommand FindCommand { get { return s_emptyCommand; } }
+        public ICommand ExpandAllCommand { get { return s_emptyCommand; } }
+        public ICommand CollapseAllCommand { get { return s_emptyCommand; } }
+        public ICommand ShowFileTreePaneCommand;
+        public ICommand ShowConnectionPaneCommand;
+        public ICommand ShowFileSharePaneCommand;
+        public ICommand ShowIdInfoTablePaneCommand;
+        public ICommand ImportCommand;
+        public ICommand CheckInCommand;
+        public ICommand CancelCheckOutCommand;
+        public ICommand AcquisitionCommand;
+        public ICommand CheckInAllCommand { get { return s_emptyCommand; } }
+        public ICommand CheckOutAllCommand { get { return s_emptyCommand; } }
+        public ICommand AcquisitionAllCommand { get { return s_emptyCommand; } }
+        public ICommand UpdateCommand { get { return s_emptyCommand; } }
+        public ICommand SettingFileShareCommand { get { return s_emptyCommand; } }
+        public ICommand SettingStyleCommand { get { return s_emptyCommand; } }
+        public ICommand OptionCommand { get { return s_emptyCommand; } }
+        public ICommand ShowHelpDocumentCommand { get { return s_emptyCommand; } }
+        public ICommand ShowVersionInfoCommand { get { return s_emptyCommand; } }
+
+
+
+        #endregion  // Commands
 
 
         /// <summary>

@@ -7,9 +7,20 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="MenuItemStyles.xaml"/>
+                <ResourceDictionary>
+                    
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding SaveAsCommand}" Gesture="Ctrl+Shift+S"/>
         <KeyBinding Command="{Binding SaveCommand}" Gesture="Ctrl+S"/>
+        
     </UserControl.InputBindings>
     <Grid>
         <TreeView ItemsSource="{Binding Path=Collection}">
@@ -48,6 +59,14 @@
             <TreeView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="CreateID" Command="{Binding CreateNewIdCommand}"/>
+                    <MenuItem Style="{StaticResource KeyMenuItemCopyId}" Command="{Binding CopyIdCommand}"></MenuItem>
+                    <MenuItem Style="{StaticResource KeyMenuItemCopyParameter}" Command="{Binding CopyParameterCommand}"></MenuItem>
+                    <MenuItem Style="{StaticResource KeyMenuItemPaste}" Command="{Binding PasteCommand}"></MenuItem>
+                    <MenuItem Style="{StaticResource KeyMenuItemCreateNewId}" Command="{Binding CreateNewIdCommand}"></MenuItem>
+                    <MenuItem Style="{StaticResource KeyMenuItemInstanceCopy}" Command="{Binding InstanceCopyCommand}"></MenuItem>
+                    <MenuItem Style="{StaticResource KeyMenuItemCancelEdit}" Command="{Binding CancelEditCommand}"></MenuItem>
+                    <MenuItem Style="{StaticResource KeyMenuItemDeleteId}" Command="{Binding DeleteIdCommand}"></MenuItem>
+                    <MenuItem Style="{StaticResource KeyMenuItemEditIdInfo}" Command="{Binding EditIdInfoCommand}"></MenuItem>
                 </ContextMenu>
             </TreeView.ContextMenu>
 

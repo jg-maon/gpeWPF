@@ -6,107 +6,115 @@
     
     <DataTemplate x:Key="KeyParameterTabPaneTemplate">
         <DataTemplate.Resources>
-            <DataTemplate x:Key="KeyValueTemplate">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
-                    <Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
-                            <TextBox Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Label Grid.Column="2" Content="ColorPicker"></Label>
-                        </Grid>
-                    </Expander.Header>
-                    <Grid>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="MenuItemStyles.xaml"/>
+                    <ResourceDictionary>
+                        <DataTemplate x:Key="KeyValueTemplate">
+                            <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                                        <TextBox Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <Label Grid.Column="2" Content="ColorPicker"></Label>
+                                    </Grid>
+                                </Expander.Header>
+                                <Grid>
 
-                        <!--<Slider Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
-                        <xctk:ColorCanvas />
-                    </Grid>
-                </Expander>
-            </DataTemplate>
+                                    <!--<Slider Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                                    <xctk:ColorCanvas />
+                                </Grid>
+                            </Expander>
+                        </DataTemplate>
 
-            <DataTemplate x:Key="KeyBoolTemplate">
-                <Grid Margin="25,0,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <!--<TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                        <DataTemplate x:Key="KeyBoolTemplate">
+                            <Grid Margin="25,0,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <!--<TextBlock Grid.Column="0" Text="{Binding DispName}"/>
                     <CheckBox Grid.Column="1" TabIndex="{Binding TabIndex}" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
-                    <xctk:ColorPicker ColorMode="ColorCanvas" ShowAdvancedButton="False" Background="DarkGray" />
-                </Grid>
-            </DataTemplate>
+                                <xctk:ColorPicker ColorMode="ColorCanvas" ShowAdvancedButton="False" Background="DarkGray" />
+                            </Grid>
+                        </DataTemplate>
 
 
-            <DataTemplate x:Key="KeyFloat2Template">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
-                    <Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
-                            <TextBox x:Name="box1" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <TextBox x:Name="box2" Grid.Column="2" Margin="10,0,0,0" TabIndex="{Binding TabIndex}" Text="{Binding Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        </Grid>
-                    </Expander.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="20"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Row="0" Grid.Column="0" Text="X"/>
-                        <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=box1}"/>
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Y"/>
-                        <Slider Grid.Row="1" Grid.Column="1" Value="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=box2}"/>
-                    </Grid>
-                </Expander>
-            </DataTemplate>
+                        <DataTemplate x:Key="KeyFloat2Template">
+                            <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="100"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                                        <TextBox x:Name="box1" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <TextBox x:Name="box2" Grid.Column="2" Margin="10,0,0,0" TabIndex="{Binding TabIndex}" Text="{Binding Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Grid>
+                                </Expander.Header>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="X"/>
+                                    <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=box1}"/>
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Y"/>
+                                    <Slider Grid.Row="1" Grid.Column="1" Value="{Binding Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ElementName=box2}"/>
+                                </Grid>
+                            </Expander>
+                        </DataTemplate>
 
-            <DataTemplate x:Key="KeyGroupTemplate">
-                <Expander Content="{Binding}"
+                        <DataTemplate x:Key="KeyGroupTemplate">
+                            <Expander Content="{Binding}"
                           IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
-                    <Expander.Header>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
-                        </Grid>
-                    </Expander.Header>
-                    <Expander.ContentTemplateSelector>
-                        <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                                    </Grid>
+                                </Expander.Header>
+                                <Expander.ContentTemplateSelector>
+                                    <local:ParameterTabTemplateSelector BoolTemplate="{StaticResource KeyBoolTemplate}"
                                                             ValueTemplate="{StaticResource KeyValueTemplate}"
                                                             Float2Template="{StaticResource KeyFloat2Template}"
                                                             >
-                            <local:ParameterTabTemplateSelector.GroupTemplate>
-                                <DataTemplate>
-                                    <ItemsControl ItemsSource="{Binding Value}" Margin="20,0,0,0" ItemTemplateSelector="{DynamicResource KeyTemplateSelector}">
-                                    </ItemsControl>
-                                </DataTemplate>
-                            </local:ParameterTabTemplateSelector.GroupTemplate>
-                        </local:ParameterTabTemplateSelector>
-                    </Expander.ContentTemplateSelector>
-                </Expander>
-            </DataTemplate>
+                                        <local:ParameterTabTemplateSelector.GroupTemplate>
+                                            <DataTemplate>
+                                                <ItemsControl ItemsSource="{Binding Value}" Margin="20,0,0,0" ItemTemplateSelector="{DynamicResource KeyTemplateSelector}">
+                                                </ItemsControl>
+                                            </DataTemplate>
+                                        </local:ParameterTabTemplateSelector.GroupTemplate>
+                                    </local:ParameterTabTemplateSelector>
+                                </Expander.ContentTemplateSelector>
+                            </Expander>
+                        </DataTemplate>
 
 
-            <local:ParameterTabTemplateSelector x:Key="KeyTemplateSelector"
+                        <local:ParameterTabTemplateSelector x:Key="KeyTemplateSelector"
                                                 BoolTemplate="{StaticResource KeyBoolTemplate}"
                                                 ValueTemplate="{StaticResource KeyValueTemplate}"
                                                 GroupTemplate="{StaticResource KeyGroupTemplate}"
                                                 Float2Template="{StaticResource KeyFloat2Template}"
                                                 />
+
+                    </ResourceDictionary>
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
             
         </DataTemplate.Resources>
         
@@ -128,6 +136,12 @@
                           >
 
                 <StackPanel >
+                    <StackPanel.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Style="{StaticResource KeyMenuItemExpandAll}" Command="{Binding ExpandAllCommand}"></MenuItem>
+                            <MenuItem Style="{StaticResource KeyMenuItemCollapseAll}" Command="{Binding CollapseAllCommand}"></MenuItem>
+                        </ContextMenu>
+                    </StackPanel.ContextMenu>
 
                     <Expander Header="情報" IsExpanded="{Binding IsInfoGroupExpanded, Mode=TwoWay}">
                         <Grid>

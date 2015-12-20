@@ -136,6 +136,7 @@
     <Compile Include="LayoutItemBehavior.cs" />
     <Compile Include="LightSetViewModel.cs" />
     <Compile Include="MainWindowBehavior.cs" />
+    <Compile Include="MenuContent.cs" />
     <Compile Include="MouseDoubleClickBehavior.cs" />
     <Compile Include="ObjectToTypeConverter.cs" />
     <Compile Include="ParameterBase.cs" />
@@ -192,6 +193,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MenuItemStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ParameterTabPane.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -59,5 +59,347 @@ namespace WpfApplication1.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   選択中のファイルのサーバーバージョン取得 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemAcquisition {
+            get {
+                return ResourceManager.GetString("MenuItemAcquisition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   全てのサーバーバージョン取得 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemAcquisitionAll {
+            get {
+                return ResourceManager.GetString("MenuItemAcquisitionAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   編集中のファイルのチェックアウト取り消し に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCancelCheckOut {
+            get {
+                return ResourceManager.GetString("MenuItemCancelCheckOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   全てのチェックアウト取り消し に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCancelCheckOutAll {
+            get {
+                return ResourceManager.GetString("MenuItemCancelCheckOutAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   編集の取り消し に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCancelEdit {
+            get {
+                return ResourceManager.GetString("MenuItemCancelEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   編集中のファイルのチェックイン に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCheckIn {
+            get {
+                return ResourceManager.GetString("MenuItemCheckIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   チェックアウト中のファイルを全てチェックイン に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCheckInAll {
+            get {
+                return ResourceManager.GetString("MenuItemCheckInAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   全てのチェックアウト に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCheckOutAll {
+            get {
+                return ResourceManager.GetString("MenuItemCheckOutAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   グループの一斉折りたたみ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCollapseAll {
+            get {
+                return ResourceManager.GetString("MenuItemCollapseAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   実機接続タブの表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemConnectionPane {
+            get {
+                return ResourceManager.GetString("MenuItemConnectionPane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   IDのコピー に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCopyId {
+            get {
+                return ResourceManager.GetString("MenuItemCopyId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   パラメータのコピー に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemCopyParameter {
+            get {
+                return ResourceManager.GetString("MenuItemCopyParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   IDの削除 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemDeleteId {
+            get {
+                return ResourceManager.GetString("MenuItemDeleteId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   編集 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemEdit {
+            get {
+                return ResourceManager.GetString("MenuItemEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ID簡易情報の編集 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemEditIdInfo {
+            get {
+                return ResourceManager.GetString("MenuItemEditIdInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   グループの一斉展開 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemExpandAll {
+            get {
+                return ResourceManager.GetString("MenuItemExpandAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ファイル共有 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemFileShare {
+            get {
+                return ResourceManager.GetString("MenuItemFileShare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ファイル共有タブの表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemFileSharePane {
+            get {
+                return ResourceManager.GetString("MenuItemFileSharePane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ファイルツリーの表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemFileTreePane {
+            get {
+                return ResourceManager.GetString("MenuItemFileTreePane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   検索 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemFind {
+            get {
+                return ResourceManager.GetString("MenuItemFind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ヘルプ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemHelp {
+            get {
+                return ResourceManager.GetString("MenuItemHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ヘルプドキュメントの表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemHelpDocument {
+            get {
+                return ResourceManager.GetString("MenuItemHelpDocument", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ID詳細 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemIdInfoTable {
+            get {
+                return ResourceManager.GetString("MenuItemIdInfoTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   項目の表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemIdInfoTableColumns {
+            get {
+                return ResourceManager.GetString("MenuItemIdInfoTableColumns", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ID詳細タブの表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemIdInfoTablePane {
+            get {
+                return ResourceManager.GetString("MenuItemIdInfoTablePane", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   編集中のファイルのインポート に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemImport {
+            get {
+                return ResourceManager.GetString("MenuItemImport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   インスタンスコピーの作成 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemInstanceCopy {
+            get {
+                return ResourceManager.GetString("MenuItemInstanceCopy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   新規IDの作成 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemNewId {
+            get {
+                return ResourceManager.GetString("MenuItemNewId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   オプション に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemOption {
+            get {
+                return ResourceManager.GetString("MenuItemOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   貼り付け に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemPaste {
+            get {
+                return ResourceManager.GetString("MenuItemPaste", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   やり直し に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemRedo {
+            get {
+                return ResourceManager.GetString("MenuItemRedo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ファイル共有設定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemSettingFileShare {
+            get {
+                return ResourceManager.GetString("MenuItemSettingFileShare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   設定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemSettings {
+            get {
+                return ResourceManager.GetString("MenuItemSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   スタイル設定 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemSettingStyle {
+            get {
+                return ResourceManager.GetString("MenuItemSettingStyle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   元に戻す に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemUndo {
+            get {
+                return ResourceManager.GetString("MenuItemUndo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   状態の更新 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemUpdate {
+            get {
+                return ResourceManager.GetString("MenuItemUpdate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   バージョン情報 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemVersionInfo {
+            get {
+                return ResourceManager.GetString("MenuItemVersionInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   表示 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MenuItemView {
+            get {
+                return ResourceManager.GetString("MenuItemView", resourceCulture);
+            }
+        }
     }
 }
