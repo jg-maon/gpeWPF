@@ -109,6 +109,7 @@
     </Compile>
     <Compile Include="CategoryTreePaneViewModel.cs" />
     <Compile Include="ColorToStringConverter.cs" />
+    <Compile Include="ComboBoxValue.cs" />
     <Compile Include="ConfigManager.cs" />
     <Compile Include="Controls\TreeViewViewModel.cs" />
     <Compile Include="CreateNewIdWindowContent.xaml.cs">
@@ -243,10 +244,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
-    <None Include="Resources\config\default.gparamxml" />
-    <None Include="Resources\config\group.json" />
-    <None Include="Resources\config\Parameter.json" />
-    <None Include="Resources\sample\sample.gparamxml" />
+    <Resource Include="Resources\config\default.gparamxml" />
+    <Resource Include="Resources\config\group.json" />
+    <Resource Include="Resources\config\Parameter.json" />
+    <Resource Include="Resources\sample\sample.gparamxml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -358,7 +359,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Resources_2config_2Parameter_1json__JSONSchema="http://json-schema.org/geo" Resources_2config_2group_1json__JSONSchema="http://json-schema.org/geo" />
+      <UserProperties Resources_2config_2group_1json__JSONSchema="http://json-schema.org/geo" Resources_2config_2Parameter_1json__JSONSchema="http://json-schema.org/geo" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

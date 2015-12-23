@@ -13,20 +13,7 @@
             ]
         },
         {
-            "Name": "test-int8",
-            "ComboBox": {
-                "Text": [ "Zero", "One", "Two" ]
-            }
-        },
-        {
-            "Name": "test-int16",
-            "ComboBox": {
-                "Text": [ "3", "5", "7" ],
-                "Values": [ 3, 5, 7 ]
-            }
-        },
-        {
-            "Name": "test-int32",
+            "Name": "test-slider",
             "Slider": [
 
                 {
@@ -76,6 +63,35 @@
         },
         {
             "Name": "test_isSave:none"
+        },
+        {
+            "Name": "test_comboBox_int",
+            "ComboBox": {
+                "Text": [ "3", "5", "7" ],
+                "Values": [ 3, 5, 7 ]
+            }
+        },
+        {
+            "Name": "test_comboBox_float",
+            "EditorType": 9,
+            "ComboBox": {
+                "Text": [ "1.5", "10.0", "100.5" ],
+                "Values": [ 1.5, 10.0, 100.5 ]
+            }
+        },
+        {
+            "Name": "test_comboBox_string",
+            "EditorType": 16,
+            "ComboBox": {
+                "Text": [ "hoge", "fuga", "piyo" ],
+                "Values": [ "hoge", "fuga", "piyo" ]
+            }
+        },
+        {
+            "Name": "test_comboBox_none",
+            "ComboBox": {
+                "Text": [ "Zero", "One", "Two"]
+            }
         }
 
     ]

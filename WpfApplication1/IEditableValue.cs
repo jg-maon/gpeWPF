@@ -53,7 +53,7 @@ namespace WpfApplication1
         /// <summary>
         /// 値の取得と設定
         /// </summary>
-        object Value { get; }
+        dynamic Value { get; }
 
         /// <summary>
         /// パラメータを表示するかどうか
@@ -230,7 +230,7 @@ namespace WpfApplication1
         }
 
 
-        object IEditableValue.Value
+        dynamic IEditableValue.Value
         {
             get
             {
@@ -361,7 +361,7 @@ namespace WpfApplication1
     /// <summary>
     /// パラメータ
     /// </summary>
-    [Obsolete("Editable")]
+    [Obsolete("use TUnitValue")]
     public class EditableValue : ViewModelBase
     {
 

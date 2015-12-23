@@ -195,6 +195,26 @@
                 </Expander>
             </DataTemplate>
 
+
+
+
+            <DataTemplate x:Key="KeyComboBoxTemplate">
+                <Grid Margin="25,0,0,0" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                    <ComboBox Grid.Column="1" TabIndex="{Binding TabIndex}" 
+                              ItemsSource="{Binding Items}"
+                              DisplayMemberPath="Text"
+                              SelectedValuePath="Value"
+                              SelectedValue="{Binding SelectedValue, Mode=TwoWay}"
+                              />
+                    <!--<xctk:ColorPicker ColorMode="ColorCanvas" ShowAdvancedButton="False" Background="DarkGray" />-->
+                </Grid>
+            </DataTemplate>
+
             <DataTemplate x:Key="KeyGroupTemplate">
                 <Expander Content="{Binding}"
                 IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
@@ -215,6 +235,7 @@
                                                             Float4Template="{StaticResource KeyFloat4Template}"
                                                             ColorTemplate="{StaticResource KeyColorTemplate}"
                                                             StringTemplate="{StaticResource KeyStringTemplate}"
+                                                            ComboBoxTemplate="{StaticResource KeyComboBoxTemplate}"
                                                             >
                             <local:ParameterTabTemplateSelector.GroupTemplate>
                                 <DataTemplate>
@@ -226,8 +247,6 @@
                     </Expander.ContentTemplateSelector>
                 </Expander>
             </DataTemplate>
-
-
             <local:ParameterTabTemplateSelector x:Key="KeyTemplateSelector"
                                                 BoolTemplate="{StaticResource KeyBoolTemplate}"
                                                 ValueTemplate="{StaticResource KeyValueTemplate}"
@@ -236,8 +255,8 @@
                                                 Float3Template="{StaticResource KeyFloat3Template}"
                                                 Float4Template="{StaticResource KeyFloat4Template}"
                                                 ColorTemplate="{StaticResource KeyColorTemplate}"
-                                                
                                                 StringTemplate="{StaticResource KeyStringTemplate}"
+                                                ComboBoxTemplate="{StaticResource KeyComboBoxTemplate}"
                                                 />
 
             

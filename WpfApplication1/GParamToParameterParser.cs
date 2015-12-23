@@ -176,144 +176,16 @@ namespace WpfApplication1
                             string gparamTextById = gparamSlot.Value.FirstOrDefault(v => v.Id == id).Text;
                             // パラメータコレクションに追加させる値
                             IEditableValue slotValue = null;
-                            
-                            bool isVisible = true;
-                            bool isSave = true;
-                            int editorType = gparamSlot.Type;
+
                             ConfigManager.ParameterInfo paramInfo = null;
-                            if(ParameterInfos.TryGetValue(parameterName, out paramInfo))
+
+                            if (ParameterInfos.TryGetValue(parameterName, out paramInfo))
                             {
-                                if(null == paramInfo.EditorType)
-                                {
-                                    editorType = gparamSlot.Type;
-                                }
-                                else
-                                {
-                                    editorType = paramInfo.EditorType.Value;
-                                }
-                                isSave = paramInfo.IsSave;
-                                isVisible = paramInfo.IsVisible;
                             }
 
+                            slotValue = _GetEditorValue(paramInfo, gparamSlot.Type, gparamTextById);
 
-                            switch (editorType)
-                            {
-                                case (int)GX_META_INFO_TYPE.INT8:
-                                    {
-                                        var unitValue = new TUnitValue<sbyte>();
-                                        unitValue.Value = sbyte.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.INT16:
-                                    {
-                                        var unitValue = new TUnitValue<Int16>();
-                                        unitValue.Value = Int16.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.INT32:
-                                    {
-                                        var unitValue = new TUnitValue<Int32>();
-                                        unitValue.Value = Int32.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.INT64:
-                                    {
-                                        var unitValue = new TUnitValue<Int64>();
-                                        unitValue.Value = Int64.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.UINT8:
-                                    {
-                                        var unitValue = new TUnitValue<byte>();
-                                        unitValue.Value = byte.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.UINT16:
-                                    {
-                                        var unitValue = new TUnitValue<UInt16>();
-                                        unitValue.Value = UInt16.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.UINT32:
-                                    {
-                                        var unitValue = new TUnitValue<UInt32>();
-                                        unitValue.Value = UInt32.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.UINT64:
-                                    {
-                                        var unitValue = new TUnitValue<UInt64>();
-                                        unitValue.Value = UInt64.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.FLOAT32:
-                                    {
-                                        var unitValue = new TUnitValue<float>();
-                                        unitValue.Value = float.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.FLOAT64:
-                                    {
-                                        var unitValue = new TUnitValue<double>();
-                                        unitValue.Value = double.Parse(gparamTextById);
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.STRINGW:
-                                    {
-                                        var unitValue = new TUnitValue<string>();
-                                        unitValue.Value = gparamTextById;
 
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.VECTOR2AL:
-                                case (int)GX_META_INFO_TYPE.VECTOR3AL:
-                                case (int)GX_META_INFO_TYPE.VECTOR4AL:
-                                    {
-                                        var values = gparamTextById.Split(',');
-                                        var unitValue = new TUnitValue<TArrayValue<float>>();
-                                        var arrayValue = new TArrayValue<float>(Array.ConvertAll<string, float>(values, (s => float.Parse(s))));
-                                        unitValue.Value = arrayValue;
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.COLOR32:
-                                    {
-                                        var values = gparamTextById.Split(',');
-                                        var unitValue = new TUnitValue<TArrayValue<byte>>();
-                                        var arrayValue = new TArrayValue<byte>(Array.ConvertAll<string, byte>(values, (s => byte.Parse(s))));
-                                        unitValue.Value = arrayValue;
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-                                case (int)GX_META_INFO_TYPE.BOOL:
-                                    {
-                                        var unitValue = new TUnitValue<bool>();
-                                        bool v;
-                                        if(!bool.TryParse(gparamTextById, out v))
-                                        {
-                                            v = int.Parse(gparamTextById) != 0;
-                                        }
-                                        unitValue.Value = v;
-                                        slotValue = unitValue;
-                                    }
-                                    break;
-
-                            }
-                            slotValue.IsSave = isSave;
-                            slotValue.IsVisible = isVisible;
-                            slotValue.Type = gparamSlot.Type;
-                            slotValue.EditorType = editorType;
                             slotValue.DispName = parameterDispName;
                             slotValue.Name = parameterName;
                             slotValue.BindableName = parameterBindableName;
@@ -451,6 +323,395 @@ namespace WpfApplication1
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="paramInfo">パラメータ情報</param>
+        /// <param name="gparamSlotType">ファイル上の型</param>
+        /// <param name="gparamTextById">ファイルの値文字列</param>
+        /// <returns>エディタ上の値</returns>
+        private static IEditableValue _GetEditorValue(ConfigManager.ParameterInfo paramInfo, int gparamSlotType, string gparamTextById)
+        {
+            IEditableValue slotValue = null;
+            bool isVisible = true;
+            bool isSave = true;
+            int editorType = gparamSlotType;
+            
+            ConfigManager.ParameterInfo.EditorKind editorKind = ConfigManager.ParameterInfo.EditorKind.Default;
+            if (null != paramInfo)
+            {
+                if (null == paramInfo.EditorType)
+                {
+                    editorType = gparamSlotType;
+                }
+                else
+                {
+                    editorType = paramInfo.EditorType.Value;
+                }
+                isSave = paramInfo.IsSave;
+                isVisible = paramInfo.IsVisible;
+                editorKind = paramInfo.Kind;
+            }
+
+            if (ConfigManager.ParameterInfo.EditorKind.ComboBox == editorKind)
+            {
+                string text = gparamTextById;
+                {
+                    double d;   // .00000000のような無駄な記述を整えるため
+                    if (double.TryParse(text, out d))
+                    {
+                        text = "" + d;
+                    }
+                }
+                var comboBox = paramInfo.Editor as ConfigManager.ComboBoxInfo;
+                var comboBoxValue = new ComboBoxValue();
+                for (int i = 0; i < comboBox.Text.Count; ++i)
+                {
+                    comboBoxValue.AddItem(comboBox.Text[i], comboBox.Values[i]);
+                    var valueString = "" + comboBox.Values[i];
+                    if (valueString == text)
+                    {
+                        comboBoxValue.SelectedValue = comboBox.Values[i];
+                    }
+                }
+                if (null == comboBoxValue.SelectedValue)
+                {
+                    comboBoxValue.SelectedValue = comboBox.Values.First();
+                }
+                slotValue = comboBoxValue;
+            }
+            else
+            {
+                switch (editorType)
+                {
+                    case (int)GX_META_INFO_TYPE.INT8:
+                        {
+                            var unitValue = new TUnitValue<sbyte>();
+                            unitValue.Value = sbyte.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.INT16:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<Int16>();
+                            unitValue.Value = Int16.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.INT32:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<Int32>();
+                            unitValue.Value = Int32.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.INT64:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<Int64>();
+                            unitValue.Value = Int64.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.UINT8:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<byte>();
+                            unitValue.Value = byte.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.UINT16:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<UInt16>();
+                            unitValue.Value = UInt16.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.UINT32:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<UInt32>();
+                            unitValue.Value = UInt32.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.UINT64:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<UInt64>();
+                            unitValue.Value = UInt64.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.FLOAT32:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+
+                                default:
+                                    {
+
+                                    }
+                                    break;
+                            }
+                            var unitValue = new TUnitValue<float>();
+                            unitValue.Value = float.Parse(gparamTextById);
+                            slotValue = unitValue;
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.FLOAT64:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                default:
+                                    {
+                                        var unitValue = new TUnitValue<double>();
+                                        unitValue.Value = double.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.STRINGW:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+
+                                    }
+                                    break;
+                                default:
+                                    {
+                                        var unitValue = new TUnitValue<string>();
+                                        unitValue.Value = gparamTextById;
+
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.VECTOR2AL:
+                    case (int)GX_META_INFO_TYPE.VECTOR3AL:
+                    case (int)GX_META_INFO_TYPE.VECTOR4AL:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    throw new NotImplementedException();
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    throw new NotImplementedException();
+
+                                default:
+                                    {
+                                        var values = gparamTextById.Split(',');
+                                        var unitValue = new TUnitValue<TArrayValue<float>>();
+                                        var arrayValue = new TArrayValue<float>(Array.ConvertAll<string, float>(values, (s => float.Parse(s))));
+                                        unitValue.Value = arrayValue;
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.COLOR32:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    throw new NotImplementedException();
+                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                    throw new NotImplementedException();
+                                default:
+                                    {
+                                        var values = gparamTextById.Split(',');
+                                        var unitValue = new TUnitValue<TArrayValue<byte>>();
+                                        var arrayValue = new TArrayValue<byte>(Array.ConvertAll<string, byte>(values, (s => byte.Parse(s))));
+                                        unitValue.Value = arrayValue;
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+                    case (int)GX_META_INFO_TYPE.BOOL:
+                        {
+                            switch (editorKind)
+                            {
+                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                    {
+                                        var slider = paramInfo.Editor as ConfigManager.SliderInfo;
+                                    }
+                                    break;
+
+                                default:
+                                    {
+                                        var unitValue = new TUnitValue<bool>();
+                                        bool v;
+                                        if (!bool.TryParse(gparamTextById, out v))
+                                        {
+                                            v = int.Parse(gparamTextById) != 0;
+                                        }
+                                        unitValue.Value = v;
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+
+                }
+            }
+
+            slotValue.IsSave = isSave;
+            slotValue.IsVisible = isVisible;
+            slotValue.Type = gparamSlotType;
+            slotValue.EditorType = editorType;
+
+            return slotValue;
+        }
 
         internal static bool TryDeserialize(ReadOnlyObservableCollection<CategoryViewModel> parameterCollection, out GparamRoot outGparam)
         {
@@ -570,7 +831,7 @@ namespace WpfApplication1
                     // エディタ上の型にobjectをキャスト
                     dynamic editorValue = null;
 
-                    editorValue = _GetFileValue(paramEditorType, paramType, slot.Value);
+                    editorValue = _GetFileValue(paramEditorType, paramType, slot.Value, slot.GetType());
                     
                     // ファイルの型として文字列化
                     switch (paramType)
@@ -630,8 +891,9 @@ namespace WpfApplication1
         /// <param name="paramEditorType">エディタ上の型</param>
         /// <param name="paramType">出力先の型</param>
         /// <param name="slotValue">値</param>
+        /// <param name="slotType">slotの型</param>
         /// <returns></returns>
-        private static dynamic _GetFileValue(int paramEditorType, int paramType, object slotValue)
+        private static dynamic _GetFileValue(int paramEditorType, int paramType, dynamic slotValue, Type slotType)
         {
             dynamic editorValue = null;
             switch (paramEditorType)
@@ -689,6 +951,11 @@ namespace WpfApplication1
                     break;
             }
             if(paramEditorType == paramType)
+            {
+                return editorValue;
+            }
+            // ComboBoxの場合は選択されたものをそのまま返す
+            if(typeof(ComboBoxValue) == slotType)
             {
                 return editorValue;
             }

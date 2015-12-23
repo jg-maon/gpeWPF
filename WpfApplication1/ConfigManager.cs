@@ -250,7 +250,7 @@ namespace WpfApplication1
         private static readonly string s_parameterInfoComboBoxTextLabel = "Text";
         private static readonly string s_parameterInfoComboBoxValuesLabel = "Values";
 
-        class SliderInfo
+        public class SliderInfo
         {
             public class RangeInfo
             {
@@ -265,11 +265,11 @@ namespace WpfApplication1
             public SliderInfo() { Units = new List<RangeInfo>(); }
         }
 
-        class ComboBoxInfo
+        public class ComboBoxInfo
         {
             public List<string> Text { get; set; }
-            public List<object> Values { get; set; }
-            public ComboBoxInfo() { Text = new List<string>(); Values = new List<object>(); }
+            public List<dynamic> Values { get; set; }
+            public ComboBoxInfo() { Text = new List<string>(); Values = new List<dynamic>(); }
         }
 
         class SliderValue<ValueType> : TUnitValue<ValueType>

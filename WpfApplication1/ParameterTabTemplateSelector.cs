@@ -22,11 +22,17 @@ namespace WpfApplication1
         public DataTemplate ColorTemplate { get; set; }
         public DataTemplate StringTemplate { get; set; }
 
+        public DataTemplate ComboBoxTemplate { get; set; }
+
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
             var value = item as IEditableValue;
             if (null != value)
             {
+                if(value is ComboBoxValue)
+                {
+                    return ComboBoxTemplate;
+                }
                 switch(value.EditorType)
                 {
                     case (int)GX_META_INFO_TYPE.INT8:
