@@ -13,9 +13,10 @@ namespace WpfApplication1
 {
     class ParameterTabTemplateSelector : DataTemplateSelector
     {
-        public DataTemplate ValueTemplate { get; set; }
         public DataTemplate BoolTemplate { get; set; }
         public DataTemplate GroupTemplate { get; set; }
+
+        public DataTemplate ValueTemplate { get; set; }
         public DataTemplate Float2Template { get; set; }
         public DataTemplate Float3Template { get; set; }
         public DataTemplate Float4Template { get; set; }
@@ -23,7 +24,13 @@ namespace WpfApplication1
         public DataTemplate StringTemplate { get; set; }
 
         public DataTemplate ComboBoxTemplate { get; set; }
-
+        /*
+        public DataTemplate SliderValueTemplate { get; set; }
+        public DataTemplate SliderFloat2Template { get; set; }
+        public DataTemplate SliderFloat3Template { get; set; }
+        public DataTemplate SliderFloat4Template { get; set; }
+        public DataTemplate SliderColorTemplate { get; set; }
+        //*/
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
             var value = item as IEditableValue;
@@ -33,6 +40,7 @@ namespace WpfApplication1
                 {
                     return ComboBoxTemplate;
                 }
+                //bool isSliderValue = value is ISliderValue;
                 switch(value.EditorType)
                 {
                     case (int)GX_META_INFO_TYPE.INT8:
@@ -45,7 +53,7 @@ namespace WpfApplication1
                     case (int)GX_META_INFO_TYPE.UINT64:
                     case (int)GX_META_INFO_TYPE.FLOAT32:
                     case (int)GX_META_INFO_TYPE.FLOAT64:
-                        return ValueTemplate;
+                        return /*(isSliderValue) ? SliderValueTemplate :*/ ValueTemplate;
                     case (int)GX_META_INFO_TYPE.BOOL:
                         return BoolTemplate;
                     case (int)GX_META_INFO_TYPE.VECTOR2AL:

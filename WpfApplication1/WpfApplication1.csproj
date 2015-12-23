@@ -140,6 +140,7 @@
     <Compile Include="MenuContent.cs" />
     <Compile Include="MouseDoubleClickBehavior.cs" />
     <Compile Include="ObjectToTypeConverter.cs" />
+    <Compile Include="OperatorsUtil.cs" />
     <Compile Include="ParameterBase.cs" />
     <Compile Include="ParameterRecordViewModel.cs" />
     <Compile Include="ParameterTab2ViewModel.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="ParamLightSet.cs" />
     <Compile Include="RadToDegreeConverter.cs" />
     <Compile Include="RelayCommand.cs" />
+    <Compile Include="SliderValue.cs" />
     <Compile Include="Themes\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Themes\TreeViewItemExtensions.cs" />
     <Compile Include="ToolViewModel.cs" />

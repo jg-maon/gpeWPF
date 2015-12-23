@@ -177,7 +177,7 @@ namespace WpfApplication1
                             // パラメータコレクションに追加させる値
                             IEditableValue slotValue = null;
 
-                            ConfigManager.ParameterInfo paramInfo = null;
+                            ParameterInfo paramInfo = null;
 
                             if (ParameterInfos.TryGetValue(parameterName, out paramInfo))
                             {
@@ -330,14 +330,14 @@ namespace WpfApplication1
         /// <param name="gparamSlotType">ファイル上の型</param>
         /// <param name="gparamTextById">ファイルの値文字列</param>
         /// <returns>エディタ上の値</returns>
-        private static IEditableValue _GetEditorValue(ConfigManager.ParameterInfo paramInfo, int gparamSlotType, string gparamTextById)
+        private static IEditableValue _GetEditorValue(ParameterInfo paramInfo, int gparamSlotType, string gparamTextById)
         {
             IEditableValue slotValue = null;
             bool isVisible = true;
             bool isSave = true;
             int editorType = gparamSlotType;
             
-            ConfigManager.ParameterInfo.EditorKind editorKind = ConfigManager.ParameterInfo.EditorKind.Default;
+            ParameterInfo.EditorKind editorKind = ParameterInfo.EditorKind.Default;
             if (null != paramInfo)
             {
                 if (null == paramInfo.EditorType)
@@ -353,7 +353,7 @@ namespace WpfApplication1
                 editorKind = paramInfo.Kind;
             }
 
-            if (ConfigManager.ParameterInfo.EditorKind.ComboBox == editorKind)
+            if (ParameterInfo.EditorKind.ComboBox == editorKind)
             {
                 string text = gparamTextById;
                 {
@@ -363,7 +363,7 @@ namespace WpfApplication1
                         text = "" + d;
                     }
                 }
-                var comboBox = paramInfo.Editor as ConfigManager.ComboBoxInfo;
+                var comboBox = paramInfo.Editor as ComboBoxInfo;
                 var comboBoxValue = new ComboBoxValue();
                 for (int i = 0; i < comboBox.Text.Count; ++i)
                 {
@@ -386,223 +386,224 @@ namespace WpfApplication1
                 {
                     case (int)GX_META_INFO_TYPE.INT8:
                         {
-                            var unitValue = new TUnitValue<sbyte>();
-                            unitValue.Value = sbyte.Parse(gparamTextById);
-                            slotValue = unitValue;
+                            switch (editorKind)
+                            {
+                                case ParameterInfo.EditorKind.Slider:
+                                    {
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<sbyte>(slider);
+                                        sliderValue.Value = sbyte.Parse(gparamTextById);
+                                        slotValue = sliderValue;
+                                    }
+                                    break;
+
+                                default:
+                                    {
+                                        var unitValue = new TUnitValue<sbyte>();
+                                        unitValue.Value = sbyte.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                            }
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.INT16:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
-                                    }
-                                    break;
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
-                                    {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<Int16>(slider);
+                                        sliderValue.Value = Int16.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<Int16>();
+                                        unitValue.Value = Int16.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<Int16>();
-                            unitValue.Value = Int16.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.INT32:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
-                                    }
-                                    break;
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
-                                    {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<Int32>(slider);
+                                        sliderValue.Value = Int32.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<Int32>();
+                                        unitValue.Value = Int32.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<Int32>();
-                            unitValue.Value = Int32.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.INT64:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
-                                    }
-                                    break;
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
-                                    {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<Int64>(slider);
+                                        sliderValue.Value = Int64.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<Int64>();
+                                        unitValue.Value = Int64.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<Int64>();
-                            unitValue.Value = Int64.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.UINT8:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
-                                    }
-                                    break;
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
-                                    {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<byte>(slider);
+                                        sliderValue.Value = byte.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<byte>();
+                                        unitValue.Value = byte.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<byte>();
-                            unitValue.Value = byte.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.UINT16:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
-                                    }
-                                    break;
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
-                                    {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<UInt16>(slider);
+                                        sliderValue.Value = UInt16.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<UInt16>();
+                                        unitValue.Value = UInt16.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<UInt16>();
-                            unitValue.Value = UInt16.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.UINT32:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
-                                    }
-                                    break;
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
-                                    {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<UInt32>(slider);
+                                        sliderValue.Value = UInt32.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<UInt32>();
+                                        unitValue.Value = UInt32.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<UInt32>();
-                            unitValue.Value = UInt32.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.UINT64:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
-                                    }
-                                    break;
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
-                                    {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<UInt64>(slider);
+                                        sliderValue.Value = UInt64.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<UInt64>();
+                                        unitValue.Value = UInt64.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<UInt64>();
-                            unitValue.Value = UInt64.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.FLOAT32:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<float>(slider);
+                                        sliderValue.Value = float.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
 
                                 default:
                                     {
-
+                                        var unitValue = new TUnitValue<float>();
+                                        unitValue.Value = float.Parse(gparamTextById);
+                                        slotValue = unitValue;
                                     }
                                     break;
                             }
-                            var unitValue = new TUnitValue<float>();
-                            unitValue.Value = float.Parse(gparamTextById);
-                            slotValue = unitValue;
                         }
                         break;
                     case (int)GX_META_INFO_TYPE.FLOAT64:
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
+                                case ParameterInfo.EditorKind.Slider:
                                     {
-
+                                        var slider = paramInfo.Editor as SliderInfo;
+                                        var sliderValue = new SliderValue<double>(slider);
+                                        sliderValue.Value = double.Parse(gparamTextById);
+                                        slotValue = sliderValue;
                                     }
                                     break;
+
                                 default:
                                     {
                                         var unitValue = new TUnitValue<double>();
@@ -617,11 +618,8 @@ namespace WpfApplication1
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
-                                    {
-
-                                    }
-                                    break;
+                                case ParameterInfo.EditorKind.Slider:
+                                    throw new NotImplementedException();
                                 default:
                                     {
                                         var unitValue = new TUnitValue<string>();
@@ -639,9 +637,7 @@ namespace WpfApplication1
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
-                                    throw new NotImplementedException();
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                case ParameterInfo.EditorKind.Slider:
                                     throw new NotImplementedException();
 
                                 default:
@@ -660,9 +656,7 @@ namespace WpfApplication1
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
-                                    throw new NotImplementedException();
-                                case ConfigManager.ParameterInfo.EditorKind.ComboBox:
+                                case ParameterInfo.EditorKind.Slider:
                                     throw new NotImplementedException();
                                 default:
                                     {
@@ -680,11 +674,8 @@ namespace WpfApplication1
                         {
                             switch (editorKind)
                             {
-                                case ConfigManager.ParameterInfo.EditorKind.Slider:
-                                    {
-                                        var slider = paramInfo.Editor as ConfigManager.SliderInfo;
-                                    }
-                                    break;
+                                case ParameterInfo.EditorKind.Slider:
+                                    throw new NotImplementedException();
 
                                 default:
                                     {

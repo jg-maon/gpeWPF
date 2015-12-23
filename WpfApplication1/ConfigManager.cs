@@ -11,6 +11,83 @@ using System.Windows;
 
 namespace WpfApplication1
 {
+    [Serializable]
+    public class RangeInfo : System.Runtime.Serialization.ISerializable
+    {
+        public RangeInfo() { }
+        public string Name { get; set; }
+        public double Min { get; set; }
+        public double Max { get; set; }
+        public double Tick { get; set; }
+        public bool SnapToTick { get; set; }
+        public double SmallChange { get; set; }
+
+        #region ISerializable メンバー
+
+        protected RangeInfo(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        {
+            Name = info.GetString("Name");
+            Min = info.GetDouble("Min");
+            Max = info.GetDouble("Max");
+            Tick = info.GetDouble("Tick");
+            SnapToTick = info.GetBoolean("SnapToTick");
+            SmallChange = info.GetDouble("SmallChange");
+        }
+
+        public void GetObjectData(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context)
+        {
+            info.AddValue("Name", Name);
+            info.AddValue("Min", Min);
+            info.AddValue("Max", Max);
+            info.AddValue("Tick", Tick);
+            info.AddValue("SnapToTick", SnapToTick);
+            info.AddValue("SmallChange", SmallChange);
+        }
+
+        #endregion
+    }
+
+    public class SliderInfo
+    {
+
+        public List<RangeInfo> Units { get; set; }
+        public SliderInfo() { Units = new List<RangeInfo>(); }
+    }
+
+    public class ComboBoxInfo
+    {
+        public List<string> Text { get; set; }
+        public List<dynamic> Values { get; set; }
+        public ComboBoxInfo() { Text = new List<string>(); Values = new List<dynamic>(); }
+    }
+
+    public class ParameterInfo
+    {
+        public bool IsVisible { get; private set; }
+        public bool IsSave { get; private set; }
+
+        public int? EditorType { get; private set; }
+
+        public enum EditorKind
+        {
+            Default,
+            Slider,
+            ComboBox,
+        }
+        public EditorKind Kind { get; private set; }
+
+        public object Editor { get; private set; }
+
+        public ParameterInfo(EditorKind kind, object editor, double? editorType, bool isVisible, bool isSave)
+        {
+            IsVisible = isVisible;
+            IsSave = isSave;
+            EditorType = (int?)(editorType);
+            Kind = kind;
+            Editor = editor;
+        }
+
+    }
     class ConfigManager
     {
         private static ConfigManager s_instance = null;
@@ -249,91 +326,8 @@ namespace WpfApplication1
         private static readonly string s_parameterInfoComboBoxLabel = "ComboBox";
         private static readonly string s_parameterInfoComboBoxTextLabel = "Text";
         private static readonly string s_parameterInfoComboBoxValuesLabel = "Values";
-
-        public class SliderInfo
-        {
-            public class RangeInfo
-            {
-                public string Name { get; set; }
-                public double Min { get; set; }
-                public double Max { get; set; }
-                public double Tick { get; set; }
-                public bool SnapToTick { get; set; }
-                public double SmallChange { get; set; }
-            }
-            public List<RangeInfo> Units { get; set; }
-            public SliderInfo() { Units = new List<RangeInfo>(); }
-        }
-
-        public class ComboBoxInfo
-        {
-            public List<string> Text { get; set; }
-            public List<dynamic> Values { get; set; }
-            public ComboBoxInfo() { Text = new List<string>(); Values = new List<dynamic>(); }
-        }
-
-        class SliderValue<ValueType> : TUnitValue<ValueType>
-        {
-            public interface IRange
-            {
-                string Name { get; set; }
-            }
-            class TRange : IRange
-            {
-                public string Name { get; set; }
-                public ValueType Min { get; set; }
-                public ValueType Max { get; set; }
-                public ValueType Tick { get; set; }
-                public bool SnapToTick { get; set; }
-                public ValueType SmallChange { get; set; }
-            }
-
-            private ObservableCollection<IRange> m_units = new ObservableCollection<IRange>();
-            private ReadOnlyObservableCollection<IRange> m_readonlyUnits = null;
-            public ReadOnlyObservableCollection<IRange> Units
-            {
-                get
-                {
-                    return m_readonlyUnits ?? (m_readonlyUnits = new ReadOnlyObservableCollection<IRange>(m_units));
-                }
-            }
-            private IRange m_activeUnit = null;
-            public IRange ActiveUnit
-            {
-                get { return m_activeUnit; }
-                set { SetProperty(ref m_activeUnit, value); }
-            }
-        }
         
-
         
-        public class ParameterInfo
-        {
-            public bool IsVisible { get; private set; }
-            public bool IsSave { get; private set; }
-
-            public int? EditorType { get; private set; }
-
-            public enum EditorKind
-            {
-                Default,
-                Slider,
-                ComboBox,
-            }
-            public EditorKind Kind { get; private set; }
-
-            public object Editor { get; private set; }
-            
-            public ParameterInfo(EditorKind kind, object editor, double? editorType, bool isVisible, bool isSave)
-            {
-                IsVisible = isVisible;
-                IsSave = isSave;
-                EditorType = (int?)(editorType);
-                Kind = kind;
-                Editor = editor;
-            }
-
-        }
         private Dictionary<string, ParameterInfo> m_parameterInfos = new Dictionary<string, ParameterInfo>();
         private ReadOnlyDictionary<string, ParameterInfo> m_readonlyParameterInfos = null;
         public ReadOnlyDictionary<string, ParameterInfo> ParameterInfos
@@ -376,7 +370,7 @@ namespace WpfApplication1
                                     double min = (jsonRangeObject.IsDefined(s_parameterInfoSliderRangeMinLabel)) ? jsonRangeObject[s_parameterInfoSliderRangeMinLabel] : 0.0;
                                     double max = (jsonRangeObject.IsDefined(s_parameterInfoSliderRangeMaxLabel)) ? jsonRangeObject[s_parameterInfoSliderRangeMaxLabel] : 100.0;
 
-                                    slider.Units.Add(new SliderInfo.RangeInfo()
+                                    slider.Units.Add(new RangeInfo()
                                     {
                                         Min = min,
                                         Max = max,

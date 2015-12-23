@@ -13,6 +13,25 @@
     <DataTemplate x:Key="KeyParameterTabPaneTemplate">
         <DataTemplate.Resources>
             <local:RadToDegreeConverter x:Key="RadToDegreeConverter"/>
+
+            <!--<ContextMenu x:Key="KeySliderMenu" Tag="{Binding}">
+                <MenuItem Style="{StaticResource KeyMenuItemExpandAll}" Command="{Binding ExpandAllCommand}" DataContext="{Binding Path=Tag, ElementName=ParameterViewer}"></MenuItem>
+                <MenuItem Style="{StaticResource KeyMenuItemCollapseAll}" Command="{Binding CollapseAllCommand}" DataContext="{Binding Path=Tag, ElementName=ParameterViewer}"></MenuItem>
+                <MenuItem Header="単位の変更" 
+                          Visibility="{Binding CanChangeUnit, Converter={StaticResource bool2VisibilityConverter}}"
+                          ItemsSource="{Binding Units}"
+                          >
+                    <MenuItem.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="MenuItem.Command" Value="{Binding Path=Tag.ChangeUnitCommand, RelativeSource={RelativeSource AncestorType={x:Type ContextMenu}}}"/>
+                            <Setter Property="MenuItem.CommandParameter" Value="{Binding}"/>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
+                </MenuItem>
+                
+            </ContextMenu>-->
+            
+            
             <DataTemplate x:Key="KeyStringTemplate">
                 <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
@@ -39,16 +58,22 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="*"/>
+                                <!--<ColumnDefinition Width="*"/>-->
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
                             <TextBox Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Label Grid.Column="2" Content="ColorPicker"></Label>
+                            <!--<Label Grid.Column="2" Content="ColorPicker"></Label>-->
                         </Grid>
                     </Expander.Header>
                     <Grid>
 
-                        <Slider Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                
+                                Value="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <!--<xctk:ColorCanvas />-->
                     </Grid>
                 </Expander>
@@ -91,9 +116,21 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="X"/>
-                        <Slider Grid.Row="0" Grid.Column="1" Value="{Binding Path=Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="0" Grid.Column="1"
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Y"/>
-                        <Slider Grid.Row="1" Grid.Column="1" Value="{Binding Path=Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="1" Grid.Column="1"
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </Expander>
             </DataTemplate>
@@ -120,13 +157,31 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="X"/>
                         <TextBox Grid.Row="0" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Slider Grid.Row="0" Grid.Column="2" Value="{Binding Path=Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="0" Grid.Column="2"
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Y"/>
                         <TextBox Grid.Row="1" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Slider Grid.Row="1" Grid.Column="2" Value="{Binding Path=Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="1" Grid.Column="2"
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Z"/>
                         <TextBox Grid.Row="2" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Slider Grid.Row="2" Grid.Column="2" Value="{Binding Path=Value[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="2" Grid.Column="2"
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </Expander>
             </DataTemplate>
@@ -154,16 +209,40 @@
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="X"/>
                         <TextBox Grid.Row="0" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Slider Grid.Row="0" Grid.Column="2" Value="{Binding Path=Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="0" Grid.Column="2" 
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Y"/>
                         <TextBox Grid.Row="1" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Slider Grid.Row="1" Grid.Column="2" Value="{Binding Path=Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="1" Grid.Column="2" 
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Z"/>
                         <TextBox Grid.Row="2" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Slider Grid.Row="2" Grid.Column="2" Value="{Binding Path=Value[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="2" Grid.Column="2" 
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[2], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="W"/>
                         <TextBox Grid.Row="3" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Slider Grid.Row="3" Grid.Column="2" Value="{Binding Path=Value[3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Slider Grid.Row="3" Grid.Column="2"
+                                Minimum="{Binding Path=ActiveUnit.Min}"
+                                Maximum="{Binding Path=ActiveUnit.Max}"
+                                IsSnapToTickEnabled="{Binding Path=ActiveUnit.SnapTpTick}"
+                                SmallChange="{Binding Path=ActiveUnit.SmallChange}"
+                                TickFrequency="{Binding Path=ActiveUnit.Tick}"
+                                Value="{Binding Path=Value[3], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                 </Expander>
             </DataTemplate>
@@ -217,7 +296,7 @@
 
             <DataTemplate x:Key="KeyGroupTemplate">
                 <Expander Content="{Binding}"
-                IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
+                          IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -277,9 +356,11 @@
                           CanContentScroll="False"
                           HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Auto"
+                          Tag="{Binding}"
+                          x:Name="ParameterViewer"
                           >
 
-                <StackPanel >
+                <StackPanel>
                     <StackPanel.ContextMenu>
                         <ContextMenu>
                             <MenuItem Style="{StaticResource KeyMenuItemExpandAll}" Command="{Binding ExpandAllCommand}"></MenuItem>
