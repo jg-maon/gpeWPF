@@ -26,9 +26,14 @@ namespace WpfApplication1
         string DispName { get; set; }
 
         /// <summary>
-        /// パラメータの型タイプの取得と設定
+        /// ファイルに記述されていたパラメータの型タイプの取得と設定
         /// </summary>
         int Type { get; set; }
+
+        /// <summary>
+        /// エディタ上で認識させるパラメータの型タイプの取得と設定
+        /// </summary>
+        int EditorType { get; set; }
 
         /// <summary>
         /// Expander用の展開の取得と設定
@@ -68,7 +73,7 @@ namespace WpfApplication1
             m_bindableName = info.GetString("m_bindableName");
             m_name = info.GetString("m_name");
             m_dispName = info.GetString("m_dispName");
-            m_type = info.GetInt32("m_type");
+            m_editorType = info.GetInt32("m_type");
             m_isExpanded = info.GetBoolean("m_isExpanded");
             m_tabIndex = info.GetInt32("m_tabIndex");
             m_isDirty = info.GetBoolean("m_isDirty");
@@ -80,7 +85,7 @@ namespace WpfApplication1
             info.AddValue("m_bindableName", m_bindableName);
             info.AddValue("m_name", m_name);
             info.AddValue("m_dispName", m_dispName);
-            info.AddValue("m_type", m_type);
+            info.AddValue("m_type", m_editorType);
             info.AddValue("m_isExpanded", m_isExpanded);
             info.AddValue("m_tabIndex", m_tabIndex);
             info.AddValue("m_isDirty", m_isDirty);
@@ -146,7 +151,6 @@ namespace WpfApplication1
             }
         }
 
-
         private int m_type;
         /// <summary>
         /// パラメータのタイプ(gparamxmlから引っ張ってきた値そのまま)
@@ -162,6 +166,23 @@ namespace WpfApplication1
                 SetProperty(ref m_type, value);
             }
         }
+
+        private int m_editorType;
+        /// <summary>
+        /// エディタ上のタイプ
+        /// </summary>
+        public int EditorType
+        {
+            get
+            {
+                return m_editorType;
+            }
+            set
+            {
+                SetProperty(ref m_editorType, value);
+            }
+        }
+
 
 
         private bool m_isExpanded;
@@ -219,6 +240,7 @@ namespace WpfApplication1
         }
 
         #endregion
+
 
     }
     /// <summary>

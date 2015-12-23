@@ -17,12 +17,44 @@ namespace WpfApplication1
         public DataTemplate BoolTemplate { get; set; }
         public DataTemplate GroupTemplate { get; set; }
         public DataTemplate Float2Template { get; set; }
+        public DataTemplate Float3Template { get; set; }
+        public DataTemplate Float4Template { get; set; }
+        public DataTemplate ColorTemplate { get; set; }
+        public DataTemplate StringTemplate { get; set; }
 
         public override System.Windows.DataTemplate SelectTemplate(object item, System.Windows.DependencyObject container)
         {
             var value = item as IEditableValue;
             if (null != value)
             {
+                switch(value.EditorType)
+                {
+                    case (int)GX_META_INFO_TYPE.INT8:
+                    case (int)GX_META_INFO_TYPE.INT16:
+                    case (int)GX_META_INFO_TYPE.INT32:
+                    case (int)GX_META_INFO_TYPE.INT64:
+                    case (int)GX_META_INFO_TYPE.UINT8:
+                    case (int)GX_META_INFO_TYPE.UINT16:
+                    case (int)GX_META_INFO_TYPE.UINT32:
+                    case (int)GX_META_INFO_TYPE.UINT64:
+                    case (int)GX_META_INFO_TYPE.FLOAT32:
+                    case (int)GX_META_INFO_TYPE.FLOAT64:
+                        return ValueTemplate;
+                    case (int)GX_META_INFO_TYPE.BOOL:
+                        return BoolTemplate;
+                    case (int)GX_META_INFO_TYPE.VECTOR2AL:
+                        return Float2Template;
+                    case (int)GX_META_INFO_TYPE.VECTOR3AL:
+                        return Float3Template;
+                    case (int)GX_META_INFO_TYPE.VECTOR4AL:
+                        return Float4Template;
+                    case (int)GX_META_INFO_TYPE.COLOR32:
+                        return ColorTemplate;
+                    case (int)GX_META_INFO_TYPE.STRINGW:
+                        return StringTemplate;
+                
+                }
+
                 if (value.Value is ObservableCollection<IEditableValue>)
                 {
                     return GroupTemplate;

@@ -1,0 +1,60 @@
+﻿{
+    "Parameters": [
+        {
+            "Name": "DirectionalLight0 Sharpness",
+            "Slider": [
+                { "Name": "Unit1", "Range": { "Min": 0.0, "Max": 100.0 } }
+            ]
+        },
+        {
+            "Name": "DirectionalLight0 SsaoWeight",
+            "Slider": [
+                { "Name": "Unit1", "Range": { "Min": 20.0, "Max": 500.0 } }
+            ]
+        },
+        {
+            "Name": "test-int8",
+            "ComboBox": {
+                "Text": [ "Zero", "One", "Two" ]
+            }
+        },
+        {
+            "Name": "test-int16",
+            "ComboBox": {
+                "Text": [ "3", "5", "7" ],
+                "Values": [ 3, 5, 7 ]
+            }
+        },
+        {
+            "Name": "test-int32",
+            "Slider": [
+
+                {
+                    "Name": "Unit1",
+                    "Range": {
+                        "Min": 0.0,
+                        "Max": 1.0,
+                        "Tick": 0.1,
+                        "SnapToTick": false,
+                        "SmallChange": 0.01
+                    }
+                },
+                {
+                    "Name": "Unit2",
+                    "Range": {
+                        "Min": 0,
+                        "Max": 255,
+                        "Tick": 1,
+                        "SnapToTick": true,
+                        "SmallChange": 1
+                    }
+                }
+            ]
+        },
+        {
+            "Name": "test_editor_uint8_bool",
+            "EditorType": 11
+        }
+
+    ]
+}

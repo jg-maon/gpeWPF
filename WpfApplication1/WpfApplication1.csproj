@@ -146,6 +146,7 @@
     <Compile Include="ParameterTabViewModel.cs" />
     <Compile Include="ParameterViewModelBase.cs" />
     <Compile Include="ParamLightSet.cs" />
+    <Compile Include="RadToDegreeConverter.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Themes\LeftMarginMultiplierConverter.cs" />
     <Compile Include="Themes\TreeViewItemExtensions.cs" />
@@ -244,6 +245,7 @@
     <AppDesigner Include="Properties\" />
     <None Include="Resources\config\default.gparamxml" />
     <None Include="Resources\config\group.json" />
+    <None Include="Resources\config\Parameter.json" />
     <None Include="Resources\sample\sample.gparamxml" />
   </ItemGroup>
   <ItemGroup>
@@ -356,7 +358,7 @@
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties Resources_2config_2group_1json__JSONSchema="http://json-schema.org/geo" />
+      <UserProperties Resources_2config_2Parameter_1json__JSONSchema="http://json-schema.org/geo" Resources_2config_2group_1json__JSONSchema="http://json-schema.org/geo" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

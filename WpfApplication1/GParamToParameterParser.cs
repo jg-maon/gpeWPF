@@ -12,11 +12,11 @@ namespace WpfApplication1
     class GParamToParameterParser
     {
         static readonly string s_groupDefinitionFile = "config/group.json";
-        static readonly string s_groupLabel = "group";
-        static readonly string s_argumentsLabel = "Args";
-        static readonly string s_namesLabel = "Names";
-        static readonly string s_isExpandedLabel = "IsExpanded";
-        static readonly string s_spaceReplaceLabel = "SpaceReplace";
+        //static readonly string s_groupLabel = "group";
+        //static readonly string s_argumentsLabel = "Args";
+        //static readonly string s_namesLabel = "Names";
+        //static readonly string s_isExpandedLabel = "IsExpanded";
+        //static readonly string s_spaceReplaceLabel = "SpaceReplace";
 
         //static Dictionary<string, GroupPattern> s_groupDefinitions = null;
 
@@ -56,359 +56,382 @@ namespace WpfApplication1
             ObservableCollection<CategoryViewModel> tempCollection = new ObservableCollection<CategoryViewModel>();
             try
             {
+                dynamic json;
                 using (var reader = new StreamReader(s_groupDefinitionFile))
                 {
-                    var json = DynamicJson.Parse(reader.ReadToEnd());
+                    json = DynamicJson.Parse(reader.ReadToEnd());
                     Console.WriteLine(json.ToString());
+                }
+                var ParameterInfos = ConfigManager.Instance.ParameterInfos;
 
-
-                    var GroupPatterns = new Dictionary<string, List<GroupPattern>>();
+                var GroupPatterns = new Dictionary<string, List<GroupPattern>>();
                     
-                    int n = 0;  // #TODO: IDのName用
-                    foreach (var paramset in gparam.ParamSet)
+                int n = 0;  // #TODO: IDのName用
+                foreach (var paramset in gparam.ParamSet)
+                {
+                    string categoryDispName = paramset.DispName;
+                    string categoryName = paramset.Name;
+                    string categoryBindableName = categoryDispName.Trim();
+
+                    int tabIndex = 0;  // TextBox.TabIndex用カウンタ
+
+                    categoryBindableName = categoryBindableName.Replace(" ", spaceReplace);
+
+                    // グループ情報の格納
+                    #region グループ情報の格納
+                    List<GroupPattern> groupPatterns;
+                    foreach(var jsonCategoryObject in json.Categories)
                     {
-                        string categoryDispName = paramset.DispName;
-                        string categoryName = paramset.Name;
-                        string categoryBindableName = categoryDispName.Trim();
-
-                        int tabIndex = 0;  // TextBox.TabIndex用カウンタ
-
-                        categoryBindableName = categoryBindableName.Replace(" ", spaceReplace);
-
-                        // グループ情報の格納
-                        #region グループ情報の格納
-                        List<GroupPattern> groupPatterns;
-                        foreach(var jsonCategoryObject in json.Categories)
+                        // グループのグループ化するパラメータとグループ後の名前のコレクション
+                        groupPatterns = new List<GroupPattern>();
+                        //groupPatterns.Add
+                        foreach(var jsonGroupObject in jsonCategoryObject.Group)
                         {
-                            // グループのグループ化するパラメータとグループ後の名前のコレクション
-                            groupPatterns = new List<GroupPattern>();
-                            //groupPatterns.Add
-                            foreach(var jsonGroupObject in jsonCategoryObject.Group)
+                            GroupPattern pattern = new GroupPattern()
                             {
-                                GroupPattern pattern = new GroupPattern()
-                                {
-                                    Name = jsonGroupObject.Name,
-                                    DispName = jsonGroupObject.DispName,
-                                    IsExpanded = (bool)(jsonGroupObject.IsExpanded),
-                                };
-                                foreach(var jsonArgs in jsonGroupObject.Args)
-                                {
-                                    pattern.Args.Add(jsonArgs);
-                                }
-                                groupPatterns.Add(pattern);
+                                Name = jsonGroupObject.Name,
+                                DispName = jsonGroupObject.DispName,
+                                IsExpanded = (bool)(jsonGroupObject.IsExpanded),
+                            };
+                            foreach(var jsonArgs in jsonGroupObject.Args)
+                            {
+                                pattern.Args.Add(jsonArgs);
                             }
-                            GroupPatterns[jsonCategoryObject.Name] = groupPatterns;
-
+                            groupPatterns.Add(pattern);
                         }
-                        groupPatterns = GroupPatterns[categoryName];
-                        //if (json.IsDefined(categoryDispName) && json[categoryDispName].IsObject)
-                        //{
-                        //    var jsonCategory = json[categoryDispName];
-                        //    // カテゴリ(Object)内にグループがあり、Arrayの場合
-                        //    if (jsonCategory.IsDefined(s_groupLabel) && jsonCategory[s_groupLabel].IsArray)
-                        //    {
-                        //        var jsonGroups = jsonCategory[s_groupLabel];
-                        //        // グループの配列分組み合わせと名前を収拾
-                        //        foreach (var groupObject in jsonGroups)
-                        //        {
-                        //            if (groupObject.IsDefined(s_argumentsLabel) && groupObject.IsDefined(s_namesLabel))
-                        //            {
-                        //                GroupPattern groupPattern = new GroupPattern();
-                        //                foreach (string arg in groupObject[s_argumentsLabel])
-                        //                {
-                        //                    groupPattern.Args.Add(arg);
-                        //                }
-                        //                foreach (string arg in groupObject[s_namesLabel])
-                        //                {
-                        //                    groupPattern.Name.Add(arg);
-                        //                }
-                        //                foreach(bool arg in groupObject[s_isExpandedLabel])
-                        //                {
-                        //                    groupPattern.IsExpanded.Add(arg);
-                        //                }
-                        //                groupPatterns.Add(groupPattern);
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                        #endregion
+                        GroupPatterns[jsonCategoryObject.Name] = groupPatterns;
 
-                        var parameterCollection = new CategoryViewModel() {
-                            DispName = categoryDispName, Name = categoryName, BindableName = categoryBindableName };
-                        var parameters = parameterCollection.Parameters;
-                        paramset.Edited.Id.Sort(); // 昇順ソート
-                        foreach (var id in paramset.Edited.Id)
+                    }
+                    groupPatterns = GroupPatterns[categoryName];
+                    //if (json.IsDefined(categoryDispName) && json[categoryDispName].IsObject)
+                    //{
+                    //    var jsonCategory = json[categoryDispName];
+                    //    // カテゴリ(Object)内にグループがあり、Arrayの場合
+                    //    if (jsonCategory.IsDefined(s_groupLabel) && jsonCategory[s_groupLabel].IsArray)
+                    //    {
+                    //        var jsonGroups = jsonCategory[s_groupLabel];
+                    //        // グループの配列分組み合わせと名前を収拾
+                    //        foreach (var groupObject in jsonGroups)
+                    //        {
+                    //            if (groupObject.IsDefined(s_argumentsLabel) && groupObject.IsDefined(s_namesLabel))
+                    //            {
+                    //                GroupPattern groupPattern = new GroupPattern();
+                    //                foreach (string arg in groupObject[s_argumentsLabel])
+                    //                {
+                    //                    groupPattern.Args.Add(arg);
+                    //                }
+                    //                foreach (string arg in groupObject[s_namesLabel])
+                    //                {
+                    //                    groupPattern.Name.Add(arg);
+                    //                }
+                    //                foreach(bool arg in groupObject[s_isExpandedLabel])
+                    //                {
+                    //                    groupPattern.IsExpanded.Add(arg);
+                    //                }
+                    //                groupPatterns.Add(groupPattern);
+                    //            }
+                    //        }
+                    //    }
+                    //}
+                    #endregion
+
+                    var parameterCollection = new CategoryViewModel() {
+                        DispName = categoryDispName, Name = categoryName, BindableName = categoryBindableName };
+                    var parameters = parameterCollection.Parameters;
+                    paramset.Edited.Id.Sort(); // 昇順ソート
+                    foreach (var id in paramset.Edited.Id)
+                    {
+                        var commentValue = paramset.Comment.Value.FirstOrDefault(v => v.Id == id);
+                        if (null == commentValue)
                         {
-                            var commentValue = paramset.Comment.Value.FirstOrDefault(v => v.Id == id);
-                            if (null == commentValue)
-                            {
-                                System.Windows.MessageBox.Show(string.Format("id:{0} not found", id), "");
-                                continue;
-                            }
-                            var comment = commentValue.Text;
-                            var parameter = parameterCollection.CreateId(id, "name" + (++n).ToString(), comment);
-                            var slots = parameter.Slots;
-                            // 全追加用グループコレクション
-                            var groupCollection = new ObservableCollection<IEditableValue>();
-                            // グループ配列用リスト
+                            System.Windows.MessageBox.Show(string.Format("id:{0} not found", id), "");
+                            continue;
+                        }
+                        var comment = commentValue.Text;
+                        var parameter = parameterCollection.CreateId(id, "name" + (++n).ToString(), comment);
+                        var slots = parameter.Slots;
+                        // 全追加用グループコレクション
+                        var groupCollection = new ObservableCollection<IEditableValue>();
+                        // グループ配列用リスト
                             
-                            var groupDic = new Dictionary<GroupPattern, List<ObservableCollection<IEditableValue>>>();
-                            //groupDic[id] = new List<ObservableCollection<IEditableValue>>();
-                            List<ObservableCollection<IEditableValue>> groupList = null;
+                        var groupDic = new Dictionary<GroupPattern, List<ObservableCollection<IEditableValue>>>();
+                        //groupDic[id] = new List<ObservableCollection<IEditableValue>>();
+                        List<ObservableCollection<IEditableValue>> groupList = null;
 
 
 
-                            // 追加済みグループカウンタ
-                            var addedGroupCountDictionary = new Dictionary<GroupPattern, int>();
+                        // 追加済みグループカウンタ
+                        var addedGroupCountDictionary = new Dictionary<GroupPattern, int>();
 
-                            foreach (var gparamSlot in paramset.Slot)
+                        foreach (var gparamSlot in paramset.Slot)
+                        {
+                            // パラメータ名
+                            string parameterDispName = gparamSlot.DispName;
+                            // バインディング用
+                            string parameterBindableName = parameterDispName.Trim();
+                            parameterBindableName = parameterBindableName.Replace(" ", spaceReplace);
+                            // 固有名
+                            string parameterName = gparamSlot.Name;
+                            // IDが一致している値部
+                            string gparamTextById = gparamSlot.Value.FirstOrDefault(v => v.Id == id).Text;
+                            // パラメータコレクションに追加させる値
+                            IEditableValue slotValue = null;
+
+                            int editorType = gparamSlot.Type;
+                            ConfigManager.ParameterInfo paramInfo = null;
+                            if(ParameterInfos.TryGetValue(parameterName, out paramInfo))
                             {
-                                // パラメータ名
-                                string parameterDispName = gparamSlot.DispName;
-                                // バインディング用
-                                string parameterBindableName = parameterDispName.Trim();
-                                parameterBindableName = parameterBindableName.Replace(" ", spaceReplace);
-                                // 固有名
-                                string uniqueName = gparamSlot.Name;
-                                // IDが一致している値部
-                                string gparamTextById = gparamSlot.Value.FirstOrDefault(v => v.Id == id).Text;
-                                // パラメータコレクションに追加させる値
-                                IEditableValue slotValue = null;
-                                
-                                switch (gparamSlot.Type)
+                                if(null == paramInfo.EditorType)
                                 {
-                                    case (int)GX_META_INFO_TYPE.INT8:
-                                        {
-                                            var unitValue = new TUnitValue<sbyte>();
-                                            unitValue.Value = sbyte.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.INT16:
-                                        {
-                                            var unitValue = new TUnitValue<Int16>();
-                                            unitValue.Value = Int16.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.INT32:
-                                        {
-                                            var unitValue = new TUnitValue<Int32>();
-                                            unitValue.Value = Int32.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.INT64:
-                                        {
-                                            var unitValue = new TUnitValue<Int64>();
-                                            unitValue.Value = Int64.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.UINT8:
-                                        {
-                                            var unitValue = new TUnitValue<byte>();
-                                            unitValue.Value = byte.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.UINT16:
-                                        {
-                                            var unitValue = new TUnitValue<UInt16>();
-                                            unitValue.Value = UInt16.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.UINT32:
-                                        {
-                                            var unitValue = new TUnitValue<UInt32>();
-                                            unitValue.Value = UInt32.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.UINT64:
-                                        {
-                                            var unitValue = new TUnitValue<UInt64>();
-                                            unitValue.Value = UInt64.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.FLOAT32:
-                                        {
-                                            var unitValue = new TUnitValue<float>();
-                                            unitValue.Value = float.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.FLOAT64:
-                                        {
-                                            var unitValue = new TUnitValue<double>();
-                                            unitValue.Value = double.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.STRINGW:
-                                        {
-                                            var unitValue = new TUnitValue<string>();
-                                            unitValue.Value = gparamTextById;
-
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.VECTOR2AL:
-                                    case (int)GX_META_INFO_TYPE.VECTOR3AL:
-                                    case (int)GX_META_INFO_TYPE.VECTOR4AL:
-                                        {
-                                            var values = gparamTextById.Split(',');
-                                            var unitValue = new TUnitValue<TArrayValue<float>>();
-                                            var arrayValue = new TArrayValue<float>(Array.ConvertAll<string, float>(values, (s => float.Parse(s))));
-                                            unitValue.Value = arrayValue;
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.COLOR32:
-                                        {
-                                            var values = gparamTextById.Split(',');
-                                            var unitValue = new TUnitValue<TArrayValue<byte>>();
-                                            var arrayValue = new TArrayValue<byte>(Array.ConvertAll<string, byte>(values, (s => byte.Parse(s))));
-                                            unitValue.Value = arrayValue;
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-                                    case (int)GX_META_INFO_TYPE.BOOL:
-                                        {
-                                            var unitValue = new TUnitValue<bool>();
-                                            unitValue.Value = bool.Parse(gparamTextById);
-                                            slotValue = unitValue;
-                                        }
-                                        break;
-
+                                    editorType = gparamSlot.Type;
                                 }
-                                slotValue.Type = gparamSlot.Type;
-                                
-                                slotValue.DispName = parameterDispName;
-                                slotValue.Name = uniqueName;
-                                slotValue.BindableName = parameterBindableName;
-
-                                // patternのargsを蓄積したものを一気に追加させる
-                                bool isAdded = false;
-                                bool isGroupChanged = false;
-                                do
+                                else
                                 {
-                                    isAdded = false;
-                                    isGroupChanged = false;
-                                    foreach (var pattern in groupPatterns)
-                                    {
-                                        if(!groupDic.ContainsKey(pattern))
-                                        {
-                                            groupDic[pattern] = new List<ObservableCollection<IEditableValue>>();
-                                        }
-                                        groupList = groupDic[pattern];
-                                        // 配列が空の場合、全ての要素を追加する
-                                        if (pattern.Args.Count == 0)
-                                        {
-                                            groupCollection.Add(slotValue);
-                                            // 全ての要素を集めきったら
-                                            if (groupCollection.Count == paramset.Slot.Count)
-                                            {
-                                                // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
-                                                EditableValueGroup value = new EditableValueGroup();
-                                                value.Name = pattern.Name;
-                                                value.DispName = pattern.DispName;
-                                                value.BindableName = pattern.DispName.Trim().Replace(" ", spaceReplace);
-                                                value.Value = groupCollection;
-                                                value.TabIndex = tabIndex++;
-                                                value.IsExpanded = pattern.IsExpanded;
-                                                slots.Add(value);
-                                            }
-                                            isAdded = true;
-                                        }
-                                        // patternのArgsに同じparamNameが存在する場合
-                                        else if (pattern.Args.Contains(slotValue.Name))
-                                        {
-                                            // group用のコレクションに追加する
-                                            // その際、既にコレクション内にparamNameの値が追加されていたら
-                                            // 別のコレクションを探す
+                                    editorType = paramInfo.EditorType.Value;
+                                }
+                            }
 
-                                            // 追加先コレクション
-                                            ObservableCollection<IEditableValue> targetCollection = null;
-                                            // グループコレクションの確認
-                                            foreach (var group in groupList)
+
+                            switch (editorType)
+                            {
+                                case (int)GX_META_INFO_TYPE.INT8:
+                                    {
+                                        var unitValue = new TUnitValue<sbyte>();
+                                        unitValue.Value = sbyte.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.INT16:
+                                    {
+                                        var unitValue = new TUnitValue<Int16>();
+                                        unitValue.Value = Int16.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.INT32:
+                                    {
+                                        var unitValue = new TUnitValue<Int32>();
+                                        unitValue.Value = Int32.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.INT64:
+                                    {
+                                        var unitValue = new TUnitValue<Int64>();
+                                        unitValue.Value = Int64.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.UINT8:
+                                    {
+                                        var unitValue = new TUnitValue<byte>();
+                                        unitValue.Value = byte.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.UINT16:
+                                    {
+                                        var unitValue = new TUnitValue<UInt16>();
+                                        unitValue.Value = UInt16.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.UINT32:
+                                    {
+                                        var unitValue = new TUnitValue<UInt32>();
+                                        unitValue.Value = UInt32.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.UINT64:
+                                    {
+                                        var unitValue = new TUnitValue<UInt64>();
+                                        unitValue.Value = UInt64.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.FLOAT32:
+                                    {
+                                        var unitValue = new TUnitValue<float>();
+                                        unitValue.Value = float.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.FLOAT64:
+                                    {
+                                        var unitValue = new TUnitValue<double>();
+                                        unitValue.Value = double.Parse(gparamTextById);
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.STRINGW:
+                                    {
+                                        var unitValue = new TUnitValue<string>();
+                                        unitValue.Value = gparamTextById;
+
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.VECTOR2AL:
+                                case (int)GX_META_INFO_TYPE.VECTOR3AL:
+                                case (int)GX_META_INFO_TYPE.VECTOR4AL:
+                                    {
+                                        var values = gparamTextById.Split(',');
+                                        var unitValue = new TUnitValue<TArrayValue<float>>();
+                                        var arrayValue = new TArrayValue<float>(Array.ConvertAll<string, float>(values, (s => float.Parse(s))));
+                                        unitValue.Value = arrayValue;
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.COLOR32:
+                                    {
+                                        var values = gparamTextById.Split(',');
+                                        var unitValue = new TUnitValue<TArrayValue<byte>>();
+                                        var arrayValue = new TArrayValue<byte>(Array.ConvertAll<string, byte>(values, (s => byte.Parse(s))));
+                                        unitValue.Value = arrayValue;
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+                                case (int)GX_META_INFO_TYPE.BOOL:
+                                    {
+                                        var unitValue = new TUnitValue<bool>();
+                                        bool v;
+                                        if(!bool.TryParse(gparamTextById, out v))
+                                        {
+                                            v = int.Parse(gparamTextById) != 0;
+                                        }
+                                        unitValue.Value = v;
+                                        slotValue = unitValue;
+                                    }
+                                    break;
+
+                            }
+
+                            slotValue.Type = gparamSlot.Type;
+                            slotValue.EditorType = editorType;
+                            slotValue.DispName = parameterDispName;
+                            slotValue.Name = parameterName;
+                            slotValue.BindableName = parameterBindableName;
+
+                            // patternのargsを蓄積したものを一気に追加させる
+                            bool isAdded = false;
+                            bool isGroupChanged = false;
+                            do
+                            {
+                                isAdded = false;
+                                isGroupChanged = false;
+                                foreach (var pattern in groupPatterns)
+                                {
+                                    if(!groupDic.ContainsKey(pattern))
+                                    {
+                                        groupDic[pattern] = new List<ObservableCollection<IEditableValue>>();
+                                    }
+                                    groupList = groupDic[pattern];
+                                    // 配列が空の場合、全ての要素を追加する
+                                    if (pattern.Args.Count == 0)
+                                    {
+                                        groupCollection.Add(slotValue);
+                                        // 全ての要素を集めきったら
+                                        if (groupCollection.Count == paramset.Slot.Count)
+                                        {
+                                            // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
+                                            EditableValueGroup value = new EditableValueGroup();
+                                            value.Name = pattern.Name;
+                                            value.DispName = pattern.DispName;
+                                            value.BindableName = pattern.DispName.Trim().Replace(" ", spaceReplace);
+                                            value.Value = groupCollection;
+                                            value.TabIndex = tabIndex++;
+                                            value.IsExpanded = pattern.IsExpanded;
+                                            slots.Add(value);
+                                        }
+                                        isAdded = true;
+                                    }
+                                    // patternのArgsに同じparamNameが存在する場合
+                                    else if (pattern.Args.Contains(slotValue.Name))
+                                    {
+                                        // group用のコレクションに追加する
+                                        // その際、既にコレクション内にparamNameの値が追加されていたら
+                                        // 別のコレクションを探す
+
+                                        // 追加先コレクション
+                                        ObservableCollection<IEditableValue> targetCollection = null;
+                                        // グループコレクションの確認
+                                        foreach (var group in groupList)
+                                        {
+                                            // コレクション内に追加されたパラメータを1つずつ見る
+                                            foreach (var groupCollectionValue in group)
                                             {
-                                                // コレクション内に追加されたパラメータを1つずつ見る
-                                                foreach (var groupCollectionValue in group)
+                                                // 既にあるコレクションの中で自身と同じ名前のパラメータが登録されていたら
+                                                if (slotValue.Name == groupCollectionValue.Name)
                                                 {
-                                                    // 既にあるコレクションの中で自身と同じ名前のパラメータが登録されていたら
-                                                    if (slotValue.Name == groupCollectionValue.Name)
-                                                    {
-                                                        // このグループには追加させないようにしてパラメータ検索終了
-                                                        targetCollection = null;
-                                                        break;
-                                                    }
-                                                    // 同じ名前のパラメータでない場合
-                                                    else if (null == targetCollection)
-                                                    {
-                                                        // このコレクションにパラメータを追加させるように登録
-                                                        targetCollection = group;
-                                                    }
-                                                }
-                                                // 追加先が決まった場合はループ終了
-                                                if (null != targetCollection)
-                                                {
+                                                    // このグループには追加させないようにしてパラメータ検索終了
+                                                    targetCollection = null;
                                                     break;
                                                 }
+                                                // 同じ名前のパラメータでない場合
+                                                else if (null == targetCollection)
+                                                {
+                                                    // このコレクションにパラメータを追加させるように登録
+                                                    targetCollection = group;
+                                                }
                                             }
-
-                                            // 全てのコレクションに存在していたら新しいコレクションを作成し、追加を行う
-                                            if (null == targetCollection)
+                                            // 追加先が決まった場合はループ終了
+                                            if (null != targetCollection)
                                             {
-                                                targetCollection = new ObservableCollection<IEditableValue>();
-                                                groupList.Add(targetCollection);
-                                            }
-
-                                            targetCollection.Add(slotValue);
-                                            isAdded = true;
-                                            // グループのパラメータ数分集まったら
-                                            if (targetCollection.Count == pattern.Args.Count)
-                                            {
-                                                // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
-                                                EditableValueGroup value = new EditableValueGroup();
-                                                value.Name = pattern.Name;
-                                                value.DispName = pattern.DispName;
-                                                value.BindableName = value.DispName.Trim().Replace(" ", spaceReplace);
-                                                value.Value = targetCollection;
-                                                value.TabIndex = tabIndex++;
-                                                value.IsExpanded = pattern.IsExpanded;
-                                                //slots.Add(value);
-                                                //targetCollection.Add(slotValue);
-                                                slotValue = value;  // スロットの値をグループにしてからもう一度グループパターンのチェックをする
-                                                isGroupChanged = true;
-
                                                 break;
                                             }
                                         }
-                                    }
-                                    if(!isGroupChanged)
-                                    {
-                                        //isAdded = false;
-                                    }
-                                } while (isGroupChanged /*&& !isAdded*/);
 
-                                if (!isAdded)
-                                {
-                                    slotValue.TabIndex = tabIndex++;
-                                    slots.Add(slotValue);
+                                        // 全てのコレクションに存在していたら新しいコレクションを作成し、追加を行う
+                                        if (null == targetCollection)
+                                        {
+                                            targetCollection = new ObservableCollection<IEditableValue>();
+                                            groupList.Add(targetCollection);
+                                        }
+
+                                        targetCollection.Add(slotValue);
+                                        isAdded = true;
+                                        // グループのパラメータ数分集まったら
+                                        if (targetCollection.Count == pattern.Args.Count)
+                                        {
+                                            // 名前をグループ名に変更し、値にグループコレクションを入れてスロットに追加させる
+                                            EditableValueGroup value = new EditableValueGroup();
+                                            value.Name = pattern.Name;
+                                            value.DispName = pattern.DispName;
+                                            value.BindableName = value.DispName.Trim().Replace(" ", spaceReplace);
+                                            value.Value = targetCollection;
+                                            value.TabIndex = tabIndex++;
+                                            value.IsExpanded = pattern.IsExpanded;
+                                            //slots.Add(value);
+                                            //targetCollection.Add(slotValue);
+                                            slotValue = value;  // スロットの値をグループにしてからもう一度グループパターンのチェックをする
+                                            isGroupChanged = true;
+
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
+                                if(!isGroupChanged)
+                                {
+                                    //isAdded = false;
+                                }
+                            } while (isGroupChanged /*&& !isAdded*/);
 
-                            parameters.Add(parameter);
+                            if (!isAdded)
+                            {
+                                slotValue.TabIndex = tabIndex++;
+                                slots.Add(slotValue);
+                            }
                         }
 
-
-                        // 自身のコレクションに追加
-                        tempCollection.Add(parameterCollection);
+                        parameters.Add(parameter);
                     }
+
+
+                    // 自身のコレクションに追加
+                    tempCollection.Add(parameterCollection);
                 }
+                
             }
             catch (Exception e)
             {
@@ -497,6 +520,7 @@ namespace WpfApplication1
                     string paramName = slot.Name;
                     string paramDispName = slot.DispName;
                     int paramType = slot.Type;
+                    int paramEditorType = slot.EditorType;
 
                     GparamRoot._ParamSet._Slot gparamSlot;
                     // 名前に対応したスロット配列の取得
@@ -511,37 +535,218 @@ namespace WpfApplication1
                     gparamSlot.DispName = paramDispName;
                     gparamSlot.Name = paramName;
                     gparamSlot.Type = paramType;
-                    var value = new GparamRoot._ParamSet._Value() { Id = id, Index = slotCount };
+                    var gparamValue = new GparamRoot._ParamSet._Value() { Id = id, Index = slotCount };
                     
 
-                    switch (gparamSlot.Type)
+                    //switch (gparamSlot.Type)
+                    //{
+                    //    case 4: // float2
+                    //    case 5: // float3
+                    //    case 6: // float4   (とする)
+                    //        {
+                    //            var array = slot.Value as object[];
+                    //            if(null != array)
+                    //            {
+                    //                value.Text = string.Join(",", array);
+                    //            }
+                    //            else
+                    //            {
+                    //                value.Text = string.Join(",", slot.Value);
+                    //            }
+                    //            //slotValue.Value = Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s)));
+                    //        }
+                    //        break;
+                    //    default:
+                    //        value.Text = slot.Value.ToString(); // #TODO: 配列の変換
+                    //        break;
+                    //}
+
+                    
+                    // エディタ上の型にobjectをキャスト
+                    dynamic editorValue = null;
+
+                    editorValue = _GetFileValue(paramEditorType, paramType, slot.Value);
+                    
+                    // ファイルの型として文字列化
+                    switch (paramType)
                     {
-                        case 4: // float2
-                        case 5: // float3
-                        case 6: // float4   (とする)
+                        case (int)GX_META_INFO_TYPE.UNKNOWN:
+                            break;
+                        case (int)GX_META_INFO_TYPE.INT8:
+                        case (int)GX_META_INFO_TYPE.INT16:
+                        case (int)GX_META_INFO_TYPE.INT32:
+                        case (int)GX_META_INFO_TYPE.INT64:
+                        case (int)GX_META_INFO_TYPE.UINT8:
+                        case (int)GX_META_INFO_TYPE.UINT16:
+                        case (int)GX_META_INFO_TYPE.UINT32:
+                        case (int)GX_META_INFO_TYPE.UINT64:
+                            gparamValue.Text = editorValue.ToString();
+                            break;
+                        case (int)GX_META_INFO_TYPE.FLOAT32:
+                            gparamValue.Text = editorValue.ToString("F6");
+                            break;
+                        case (int)GX_META_INFO_TYPE.FLOAT64:
+                            gparamValue.Text = editorValue.ToString("F15");
+                            break;
+                        case (int)GX_META_INFO_TYPE.BOOL:
+                            gparamValue.Text = editorValue.ToString();
+                            gparamValue.Text = gparamValue.Text.ToLower();  // boolのtostringは頭文字が大文字になってしまうので。
+                            break;
+                        case (int)GX_META_INFO_TYPE.VECTOR2AL:
+                        case (int)GX_META_INFO_TYPE.VECTOR3AL:
+                        case (int)GX_META_INFO_TYPE.VECTOR4AL:
                             {
-                                var array = slot.Value as object[];
-                                if(null != array)
-                                {
-                                    value.Text = string.Join(",", array);
-                                }
-                                else
-                                {
-                                    value.Text = string.Join(",", slot.Value);
-                                }
-                                //slotValue.Value = Array.ConvertAll<string, float>(values, new Converter<string, float>((s) => float.Parse(s)));
+                                IEnumerable<float> values = editorValue;
+                                gparamValue.Text = string.Join(",", values.Select(v => v.ToString("F6")));
                             }
                             break;
+                        case (int)GX_META_INFO_TYPE.COLOR32:
+                            gparamValue.Text = string.Join(",", editorValue);
+                            break;
+                        case (int)GX_META_INFO_TYPE.STRINGW:
+                            gparamValue.Text = editorValue;
+                            break;
+                        case (int)GX_META_INFO_TYPE.NUM:
+                            break;
                         default:
-                            value.Text = slot.Value.ToString(); // #TODO: 配列の変換
                             break;
                     }
 
 
-                    gparamSlot.Value.Add(value);
+                    gparamSlot.Value.Add(gparamValue);
 
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="paramEditorType">エディタ上の型</param>
+        /// <param name="paramType">出力先の型</param>
+        /// <param name="slotValue">値</param>
+        /// <returns></returns>
+        private static dynamic _GetFileValue(int paramEditorType, int paramType, object slotValue)
+        {
+            dynamic editorValue = null;
+            switch (paramEditorType)
+            {
+                case (int)GX_META_INFO_TYPE.UNKNOWN:
+                    return editorValue;
+                case (int)GX_META_INFO_TYPE.INT8:
+                    editorValue = (sbyte)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.INT16:
+                    editorValue = (Int16)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.INT32:
+                    editorValue = (Int32)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.INT64:
+                    editorValue = (Int64)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT8:
+                    editorValue = (byte)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT16:
+                    editorValue = (UInt16)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT32:
+                    editorValue = (UInt32)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT64:
+                    editorValue = (UInt64)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.FLOAT32:
+                    editorValue = (float)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.FLOAT64:
+                    editorValue = (double)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.BOOL:
+                    editorValue = (bool)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.VECTOR2AL:
+                case (int)GX_META_INFO_TYPE.VECTOR3AL:
+                case (int)GX_META_INFO_TYPE.VECTOR4AL:
+                    editorValue = (TArrayValue<float>)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.COLOR32:
+                    editorValue = (TArrayValue<byte>)slotValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.STRINGW:
+                    editorValue = (string)slotValue;
+                    editorValue = editorValue ?? "";
+                    break;
+                case (int)GX_META_INFO_TYPE.NUM:
+                    break;
+                default:
+                    break;
+            }
+            if(paramEditorType == paramType)
+            {
+                return editorValue;
+            }
+            // bool型はキャストができないので先にチェックして変換しておく
+            if(paramEditorType == (int)GX_META_INFO_TYPE.BOOL)
+            {
+                editorValue = (editorValue) ? 1 : 0;
+            }
+            switch (paramType)
+            {
+                case (int)GX_META_INFO_TYPE.UNKNOWN:
+                    return editorValue;
+                case (int)GX_META_INFO_TYPE.INT8:
+                    editorValue = (sbyte)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.INT16:
+                    editorValue = (Int16)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.INT32:
+                    editorValue = (Int32)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.INT64:
+                    editorValue = (Int64)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT8:
+                    editorValue = (byte)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT16:
+                    editorValue = (UInt16)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT32:
+                    editorValue = (UInt32)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.UINT64:
+                    editorValue = (UInt64)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.FLOAT32:
+                    editorValue = (float)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.FLOAT64:
+                    editorValue = (double)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.BOOL:
+                    editorValue = (bool)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.VECTOR2AL:
+                case (int)GX_META_INFO_TYPE.VECTOR3AL:
+                case (int)GX_META_INFO_TYPE.VECTOR4AL:
+                    editorValue = (TArrayValue<float>)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.COLOR32:
+                    editorValue = (TArrayValue<byte>)editorValue;
+                    break;
+                case (int)GX_META_INFO_TYPE.STRINGW:
+                    editorValue = editorValue.ToString();
+                    editorValue = editorValue ?? "";
+                    break;
+                case (int)GX_META_INFO_TYPE.NUM:
+                    break;
+                default:
+                    break;
+            }
+            return editorValue;
         }
 
 

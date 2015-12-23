@@ -113,6 +113,10 @@
     <slot dispname="test string" type="16" name="test-string">
       <value id="1" index="0">abcdef ghijk</value>
     </slot>
-    
+
+    <slot dispname="test editor uint8=>bool" type="5" name="test_editor_uint8_bool">
+      <value id="1" index="0">0</value>
+    </slot>    
+
   </ParamSet>
 </root>
