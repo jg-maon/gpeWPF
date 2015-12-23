@@ -8,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace WpfApplication1
 {
-    class ComboBoxValue : TUnitValue<dynamic>
+    /// <summary>
+    /// コンボボックス用の値
+    /// </summary>
+    [Serializable]
+    class ComboBoxValue : TUnitValue<dynamic>, ISerializable
     {
         public ComboBoxValue()
         { }
@@ -16,7 +20,8 @@ namespace WpfApplication1
         protected ComboBoxValue(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
-
+            var type = (Type)info.GetValue("type", typeof(Type));
+            m_selectedValue = info.GetValue("m_selectedValue", type);
             var innerItems = info.GetValue("m_innerItems", typeof(ComboBoxItem[]));
             m_innerItems = (ComboBoxItem[])innerItems;
         }
@@ -30,11 +35,12 @@ namespace WpfApplication1
         public new void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
-            //info.AddValue("m_value", m_value, m_value.GetType());
+            info.AddValue("type", m_selectedValue.GetType());
+            info.AddValue("m_selectedValue", m_selectedValue);
             info.AddValue("m_innerItems", m_items.ToArray());
         }
-
-        public class ComboBoxItem
+        [Serializable]
+        public class ComboBoxItem : ISerializable
         {
             public string Text { get; private set; }
             public dynamic Value { get; private set; }
@@ -43,6 +49,23 @@ namespace WpfApplication1
                 Text = text;
                 Value = value;
             }
+
+            #region ISerializable メンバー
+            protected ComboBoxItem(SerializationInfo info, StreamingContext context)
+            {
+                Text = info.GetString("Text");
+                var type = (Type)info.GetValue("ValueType", typeof(Type));
+                Value = info.GetValue("Value", type);
+            }
+
+            public void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+                info.AddValue("Text", Text);
+                info.AddValue("ValueType", Value.GetType());
+                info.AddValue("Value", Value);
+            }
+
+            #endregion
         }
 
         private ObservableCollection<ComboBoxItem> m_items = new ObservableCollection<ComboBoxItem>();
