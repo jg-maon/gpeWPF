@@ -116,7 +116,29 @@
 
     <slot dispname="test editor uint8=>bool" type="5" name="test_editor_uint8_bool">
       <value id="1" index="0">0</value>
-    </slot>    
+    </slot>
 
+    <slot dispname="test isVisible:true" type="11" name="test_isVisible:true">
+      <value id="1" index="0">false</value>
+    </slot>
+    <slot dispname="test isVisible:false" type="11" name="test_isVisible:false">
+      <value id="1" index="0">false</value>
+    </slot>
+    <slot dispname="test isVisible:none" type="11" name="test_isVisible:none">
+      <value id="1" index="0">false</value>
+    </slot>
+
+    <slot dispname="test isSave:true" type="11" name="test_isSave:true">
+      <value id="1" index="0">false</value>
+    </slot>
+    <slot dispname="test isSave:none" type="11" name="test_isSave:none">
+      <value id="1" index="0">false</value>
+    </slot>
+    <slot dispname="test isSave:false" type="11" name="test_isSave:false">
+      <value id="1" index="0">false</value>
+    </slot>
+
+    
+    
   </ParamSet>
 </root>

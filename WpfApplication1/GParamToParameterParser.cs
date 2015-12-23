@@ -176,7 +176,9 @@ namespace WpfApplication1
                             string gparamTextById = gparamSlot.Value.FirstOrDefault(v => v.Id == id).Text;
                             // パラメータコレクションに追加させる値
                             IEditableValue slotValue = null;
-
+                            
+                            bool isVisible = true;
+                            bool isSave = true;
                             int editorType = gparamSlot.Type;
                             ConfigManager.ParameterInfo paramInfo = null;
                             if(ParameterInfos.TryGetValue(parameterName, out paramInfo))
@@ -189,6 +191,8 @@ namespace WpfApplication1
                                 {
                                     editorType = paramInfo.EditorType.Value;
                                 }
+                                isSave = paramInfo.IsSave;
+                                isVisible = paramInfo.IsVisible;
                             }
 
 
@@ -306,7 +310,8 @@ namespace WpfApplication1
                                     break;
 
                             }
-
+                            slotValue.IsSave = isSave;
+                            slotValue.IsVisible = isVisible;
                             slotValue.Type = gparamSlot.Type;
                             slotValue.EditorType = editorType;
                             slotValue.DispName = parameterDispName;
@@ -514,7 +519,7 @@ namespace WpfApplication1
                 {
                     _Recursively(id, slotCount, group, ref gparamSlotDictionary);
                 }
-                else
+                else if(slot.IsSave)    // セーブするパラメータのみ
                 {
                     // 通常のパラメータ
                     string paramName = slot.Name;

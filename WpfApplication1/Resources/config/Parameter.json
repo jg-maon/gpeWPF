@@ -54,6 +54,28 @@
         {
             "Name": "test_editor_uint8_bool",
             "EditorType": 11
+        },
+        {
+            "Name": "test_isVisible:true",
+            "IsVisible": true
+        },
+        {
+            "Name": "test_isVisible:false",
+            "IsVisible": false
+        },
+        {
+            "Name": "test_isVisible:none"
+        },
+        {
+            "Name": "test_isSave:true",
+            "IsSave": true
+        },
+        {
+            "Name": "test_isSave:false",
+            "IsSave": false
+        },
+        {
+            "Name": "test_isSave:none"
         }
 
     ]

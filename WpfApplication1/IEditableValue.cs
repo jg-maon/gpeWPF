@@ -54,6 +54,16 @@ namespace WpfApplication1
         /// 値の取得と設定
         /// </summary>
         object Value { get; }
+
+        /// <summary>
+        /// パラメータを表示するかどうか
+        /// </summary>
+        bool IsVisible { get; set; }
+
+        /// <summary>
+        /// パラメータをファイルに保存するかどうか
+        /// </summary>
+        bool IsSave { get; set; }
     }
 
     /// <summary>
@@ -73,10 +83,13 @@ namespace WpfApplication1
             m_bindableName = info.GetString("m_bindableName");
             m_name = info.GetString("m_name");
             m_dispName = info.GetString("m_dispName");
-            m_editorType = info.GetInt32("m_type");
+            m_type = info.GetInt32("m_type");
+            m_editorType = info.GetInt32("m_editorType");
             m_isExpanded = info.GetBoolean("m_isExpanded");
             m_tabIndex = info.GetInt32("m_tabIndex");
             m_isDirty = info.GetBoolean("m_isDirty");
+            m_isVisible = info.GetBoolean("m_isVisible");
+            m_isSave = info.GetBoolean("m_isSave");
         }
         public new void GetObjectData(SerializationInfo info, StreamingContext context)
         {
@@ -85,10 +98,13 @@ namespace WpfApplication1
             info.AddValue("m_bindableName", m_bindableName);
             info.AddValue("m_name", m_name);
             info.AddValue("m_dispName", m_dispName);
-            info.AddValue("m_type", m_editorType);
+            info.AddValue("m_type", m_type);
+            info.AddValue("m_editorType", m_editorType);
             info.AddValue("m_isExpanded", m_isExpanded);
             info.AddValue("m_tabIndex", m_tabIndex);
             info.AddValue("m_isDirty", m_isDirty);
+            info.AddValue("m_isVisible", m_isVisible);
+            info.AddValue("m_isSave", m_isSave);
         }
 
 
@@ -239,9 +255,33 @@ namespace WpfApplication1
             }
         }
 
+        private bool m_isVisible = true;
+        public bool IsVisible
+        {
+            get
+            {
+                return m_isVisible;
+            }
+            set
+            {
+                SetProperty(ref m_isVisible, value);
+            }
+        }
+
+        private bool m_isSave = true;
+        public bool IsSave
+        {
+            get
+            {
+                return m_isSave;
+            }
+            set
+            {
+                SetProperty(ref m_isSave, value);
+            }
+        }
+
         #endregion
-
-
     }
     /// <summary>
     /// 配列変数

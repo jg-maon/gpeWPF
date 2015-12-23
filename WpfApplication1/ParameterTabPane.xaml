@@ -1,16 +1,20 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WpfApplication1"
-                    
+                    xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="MenuItemStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+    
+    
+    
     <DataTemplate x:Key="KeyParameterTabPaneTemplate">
         <DataTemplate.Resources>
+            <local:RadToDegreeConverter x:Key="RadToDegreeConverter"/>
             <DataTemplate x:Key="KeyStringTemplate">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -29,7 +33,7 @@
                 </Expander>
             </DataTemplate>
             <DataTemplate x:Key="KeyValueTemplate">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -51,7 +55,7 @@
             </DataTemplate>
 
             <DataTemplate x:Key="KeyBoolTemplate">
-                <Grid Margin="25,0,0,0">
+                <Grid Margin="25,0,0,0" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
@@ -62,10 +66,9 @@
                 </Grid>
             </DataTemplate>
 
-            <local:RadToDegreeConverter x:Key="RadToDegreeConverter"/>
 
             <DataTemplate x:Key="KeyFloat2Template">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -95,7 +98,7 @@
                 </Expander>
             </DataTemplate>
             <DataTemplate x:Key="KeyFloat3Template">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -128,7 +131,7 @@
                 </Expander>
             </DataTemplate>
             <DataTemplate x:Key="KeyFloat4Template">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -165,7 +168,7 @@
                 </Expander>
             </DataTemplate>
             <DataTemplate x:Key="KeyColorTemplate">
-                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                <Expander IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -194,7 +197,7 @@
 
             <DataTemplate x:Key="KeyGroupTemplate">
                 <Expander Content="{Binding}"
-                IsExpanded="{Binding IsExpanded, Mode=TwoWay}">
+                IsExpanded="{Binding IsExpanded, Mode=TwoWay}" Visibility="{Binding IsVisible, Converter={StaticResource bool2VisibilityConverter}}">
                     <Expander.Header>
                         <Grid>
                             <Grid.ColumnDefinitions>
