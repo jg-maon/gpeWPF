@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace WpfApplication1
 {
+    [Obsolete("IdInfoTablePane2ViewModel")]
     class IdInfoTablePaneViewModel : DocumentViewModel
     {
         private ObservableCollection<LightSetViewModel> m_lightSetCollection = new ObservableCollection<LightSetViewModel>();
@@ -56,6 +57,11 @@ namespace WpfApplication1
             m_lightSetCollection.Add(new LightSetViewModel() { ID = 1, Comment = "id:1", Name = "よ" });
             m_lightSetCollection.Add(new LightSetViewModel() { ID = 2, Comment = "id:2", Name = "うひひ-", HemiColorDown = new ColorRGBI(0.5f) });
 
+        }
+
+        protected override void OnClose()
+        {
+            throw new NotImplementedException();
         }
     }
 }

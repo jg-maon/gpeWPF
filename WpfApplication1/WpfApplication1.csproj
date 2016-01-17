@@ -102,7 +102,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ActiveDocumentConverter.cs" />
     <Compile Include="BindableSelectedItemBehavior.cs" />
     <Compile Include="CategoryTreePane.xaml.cs">
       <DependentUpon>CategoryTreePane.xaml</DependentUpon>
@@ -123,6 +122,7 @@
     <Compile Include="DeepCopyExtensions.cs" />
     <Compile Include="DocumentViewModel.cs" />
     <Compile Include="DynamicJson.cs" />
+    <Compile Include="EditableValueMemento.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileSharePaneViewModel.cs" />
     <Compile Include="FileStatsViewModel.cs" />
@@ -133,10 +133,12 @@
     <Compile Include="IdInfoTableTabPageViewModel.cs" />
     <Compile Include="IdInfoTableTemplateSelector.cs" />
     <Compile Include="IEditableValue.cs" />
+    <Compile Include="IUndoRedoCommand.cs" />
     <Compile Include="LayoutDocumentPaneEx.cs" />
     <Compile Include="LayoutItemBehavior.cs" />
     <Compile Include="LightSetViewModel.cs" />
     <Compile Include="MainWindowBehavior.cs" />
+    <Compile Include="Memento.cs" />
     <Compile Include="MenuContent.cs" />
     <Compile Include="MouseDoubleClickBehavior.cs" />
     <Compile Include="ObjectToTypeConverter.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="TreeViewDropHighlighter.cs" />
     <Compile Include="TreeViewItemBehaviors.cs" />
     <Compile Include="Types.cs" />
+    <Compile Include="UndoRedoManager.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="Workspace.cs" />
     <Page Include="CategoryTreePane.xaml">

@@ -12,7 +12,7 @@ namespace WpfApplication1
     /// コンボボックス用の値
     /// </summary>
     [Serializable]
-    class ComboBoxValue : TUnitValue<dynamic>, ISerializable
+    class ComboBoxValue : TUnitEditableValue<dynamic>, ISerializable
     {
         public ComboBoxValue()
         { }

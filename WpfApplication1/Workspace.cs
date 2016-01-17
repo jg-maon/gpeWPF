@@ -268,6 +268,12 @@ namespace WpfApplication1
                     if(categoryTree != null)
                     {
                         ActiveFile = categoryTree;
+                        return;
+                    }
+                    var parameterTab = _activeDocument as ParameterTab2ViewModel;
+                    if(null != parameterTab)
+                    {
+                        ActiveParameter = parameterTab;
                     }
                 }
             }
@@ -308,6 +314,20 @@ namespace WpfApplication1
             }
         }
 
+        #region ActiveParameter
+
+        private ParameterTab2ViewModel m_activeParameter = null;
+        public ParameterTab2ViewModel ActiveParameter
+        {
+            get { return m_activeParameter; }
+            set
+            {
+                SetProperty(ref m_activeParameter, value);
+                OnPropertyChanged(() => UndoCommand);
+                OnPropertyChanged(() => RedoCommand);
+            }
+        }
+        #endregion
 
         internal void Close(FileViewModel fileToClose)
         {
@@ -414,8 +434,8 @@ namespace WpfApplication1
         }
         #endregion
 
-        public ICommand UndoCommand { get { return s_emptyCommand; } }
-        public ICommand RedoCommand { get { return s_emptyCommand; } }
+        public ICommand UndoCommand { get { return (null != ActiveParameter) ? ActiveParameter.UndoCommand : s_emptyCommand; } }
+        public ICommand RedoCommand { get { return (null != ActiveParameter) ? ActiveParameter.RedoCommand : s_emptyCommand; } }
         public ICommand CopyIdCommand { get { return (null != ActiveFile) ? ActiveFile.CopyIdCommand : s_emptyCommand; } }
         public ICommand CopyParameterCommand { get { return (null != ActiveFile) ? ActiveFile.CopyParameterCommand : s_emptyCommand; } }
         public ICommand PasteCommand { get { return (null != ActiveFile) ? ActiveFile.PasteCommand : s_emptyCommand; } }
@@ -743,5 +763,15 @@ namespace WpfApplication1
         }
 
 
+
+
+        internal void Close(ToolViewModel toolViewModel)
+        {
+            if(toolViewModel == ActiveParameter)
+            {
+                ActiveParameter = null;
+            }
+            m_tools.Remove(toolViewModel);
+        }
     }
 }

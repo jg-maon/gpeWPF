@@ -23,7 +23,7 @@ namespace WpfApplication1
     /// </summary>
     /// <typeparam name="ValueType">値の型</typeparam>
     [Serializable]
-    class SliderValue<ValueType> : TUnitValue<ValueType>, ISliderValue, ISerializable
+    class SliderValue<ValueType> : TUnitEditableValue<ValueType>, ISliderValue, ISerializable
     {
         /// <summary>
         /// コンストラクタ

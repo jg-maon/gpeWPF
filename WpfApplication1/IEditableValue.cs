@@ -64,6 +64,9 @@ namespace WpfApplication1
         /// パラメータをファイルに保存するかどうか
         /// </summary>
         bool IsSave { get; set; }
+
+        event CancelEventHandler ValueChanging;
+        event EventHandler ValueChanged;
     }
 
     /// <summary>
@@ -71,12 +74,12 @@ namespace WpfApplication1
     /// </summary>
     /// <typeparam name="T">型</typeparam>
     [Serializable]
-    public class TUnitValue<T> : ViewModelBase, IEditableValue, ISerializable
+    public class TUnitEditableValue<T> : ViewModelBase, IEditableValue, ISerializable
     {
-        public TUnitValue() 
+        public TUnitEditableValue() 
         { }
 
-        public TUnitValue(SerializationInfo info, StreamingContext context)
+        public TUnitEditableValue(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             m_value = (T)info.GetValue("m_value", typeof(T));
@@ -117,7 +120,39 @@ namespace WpfApplication1
             }
             set
             {
-                SetProperty(ref m_value, value, "Value");
+                if (!m_value.Equal(value))
+                {
+                    if(RaiseValueChanging())
+                    {
+                        return;
+                    }
+                    SetProperty(ref m_value, value, "Value");
+
+                    RaiseValueChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>キャンセルしたか</returns>
+        protected bool RaiseValueChanging()
+        {
+            if (null != ValueChanging)
+            {
+                var args = new CancelEventArgs();
+                ValueChanging(this, args);
+                return args.Cancel;
+            }
+            return false;
+        }
+
+        protected void RaiseValueChanged()
+        {
+            if (null != ValueChanged)
+            {
+                ValueChanged(this, EventArgs.Empty);
             }
         }
 
@@ -281,6 +316,11 @@ namespace WpfApplication1
             }
         }
 
+
+
+        public event CancelEventHandler ValueChanging;
+        public event EventHandler ValueChanged;
+
         #endregion
     }
     /// <summary>
@@ -288,7 +328,7 @@ namespace WpfApplication1
     /// </summary>
     /// <typeparam name="ValueType">型</typeparam>
     [Serializable]
-    public class TArrayValue<ValueType> : ObservableCollection<ValueType>, ISerializable
+    public class TArrayValue<ValueType> : ObservableCollection<ValueType>, ISerializable, IEquatable<TArrayValue<ValueType>>
     {
         /// <summary>
         /// 値変更イベント
@@ -356,133 +396,20 @@ namespace WpfApplication1
         }
 
         #endregion
+
+        #region IEquatable<TArrayValue<ValueType>> メンバー
+
+        public bool Equals(TArrayValue<ValueType> other)
+        {
+            return ((object)other).Equal(this);
+        }
+
+        #endregion
     }
 
-    /// <summary>
-    /// パラメータ
-    /// </summary>
-    [Obsolete("use TUnitValue")]
-    public class EditableValue : ViewModelBase
-    {
-
-        private string m_bindableName;
-        public string BindableName
-        {
-            get { return m_bindableName; }
-            set
-            {
-                SetProperty(ref m_bindableName, value);
-            }
-        }
-
-        private string m_dispName;
-        /// <summary>
-        /// パラメータ名(Angle的な)
-        /// </summary>
-        public string DispName 
-        {
-            get
-            {
-                return m_dispName;
-            }
-            set
-            {
-                SetProperty(ref m_dispName, value);
-            }
-        }
-
-        private string m_name;
-        /// <summary>
-        /// パラメータ固有名(DirLight0Angle的な)
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                return m_name;
-            }
-            set
-            {
-                SetProperty(ref m_name, value);
-            }
-        }
-
-        private int m_type;
-        /// <summary>
-        /// パラメータのタイプ(gparamxmlから引っ張ってきた値そのまま)
-        /// </summary>
-        public int Type 
-        {
-            get
-            {
-                return m_type;
-            }
-            set
-            {
-                SetProperty(ref m_type, value);
-            }
-        }
-
-
-        protected dynamic m_value;
-        public dynamic Value
-        {
-            get
-            {
-                return m_value;
-            }
-            set
-            {
-                this.SetProperty(ref m_value, value, "Value");
-            }
-        }
-
-        private bool m_isExpanded;
-        public bool IsExpanded
-        {
-            get
-            {
-                return m_isExpanded;
-            }
-            set
-            {
-                this.SetProperty(ref m_isExpanded, value);
-            }
-        }
-
-        private int m_tabIndex = 0;
-        public int TabIndex
-        {
-            get
-            {
-                return m_tabIndex;
-            }
-            set
-            {
-                this.SetProperty(ref m_tabIndex, value);
-            }
-        }
-
-        private bool m_isDirty = false;
-        /// <summary>
-        /// パラメータの値が変更されたか
-        /// </summary>
-        public virtual bool IsDirty
-        {
-            get
-            {
-                return m_isDirty;
-            }
-            set
-            {
-                this.SetProperty(ref m_isDirty, value);
-            }
-        }
-
-    }
 
     [Serializable]
-    public class EditableValueGroup : TUnitValue<ObservableCollection<IEditableValue>>, System.ComponentModel.ICustomTypeDescriptor, ISerializable
+    public class EditableValueGroup : TUnitEditableValue<ObservableCollection<IEditableValue>>, System.ComponentModel.ICustomTypeDescriptor, ISerializable
     {
 
         private List<System.ComponentModel.PropertyDescriptor> m_extendProperties = new List<System.ComponentModel.PropertyDescriptor>();
@@ -492,10 +419,12 @@ namespace WpfApplication1
         {
             var collection = new ObservableCollection<IEditableValue>();
             Value = collection;
+            
             PropertyChanged += (sender, e) =>
             {
                 if (e.PropertyName == "Value")
                 {
+                    RaiseValueChanged();
                     foreach(IEditableValue value in Value)
                     {
                         m_extendProperties.Add(new CustomPropertyDescriptor<IEditableValue>(value.BindableName, value, typeof(EditableValueGroup)));
@@ -514,7 +443,7 @@ namespace WpfApplication1
                 }
                 else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
                 {
-                    foreach (IEditableValue item in e.NewItems)
+                    foreach (IEditableValue item in e.OldItems)
                     {
                         m_extendProperties.Remove(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(EditableValueGroup)));
                     }

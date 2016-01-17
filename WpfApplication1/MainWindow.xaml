@@ -64,7 +64,6 @@
                         <Setter Property="BorderThickness" Value="10"/>
                     </Style>
 
-                    <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
                     <local:ObjectToTypeConverter x:Key="ObjectToTypeConverter"/>
                     <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
                 </ResourceDictionary>

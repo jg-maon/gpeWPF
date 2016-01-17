@@ -399,7 +399,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<sbyte>();
+                                        var unitValue = new TUnitEditableValue<sbyte>();
                                         unitValue.Value = sbyte.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -422,7 +422,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<Int16>();
+                                        var unitValue = new TUnitEditableValue<Int16>();
                                         unitValue.Value = Int16.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -445,7 +445,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<Int32>();
+                                        var unitValue = new TUnitEditableValue<Int32>();
                                         unitValue.Value = Int32.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -468,7 +468,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<Int64>();
+                                        var unitValue = new TUnitEditableValue<Int64>();
                                         unitValue.Value = Int64.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -491,7 +491,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<byte>();
+                                        var unitValue = new TUnitEditableValue<byte>();
                                         unitValue.Value = byte.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -514,7 +514,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<UInt16>();
+                                        var unitValue = new TUnitEditableValue<UInt16>();
                                         unitValue.Value = UInt16.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -537,7 +537,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<UInt32>();
+                                        var unitValue = new TUnitEditableValue<UInt32>();
                                         unitValue.Value = UInt32.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -560,7 +560,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<UInt64>();
+                                        var unitValue = new TUnitEditableValue<UInt64>();
                                         unitValue.Value = UInt64.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -583,7 +583,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<float>();
+                                        var unitValue = new TUnitEditableValue<float>();
                                         unitValue.Value = float.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -606,7 +606,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<double>();
+                                        var unitValue = new TUnitEditableValue<double>();
                                         unitValue.Value = double.Parse(gparamTextById);
                                         slotValue = unitValue;
                                     }
@@ -622,7 +622,7 @@ namespace WpfApplication1
                                     throw new NotImplementedException();
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<string>();
+                                        var unitValue = new TUnitEditableValue<string>();
                                         unitValue.Value = gparamTextById;
 
                                         slotValue = unitValue;
@@ -643,7 +643,7 @@ namespace WpfApplication1
                                 default:
                                     {
                                         var values = gparamTextById.Split(',');
-                                        var unitValue = new TUnitValue<TArrayValue<float>>();
+                                        var unitValue = new TUnitEditableValue<TArrayValue<float>>();
                                         var arrayValue = new TArrayValue<float>(Array.ConvertAll<string, float>(values, (s => float.Parse(s))));
                                         unitValue.Value = arrayValue;
                                         slotValue = unitValue;
@@ -661,7 +661,7 @@ namespace WpfApplication1
                                 default:
                                     {
                                         var values = gparamTextById.Split(',');
-                                        var unitValue = new TUnitValue<TArrayValue<byte>>();
+                                        var unitValue = new TUnitEditableValue<TArrayValue<byte>>();
                                         var arrayValue = new TArrayValue<byte>(Array.ConvertAll<string, byte>(values, (s => byte.Parse(s))));
                                         unitValue.Value = arrayValue;
                                         slotValue = unitValue;
@@ -679,7 +679,7 @@ namespace WpfApplication1
 
                                 default:
                                     {
-                                        var unitValue = new TUnitValue<bool>();
+                                        var unitValue = new TUnitEditableValue<bool>();
                                         bool v;
                                         if (!bool.TryParse(gparamTextById, out v))
                                         {

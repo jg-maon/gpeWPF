@@ -7,6 +7,7 @@ using System.Text;
 
 namespace WpfApplication1
 {
+    
     class IdInfoTableTabPageViewModel : DocumentViewModel, IEquatable<IdInfoTableTabPageViewModel>
     {
         private readonly CategoryTreePaneViewModel m_file;
@@ -18,6 +19,8 @@ namespace WpfApplication1
             }
         }
         private readonly CategoryViewModel m_categoryViewModel;
+
+        private readonly IdInfoTablePaneContentViewModel m_content;
 
         public string CategoryName
         {
@@ -71,13 +74,15 @@ namespace WpfApplication1
         /// </summary>
         /// <param name="file">ファイル</param>
         /// <param name="categoryViewModel">カテゴリ</param>
-        public IdInfoTableTabPageViewModel(CategoryTreePaneViewModel file, CategoryViewModel categoryViewModel)
+        public IdInfoTableTabPageViewModel(IdInfoTablePaneContentViewModel content, CategoryTreePaneViewModel file, CategoryViewModel categoryViewModel)
             : base(categoryViewModel.DispName)
         {
+            this.m_content = content;
             this.m_file = file;
             this.m_categoryViewModel = categoryViewModel;
             
         }
+
 
 
         #region IEquatable<IdInfoTableTabPageViewModel> メンバー
@@ -101,5 +106,10 @@ namespace WpfApplication1
         }
 
         #endregion
+
+        protected override void OnClose()
+        {
+            m_content.Close(this);
+        }
     }
 }

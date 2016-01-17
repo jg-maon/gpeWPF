@@ -68,7 +68,7 @@ namespace WpfApplication1
         /// <param name="categoryViewModel">カテゴリ</param>
         internal void OpenParameterTab(CategoryViewModel categoryViewModel)
         {
-            var openTabPage = new IdInfoTableTabPageViewModel(m_file, categoryViewModel);
+            var openTabPage = new IdInfoTableTabPageViewModel(this, m_file, categoryViewModel);
 
             var tabPage = m_parameterTabPages.FirstOrDefault((page => page.Equals(openTabPage)));
             // 開かれていない場合
@@ -79,6 +79,11 @@ namespace WpfApplication1
             }
             tabPage.IsActive = true;
             tabPage.IsSelected = true;
+        }
+
+        internal void Close(IdInfoTableTabPageViewModel idInfoTableTabPageViewModel)
+        {
+            m_parameterTabPages.Remove(idInfoTableTabPageViewModel);
         }
     }
 }

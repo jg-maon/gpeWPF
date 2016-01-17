@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindEditableValuePropertyGe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdInfoTableTabPageXamlGenerator", "IdInfoTableTabPageXamlGenerator\IdInfoTableTabPageXamlGenerator.csproj", "{1EABBB5C-1A04-4700-A1E7-76D9A3A0A601}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1.Controls", "WpfApplication1.Controls\WpfApplication1.Controls.csproj", "{D00D162B-5A67-49B3-BAAB-CECA17771587}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{1EABBB5C-1A04-4700-A1E7-76D9A3A0A601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EABBB5C-1A04-4700-A1E7-76D9A3A0A601}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EABBB5C-1A04-4700-A1E7-76D9A3A0A601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D00D162B-5A67-49B3-BAAB-CECA17771587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D00D162B-5A67-49B3-BAAB-CECA17771587}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D00D162B-5A67-49B3-BAAB-CECA17771587}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D00D162B-5A67-49B3-BAAB-CECA17771587}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

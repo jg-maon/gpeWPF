@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace WpfApplication1
 {
-    class DocumentViewModel : PaneViewModel
+    abstract class DocumentViewModel : PaneViewModel
     {
         public DocumentViewModel(string title):
             base(title)
         { }
+
     }
 }

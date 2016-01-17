@@ -14,15 +14,17 @@
 
   **********************************************************************/
 
+using Microsoft.Practices.Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace WpfApplication1
 {
-    class PaneViewModel : ViewModelBase
+    abstract class PaneViewModel : ViewModelBase
     {
         private bool m_doFloating = false;
         /// <summary>
@@ -152,5 +154,32 @@ namespace WpfApplication1
                 SetProperty(ref m_floatingHeight, value);
             }
         }
+
+        private DelegateCommand m_closeCommand = null;
+        public ICommand CloseCommand { get { return m_closeCommand ?? (m_closeCommand = new DelegateCommand(OnClose, DoesClose)); } }
+
+        private bool m_canClose = true;
+        public bool CanClose
+        {
+            get { return m_canClose; }
+            set
+            {
+                SetProperty(ref m_canClose, value);
+                OnPropertyChanged(() => CloseCommand);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool DoesClose()
+        {
+            return CanClose;
+        }
+
+        protected abstract void OnClose();
+
+
     }
 }

@@ -89,11 +89,11 @@ namespace WpfApplication1
                 {
                     return Float2Template;
                 }
-                else if(value.Value is TUnitValue<float>)
+                else if(value.Value is TUnitEditableValue<float>)
                 {
                     return Float2Template;
                 }
-                else if (value.Value is TUnitValue<TArrayValue<float>>)
+                else if (value.Value is TUnitEditableValue<TArrayValue<float>>)
                 {
                     return Float2Template;
                 }

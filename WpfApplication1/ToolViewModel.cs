@@ -56,5 +56,10 @@ namespace WpfApplication1
         #endregion
 
 
+
+        protected override void OnClose()
+        {
+            Workspace.Instance.Close(this);
+        }
     }
 }

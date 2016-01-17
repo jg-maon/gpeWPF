@@ -53,7 +53,8 @@ namespace WpfApplication1
             }
         }
 
-
+        #region パラメータの絞り込み検索
+        
         private string m_searchText;
         public string SearchText
         {
@@ -83,7 +84,6 @@ namespace WpfApplication1
             }
 
         }
-
 
         /// <summary>
         /// 末端のパラメータDispNameと入力文字のフィルター
@@ -175,6 +175,10 @@ namespace WpfApplication1
             return result;
         }
 
+        #endregion
+
+        #region Commands
+
         #region ExpandCommand
 
         private DelegateCommand m_expandCommand = null;
@@ -265,6 +269,57 @@ namespace WpfApplication1
         }
         #endregion
 
+        #region UndoCommand
+
+        private DelegateCommand m_undoCommand = null;
+        public ICommand UndoCommand { get { return m_undoCommand ?? (m_undoCommand = new DelegateCommand(_OnUndo, _DoesUndo)); } }
+
+        private bool _DoesUndo()
+        {
+            return m_undoRedoManager.CanUndo;
+        }
+
+        private void _OnUndo()
+        {
+            m_undoRedoManager.Undo();
+            OnPropertyChanged(() => Parameters);
+            OnPropertyChanged(() => UndoCommand);
+            OnPropertyChanged(() => RedoCommand);
+        }
+        #endregion
+
+        #region RedoCommand
+
+        private DelegateCommand m_redoCommand = null;
+        public ICommand RedoCommand { get { return m_redoCommand ?? (m_redoCommand = new DelegateCommand(_OnRedo, _DoesRedo)); } }
+
+        private bool _DoesRedo()
+        {
+            return m_undoRedoManager.CanRedo;
+        }
+
+        private void _OnRedo()
+        {
+            m_undoRedoManager.Redo();
+            OnPropertyChanged(() => Parameters);
+            OnPropertyChanged(() => UndoCommand);
+            OnPropertyChanged(() => RedoCommand);
+        }
+        #endregion
+
+        #endregion
+
+
+        /// <summary>
+        /// アンドゥ・リドゥ用マネージャ
+        /// </summary>
+        private readonly UndoRedoManager m_undoRedoManager = new UndoRedoManager(3);
+
+        /// <summary>
+        /// アンドゥ・リドゥ用変更された値
+        /// </summary>
+        private Memento<IEditableValue, ParameterRecordViewModel> m_memento = null;
+
 
         /// <summary>
         /// 展開状態の変更ボタンのtooltip
@@ -324,8 +379,46 @@ namespace WpfApplication1
             m_file = categoryTreePaneViewModel;
 
             m_parameters = parameterIdViewModel;
+            m_memento = new EditableValueMemento(null, Parameters);
+
+            m_parameters.ValueChanging -= m_parameters_ValueChanging;
+            m_parameters.ValueChanging += m_parameters_ValueChanging;
+            //m_parameters.ValueChanged -= m_parameters_ValueChanged;
+            //m_parameters.ValueChanged += m_parameters_ValueChanged;
 
             _AddPropertyChangedEvent(m_parameters.Slots);
+        }
+
+        void m_parameters_ValueChanging(object sender, IEditableValue value)
+        {
+            var record = (ParameterRecordViewModel)sender;
+
+            var current = new EditableValueMemento(value, record);
+            var cmd = new MementoCommand<IEditableValue, ParameterRecordViewModel>(m_memento, current);
+            if (!m_undoRedoManager.Invoke(cmd))
+            {
+                // 編集しすぎ
+
+            }
+            m_memento = current;
+
+            OnPropertyChanged(() => UndoCommand);
+        }
+
+        void m_parameters_ValueChanged(object sender, IEditableValue value)
+        {
+            var record = (ParameterRecordViewModel)sender;
+
+            var current = new EditableValueMemento(value, record);
+            var cmd = new MementoCommand<IEditableValue, ParameterRecordViewModel>(m_memento, current);
+            if (!m_undoRedoManager.Invoke(cmd))
+            {
+                // 編集しすぎ
+
+            }
+            m_memento = current;
+
+            OnPropertyChanged(() => UndoCommand);
         }
 
         /// <summary>
@@ -336,6 +429,7 @@ namespace WpfApplication1
         {
             foreach (var value in collection)
             {
+                value.PropertyChanged -= _OnValue_PropertyChanged;
                 value.PropertyChanged += _OnValue_PropertyChanged;
 
                 // 子の設定
@@ -352,18 +446,23 @@ namespace WpfApplication1
             var value = sender as IEditableValue;
             if (null != value)
             {
-                value.PropertyChanged += (s, ev) =>
-                {
-                    var v = s as IEditableValue;
-                    if (ev.PropertyName == "IsExpanded")
-                    {
-                        this.OnPropertyChanged(() => this.ButtonToolTip);
-                    }
-                    else if(ev.PropertyName != "IsDirty")
-                    {
-                        value.IsDirty = true;
-                    }
-                };
+                value.PropertyChanged -= value_PropertyChanged;
+                value.PropertyChanged += value_PropertyChanged;
+
+                
+            }
+        }
+
+        void value_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            var v = sender as IEditableValue;
+            if (e.PropertyName == "IsExpanded")
+            {
+                this.OnPropertyChanged(() => this.ButtonToolTip);
+            }
+            else if (e.PropertyName != "IsDirty")
+            {
+                v.IsDirty = true;
             }
         }
 
@@ -377,6 +476,7 @@ namespace WpfApplication1
             }
             return true;
         }
+
 
     }
 }

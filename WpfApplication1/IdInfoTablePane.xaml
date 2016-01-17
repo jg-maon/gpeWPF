@@ -7,7 +7,6 @@
     <DataTemplate x:Key="KeyIdInfoTablePaneTemplate">
         <DataTemplate.Resources>
 
-            <local:ActiveDocumentConverter x:Key="ActiveDocumentConverter"/>
             <avalonDock:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
             <local:ColorToStringConverter x:Key="ColorToStringConverter"/>

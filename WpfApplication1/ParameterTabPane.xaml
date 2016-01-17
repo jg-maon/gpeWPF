@@ -258,8 +258,12 @@
                     </Expander.Header>
                     <Grid>
                         <Grid.Resources>
-                            <Style TargetType="{x:Type ScrollViewer}" BasedOn="{x:Null}">
-                                <Setter Property="Background" Value="{StaticResource ForegroundBrush}"/>
+                            <Style TargetType="{x:Type ScrollViewer}" BasedOn="{StaticResource {x:Type ScrollViewer}}">
+                                <Setter Property="Width" Value="100"/>
+                                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
+                                
+                            </Style>
+                            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
                             </Style>
                         </Grid.Resources>
                         <xctk:ColorCanvas R="{Binding Path=Value[0], Mode=TwoWay}"

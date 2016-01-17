@@ -93,6 +93,25 @@ namespace WpfApplication1
             }
         }
 
+        public event EventHandler<IEditableValue> ValueChanging;
+
+        protected void RaiseValueChanging(IEditableValue value)
+        {
+            if (null != ValueChanging)
+            {
+                ValueChanging(this, value);
+            }
+        }
+        public event EventHandler<IEditableValue> ValueChanged;
+
+        protected void RaiseValueChanged(IEditableValue value)
+        {
+            if(null != ValueChanged)
+            {
+                ValueChanged(this, value);
+            }
+        }
+
         public ParameterRecordViewModel(string categoryName)
         {
             m_categoryName = categoryName;
@@ -103,8 +122,15 @@ namespace WpfApplication1
                 {
                     foreach(var slot in Slots)
                     {
-                        if(null != slot)
+                        if (null != slot)
+                        {
+                            slot.ValueChanging -= slot_ValueChanging;
+                            slot.ValueChanging += slot_ValueChanging;
+                            slot.ValueChanged -= slot_ValueChanged;
+                            slot.ValueChanged += slot_ValueChanged;
                             m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(slot.BindableName, slot, typeof(ParameterRecordViewModel)));
+                        }
+
                     }
                 }
             };
@@ -115,12 +141,16 @@ namespace WpfApplication1
                 {
                     foreach(IEditableValue item in e.NewItems)
                     {
+                        item.ValueChanging -= slot_ValueChanging;
+                        item.ValueChanging += slot_ValueChanging;
+                        item.ValueChanged -= slot_ValueChanged;
+                        item.ValueChanged += slot_ValueChanged;
                         m_slotProperties.Add(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParameterRecordViewModel)));
                     }
                 }
                 else if(e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
                 { 
-                    foreach(IEditableValue item in e.NewItems)
+                    foreach(IEditableValue item in e.OldItems)
                     {
                         m_slotProperties.Remove(new CustomPropertyDescriptor<IEditableValue>(item.BindableName, item, typeof(ParameterRecordViewModel)));
                     }
@@ -131,6 +161,17 @@ namespace WpfApplication1
                 }
             };
 
+        }
+
+        void slot_ValueChanging(object sender, CancelEventArgs e)
+        {
+            RaiseValueChanging(sender as IEditableValue);
+        }
+
+        void slot_ValueChanged(object sender, EventArgs e)
+        {
+
+            RaiseValueChanged(sender as IEditableValue);
         }
 
         
@@ -185,26 +226,6 @@ namespace WpfApplication1
             }
         }
 
-        private IEditableValue _FindValue(ObservableCollection<IEditableValue> valueCollection, string name)
-        {
-            foreach (var value in valueCollection)
-            {
-                if (value.DispName == name)
-                {
-                    return value;
-                }
-                var collection = value.Value as ObservableCollection<IEditableValue>;
-                if (null != collection)
-                {
-                    var result = _FindValue(collection, name);
-                    if (null != result)
-                    {
-                        return result;
-                    }
-                }
-            }
-            return null;
-        }
 
 
 
