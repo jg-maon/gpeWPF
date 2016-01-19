@@ -20,7 +20,6 @@
         
         <local:YawPitchTweaker x:Name="YawPitch" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2"
                                Width="200" Height="100"
-                               Background="Gray"
                                />
     </Grid>
 </Window>

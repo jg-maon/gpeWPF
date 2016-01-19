@@ -16,18 +16,50 @@
                             >
                         <Grid>
                             <Canvas x:Name="PART_TweakerCanvas"
-								    Width="{TemplateBinding Width}"
-								    Height="{TemplateBinding Height}"
+                                    Width="{TemplateBinding Width}"
+                                    Height="{TemplateBinding Height}"
                                     Background="Transparent">
                                 <Rectangle x:Name="CanvasBackground"
-                                       Height="{Binding ElementName=PART_TweakerCanvas, Path=Height}"
-                                       Width="{Binding ElementName=PART_TweakerCanvas, Path=Width}"
-								       Fill="{Binding ElementName=PART_TweakerCanvas, Path=Background}"/>
+                                           Height="{Binding ElementName=PART_TweakerCanvas, Path=Height}"
+                                           Width="{Binding ElementName=PART_TweakerCanvas, Path=Width}"
+                                           Fill="{Binding ElementName=PART_TweakerCanvas, Path=Background}"
+                                           Panel.ZIndex="-1"/>
+                                <Line x:Name="HorizontalMainLine"
+                                      StrokeThickness="2"
+                                      Stroke="{TemplateBinding MainLineBrush}"
+                                      IsHitTestVisible="False"
+                                      Panel.ZIndex="5"/>
+                                <Line x:Name="VerticalMainLine"
+                                      StrokeThickness="2"
+                                      Stroke="{TemplateBinding MainLineBrush}"
+                                      IsHitTestVisible="False"
+                                      Panel.ZIndex="5"/>
+                                <Line x:Name="HorizontalSubTopLine"
+                                      StrokeThickness="1"
+                                      Stroke="{TemplateBinding SubLineBrush}"
+                                      IsHitTestVisible="False"
+                                      Panel.ZIndex="5"/>
+                                <Line x:Name="HorizontalSubBottomLine"
+                                      StrokeThickness="1"
+                                      Stroke="{TemplateBinding SubLineBrush}"
+                                      IsHitTestVisible="False"
+                                      Panel.ZIndex="5"/>
+                                <Line x:Name="VerticalSubLeftLine"
+                                      StrokeThickness="1"
+                                      Stroke="{TemplateBinding SubLineBrush}"
+                                      IsHitTestVisible="False"
+                                      Panel.ZIndex="5"/>
+                                <Line x:Name="VerticalSubRightLine"
+                                      StrokeThickness="1"
+                                      Stroke="{TemplateBinding SubLineBrush}"
+                                      IsHitTestVisible="False"
+                                      Panel.ZIndex="5"/>
 
                                 <Canvas x:Name="PART_YawPitchSelector"
-                                    Width="10"
-                                    Height="10"
-                                    IsHitTestVisible="False">
+                                        Width="10"
+                                        Height="10"
+                                        IsHitTestVisible="False"
+                                        Panel.ZIndex="10">
                                     <Ellipse Width="10"
                                         Height="10"
                                         StrokeThickness="3"

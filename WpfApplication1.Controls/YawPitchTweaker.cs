@@ -51,10 +51,22 @@ namespace WpfApplication1.Controls
         #region TemplateParts
         private const string PART_TweakerCanvas = "PART_TweakerCanvas";
         private const string PART_YawPitchSelector = "PART_YawPitchSelector";
+        private const string HorizontalMainLine = "HorizontalMainLine";
+        private const string VerticalMainLine = "VerticalMainLine";
+        private const string HorizontalSubTopLine = "HorizontalSubTopLine";
+        private const string HorizontalSubBottomLine = "HorizontalSubBottomLine";
+        private const string VerticalSubLeftLine = "VerticalSubLeftLine";
+        private const string VerticalSubRightLine = "VerticalSubRightLine";
         #endregion
         #region Parts
         private Canvas m_tweakerCanvas;
         private Canvas m_yawPitchSelector;
+        private Line m_horizontalMainLine = null;
+        private Line m_verticalMainLine = null;
+        private Line m_horizontalSubTopLine = null;
+        private Line m_horizontalSubBottomLine = null;
+        private Line m_verticalSubLeftLine = null;
+        private Line m_verticalSubRightLine = null;
         #endregion
         static YawPitchTweaker()
         {
@@ -133,8 +145,34 @@ namespace WpfApplication1.Controls
         // Using a DependencyProperty as the backing store for MinPitch.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty MinPitchProperty =
             DependencyProperty.Register("MinPitch", typeof(double), typeof(YawPitchTweaker), new FrameworkPropertyMetadata(-90.0));
-       
 
+
+
+
+        public Brush MainLineBrush
+        {
+            get { return (Brush)GetValue(MainLineBrushProperty); }
+            set { SetValue(MainLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for MainLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty MainLineBrushProperty =
+            DependencyProperty.Register("MainLineBrush", typeof(Brush), typeof(YawPitchTweaker), new FrameworkPropertyMetadata(Brushes.DarkSlateGray));
+
+
+
+
+        public Brush SubLineBrush
+        {
+            get { return (Brush)GetValue(SubLineBrushProperty); }
+            set { SetValue(SubLineBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for SubLineBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty SubLineBrushProperty =
+            DependencyProperty.Register("SubLineBrush", typeof(Brush), typeof(YawPitchTweaker), new FrameworkPropertyMetadata(Brushes.DimGray));
+
+        
 
         #endregion
 
@@ -173,6 +211,14 @@ namespace WpfApplication1.Controls
             }
 
 
+            m_horizontalMainLine = GetTemplateChild(HorizontalMainLine) as Line;
+            m_verticalMainLine = GetTemplateChild(VerticalMainLine) as Line;
+            m_horizontalSubTopLine = GetTemplateChild(HorizontalSubTopLine) as Line;
+            m_horizontalSubBottomLine = GetTemplateChild(HorizontalSubBottomLine) as Line;
+            m_verticalSubLeftLine = GetTemplateChild(VerticalSubLeftLine) as Line;
+            m_verticalSubRightLine = GetTemplateChild(VerticalSubRightLine) as Line;
+
+
             _UpdateYawPitchSelectorPosition(Yaw, Pitch);
         }
 
@@ -187,6 +233,52 @@ namespace WpfApplication1.Controls
                     X = m_currentPosition.Value.X * e.NewSize.Width,
                     Y = m_currentPosition.Value.Y * e.NewSize.Height
                 };
+
+                var width = e.NewSize.Width;
+                var height = e.NewSize.Height;
+                if (null != m_horizontalMainLine)
+                {
+                    m_horizontalMainLine.X1 = 0.0;
+                    m_horizontalMainLine.X2 = width;
+                    m_horizontalMainLine.Y1 = height / 2.0;
+                    m_horizontalMainLine.Y2 = height / 2.0;
+                    m_horizontalMainLine.Stroke = MainLineBrush;
+                }
+                if (null != m_verticalMainLine)
+                {
+                    m_verticalMainLine.X1 = width / 2.0;
+                    m_verticalMainLine.X2 = width / 2.0;
+                    m_verticalMainLine.Y1 = 0.0;
+                    m_verticalMainLine.Y2 = height;
+                }
+                if (null != m_horizontalSubTopLine)
+                {
+                    m_horizontalSubTopLine.X1 = 0.0;
+                    m_horizontalSubTopLine.X2 = width;
+                    m_horizontalSubTopLine.Y1 = height / 4.0;
+                    m_horizontalSubTopLine.Y2 = height / 4.0;
+                }
+                if (null != m_horizontalSubBottomLine)
+                {
+                    m_horizontalSubBottomLine.X1 = 0.0;
+                    m_horizontalSubBottomLine.X2 = width;
+                    m_horizontalSubBottomLine.Y1 = height * 3.0 / 4.0;
+                    m_horizontalSubBottomLine.Y2 = height * 3.0 / 4.0;
+                }
+                if (null != m_verticalSubLeftLine)
+                {
+                    m_verticalSubLeftLine.X1 = width / 4.0;
+                    m_verticalSubLeftLine.X2 = width / 4.0;
+                    m_verticalSubLeftLine.Y1 = 0.0;
+                    m_verticalSubLeftLine.Y2 = height;
+                }
+                if (null != m_verticalSubRightLine)
+                {
+                    m_verticalSubRightLine.X1 = width * 3.0 / 4.0;
+                    m_verticalSubRightLine.X2 = width * 3.0 / 4.0;
+                    m_verticalSubRightLine.Y1 = 0.0;
+                    m_verticalSubRightLine.Y2 = height;
+                }
 
                 _UpdateYawPitchSelectorPositionAndCalculate(newPoint, false);
             }
