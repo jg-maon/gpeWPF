@@ -29,9 +29,6 @@
 
     >
 
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="DarkBrushes.xaml"/>
-    </ResourceDictionary.MergedDictionaries>
     
     <avalonDockConverters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     <avalonDockConverters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
@@ -179,13 +176,13 @@
                             <ControlTemplate TargetType="{x:Type TabItem}">
                                 <Grid SnapsToDevicePixels="true">
                                     <Border x:Name="Bd" 
-							              BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
                                           CornerRadius="2,2,0,0"
-							              Background="{TemplateBinding Background}" 
-							              Padding="{TemplateBinding Padding}">
+                                          Background="{TemplateBinding Background}" 
+                                          Padding="{TemplateBinding Padding}">
                                         <ContentPresenter 
-								            x:Name="Content" 
-								            ContentSource="Header" 
+                                            x:Name="Content" 
+                                            ContentSource="Header" 
                                             HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
                                             VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                             RecognizesAccessKey="True" 
@@ -194,9 +191,9 @@
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="Selector.IsSelected"
-								            Value="true">
+                                            Value="true">
                                         <Setter Property="Background"
-									        Value="{DynamicResource AvalonDock_Expression_BaseColor10}" />
+                                            Value="{DynamicResource AvalonDock_Expression_BaseColor10}" />
                                         <Setter Property="Margin" Value="-1,0,-1,-4"/>
                                         <Setter Property="Margin" TargetName="Content" Value="0,0,0,3"/>
                                     </Trigger>
@@ -310,13 +307,13 @@
                                         <ColumnDefinition Width="22"/>
                                     </Grid.ColumnDefinitions>
                                     <Border x:Name="Bd" 
-							              BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
                                           CornerRadius="3,0,0,0"
-							              Background="{TemplateBinding Background}" 
-							              Padding="{TemplateBinding Padding}">
+                                          Background="{TemplateBinding Background}" 
+                                          Padding="{TemplateBinding Padding}">
                                         <ContentPresenter 
-								            x:Name="Content" 
-								            ContentSource="Header" 
+                                            x:Name="Content" 
+                                            ContentSource="Header" 
                                             HorizontalAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" 
                                             VerticalAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"
                                             RecognizesAccessKey="True" 
@@ -325,14 +322,14 @@
 
                                     <localControls:SplineBorder
                                         Stroke="{TemplateBinding Background}"
-           							    Fill="{TemplateBinding Background}" 
+                                        Fill="{TemplateBinding Background}" 
                                         Grid.Column="1"/>
                                 </Grid>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="Selector.IsSelected"
-								        Value="true">
+                                        Value="true">
                                             <Setter Property="Background"
-									    Value="{DynamicResource AvalonDock_Expression_BaseColor10}" />
+                                        Value="{DynamicResource AvalonDock_Expression_BaseColor10}" />
                                             <Setter Property="Panel.ZIndex" 
                                         Value="1" />
                                     </Trigger>
@@ -899,7 +896,7 @@
                         </Border>
                     </avalonDockControls:DropDownControlArea>
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding Model.IsSelected}" Value="False">
+                        <DataTrigger Binding="{Binding Model.IsSelected, RelativeSource={RelativeSource Self}}" Value="False">
                             <Setter Property="Visibility" Value="Collapsed" TargetName="PART_HidePin"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ItemsControl}}" Value="1">
@@ -1048,7 +1045,7 @@
 
                         <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Model.RootDocument.IsActive}" Value="true">
                             <Setter Property="Background"
-									        Value="{DynamicResource AvalonDock_Expression_BaseColor10}" />
+                                            Value="{DynamicResource AvalonDock_Expression_BaseColor10}" />
                         </DataTrigger>
                         <Trigger Property="IsMouseOver" SourceName="ContextMenuDropdownButton" Value="True">
                             <Setter Property="Source" TargetName="PART_ImgPinMenu" Value="/WpfApplication1;component/Themes/Generic/Images/PinMenu_Light.png"/>
@@ -1231,10 +1228,10 @@
                                                 </Grid.ColumnDefinitions>
                                                 <Border
                                                     x:Name="intBd"
-							                          BorderBrush="{DynamicResource AvalonDock_Expression_BaseColor8}"
+                                                      BorderBrush="{DynamicResource AvalonDock_Expression_BaseColor8}"
                                                       CornerRadius="3,0,0,0"
-							                          Background="{DynamicResource AvalonDock_Expression_BaseColor8}" 
-							                          Padding="2">
+                                                      Background="{DynamicResource AvalonDock_Expression_BaseColor8}" 
+                                                      Padding="2">
                                                     <ContentPresenter Content="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}" 
                                                           ContentTemplate="{Binding AnchorableHeaderTemplate, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type avalonDock:DockingManager}, Mode=FindAncestor}}"
                                                           ContentTemplateSelector="{Binding AnchorableHeaderTemplateSelector, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type avalonDock:DockingManager}, Mode=FindAncestor}}"/>
@@ -1242,7 +1239,7 @@
                                                 <localControls:SplineBorder
                                                     x:Name="intSplineBorder"
                                                     Stroke="{DynamicResource AvalonDock_Expression_BaseColor8}"
-           							                Fill="{DynamicResource AvalonDock_Expression_BaseColor8}" 
+                                                    Fill="{DynamicResource AvalonDock_Expression_BaseColor8}" 
                                                     Grid.Column="1"/>
                                                 <avalonDockControls:DropDownControlArea 
                                                         DropDownContextMenu="{Binding Model.Root.Manager.AnchorableContextMenu, RelativeSource={RelativeSource TemplatedParent}}"

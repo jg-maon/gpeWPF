@@ -59,8 +59,6 @@ namespace WpfApplication1
         public CategoryTreePaneViewModel(string name)
             : base(name)
         {
-            FloatingHeight = 700.0;
-            FloatingWidth = 300.0;
             Title = Path.GetFileNameWithoutExtension(name);
             // パラメータファイルの読み込み
             if(!string.IsNullOrEmpty(name) && File.Exists(name))

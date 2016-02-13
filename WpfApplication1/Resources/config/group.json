@@ -1,5 +1,16 @@
 {
-    "Categories" : [
+    "Categories": [
+        {
+            "Name": "_Parameter",
+            "Group": [
+                {
+                    "Args": [ ],
+                    "Name": "___Parameter",
+                    "DispName": "parameter",
+                    "IsExpanded": true
+                }
+            ]
+        },
         {
             "Name": "LightSet Parameter",
             "Group": [

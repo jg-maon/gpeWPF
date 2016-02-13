@@ -129,12 +129,17 @@ namespace WpfApplication1
         private void OnOpen(object parameter)
         {
             var dlg = new OpenFileDialog();
+            dlg.Multiselect = true;
             if (dlg.ShowDialog().GetValueOrDefault())
             {
-                var fileViewModel = Open(dlg.FileName);
-                ActiveDocument = fileViewModel;
+                foreach(var fileName in dlg.FileNames)
+                {
+                    var fileViewModel = Open(fileName);
+                    ParameterFileTree.Add(fileName);
 
-                ParameterFileTree.Add(dlg.FileName);
+                }
+                
+
             }
         }
 
@@ -151,6 +156,7 @@ namespace WpfApplication1
             var fileViewModel = new CategoryTreePaneViewModel(filepath);
             //m_documents.Add(fileViewModel);
             m_tools.Add(fileViewModel);
+            fileViewModel.IsSelected = false;
             fileViewModel.IsSelected = true;
             fileViewModel.IsActive = true;
             return fileViewModel;
@@ -182,24 +188,24 @@ namespace WpfApplication1
         {
             return true;
         }
-        IdInfoTablePaneViewModel m_idInfoTable;
-        public IdInfoTablePaneViewModel IdInfoTable
-        {
-            get
-            {
-                if(null == m_idInfoTable)
-                {
-                    m_idInfoTable = new IdInfoTablePaneViewModel();
-                }
-                return m_idInfoTable;
-            }
-        }
+        //IdInfoTablePaneViewModel m_idInfoTable;
+        //public IdInfoTablePaneViewModel IdInfoTable
+        //{
+        //    get
+        //    {
+        //        if(null == m_idInfoTable)
+        //        {
+        //            m_idInfoTable = new IdInfoTablePaneViewModel();
+        //        }
+        //        return m_idInfoTable;
+        //    }
+        //}
         private void OnNew(object parameter)
         {
             //m_documents.Add(new FileViewModel());
             //m_documents.Add(CategoryTree);
             //m_documents.Add(IdInfoTable);
-            IdInfoTable.SelectedItemChanged += IdInfoTable_SelectedItemChanged;
+            //IdInfoTable.SelectedItemChanged += IdInfoTable_SelectedItemChanged;
 
 
             ParameterFileTree.Add(null);
@@ -447,14 +453,14 @@ namespace WpfApplication1
         public ICommand FindCommand { get { return s_emptyCommand; } }
         public ICommand ExpandAllCommand { get { return s_emptyCommand; } }
         public ICommand CollapseAllCommand { get { return s_emptyCommand; } }
-        public ICommand ShowFileTreePaneCommand;
-        public ICommand ShowConnectionPaneCommand;
-        public ICommand ShowFileSharePaneCommand;
-        public ICommand ShowIdInfoTablePaneCommand;
-        public ICommand ImportCommand;
-        public ICommand CheckInCommand;
-        public ICommand CancelCheckOutCommand;
-        public ICommand AcquisitionCommand;
+        public ICommand ShowFileTreePaneCommand { get { return s_emptyCommand; } }
+        public ICommand ShowConnectionPaneCommand { get { return s_emptyCommand; } }
+        public ICommand ShowFileSharePaneCommand { get { return s_emptyCommand; } }
+        public ICommand ShowIdInfoTablePaneCommand { get { return s_emptyCommand; } }
+        public ICommand ImportCommand { get { return s_emptyCommand; } }
+        public ICommand CheckInCommand { get { return s_emptyCommand; } }
+        public ICommand CancelCheckOutCommand { get { return s_emptyCommand; } }
+        public ICommand AcquisitionCommand { get { return s_emptyCommand; } }
         public ICommand CheckInAllCommand { get { return s_emptyCommand; } }
         public ICommand CheckOutAllCommand { get { return s_emptyCommand; } }
         public ICommand AcquisitionAllCommand { get { return s_emptyCommand; } }
@@ -486,6 +492,7 @@ namespace WpfApplication1
             if (null != first)
             {
                 first.IsActive = true;
+                first.IsSelected = false;
                 first.IsSelected = true;
             }
             else
@@ -495,16 +502,39 @@ namespace WpfApplication1
                 {
                     // 開く
                     m_tools.Add(tab);
-                    return;
                 }
                 else
                 {
                     // 1タブ開いている場合 パラメータ部分のみ変更
                     //_tools[0].Parameters = tab.Parameters;
-                    m_tools[0] = tab;
+                    int index = -1;
+                    int count = 0;
+                    foreach(var anchorable in Tools)
+                    {
+                        var paramTab = anchorable as ParameterTab2ViewModel;
+                        if(null != paramTab)
+                        {
+                            index = count;
+                            break;
+                        }
+                        ++count;
+                    }
+                    if(-1 == index)
+                    {
+                        m_tools.Add(tab);
+                    }
+                    else
+                    {
+                        m_tools[index] = tab;
+                        //m_tools.Add(tab);
+                    }
                     OnPropertyChanged(() => this.Tools);
                     //_tools[0].Parameter = tab.Parameter;
+
                 }
+                tab.IsSelected = false;
+                tab.IsSelected = true;
+                tab.IsActive = true;
             }
 
         }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace WpfApplication1
 {
+    [Obsolete("ParameterTab2ViewModel")]
     class ParameterTabViewModel : ToolViewModel, IEquatable<ParameterTabViewModel>
     {
 

@@ -34,11 +34,15 @@ namespace WpfApplication1
                 destinationContainer.FindParent<LayoutFloatingWindow>() != null)
                 return false;
 
+
             var content = anchorableToShow.Content;
             string destPaneName = "";
             if(content is IdInfoTablePane2ViewModel)
             {
                 destPaneName = "IdInfoTablePane";
+                ////layout.BottomSide.InsertChildAt(0, anchorableToShow);
+                //layout.BottomSide.Children[0].Children.Add(anchorableToShow);
+                //return true;
             }
             else if(content is CategoryTreePaneViewModel)
             {
@@ -58,6 +62,19 @@ namespace WpfApplication1
             }
             else
             { return false; }
+
+            foreach(var pane in layout.Descendents().OfType<LayoutAnchorablePane>().Where(p=>p.ChildrenCount  >= 1))
+            {
+                for (int i = 0; i < pane.ChildrenCount; ++i)
+                {
+                    var child = pane.Children[i];
+                    if (child.Content == null)
+                    {
+                        child.IsVisible = false;
+                        --i;
+                    }
+                }
+            }
 
             var toolsPane = layout.Descendents().OfType<LayoutAnchorablePane>().FirstOrDefault(d => d.Name == destPaneName);
             if (toolsPane != null)

@@ -2,24 +2,34 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:WpfApplication1.Controls"    
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Pitch:"/>
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=Pitch, ElementName=YawPitch}"/>
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Yaw:"/>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Yaw, ElementName=YawPitch}"/>
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions" 
         
-        <local:YawPitchTweaker x:Name="YawPitch" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2"
-                               Width="200" Height="100"
+        Title="MainWindow" Height="350" Width="525">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+		<TextBlock Grid.Row="0" Grid.Column="0" Text="Pitch:"/>
+		<TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Pitch, ElementName=YawPitch}"/>
+        <TextBlock Grid.Row="1" Grid.Column="0" Text="Yaw:"/>
+		<TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Yaw, ElementName=YawPitch}"/>
+        
+		<local:YawPitchTweaker x:Name="YawPitch" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="2"
+			Width="200" Height="100" 
                                />
-    </Grid>
+		<local:MouseIncrementingTextBox Grid.Column="1" 
+                                        Maximum="{Binding MaxPitch, ElementName=YawPitch}"
+                                        Minimum="{Binding MinPitch, ElementName=YawPitch}"
+                                        Value="{Binding Pitch,ElementName=YawPitch}"
+                                        XIncrementValue="1"
+                                        YIncrementValue="1"
+                                        HorizontalAlignment="Left" Height="26.849" Margin="94.272,170.833,0,-97.682" Grid.Row="2" VerticalAlignment="Top" Width="142.765"/>
+	</Grid>
 </Window>

@@ -95,16 +95,14 @@ namespace WpfApplication1
 
         #region IsSelected
 
-        private bool _isSelected = false;
+        private bool m_isSelected = false;
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get { return m_isSelected; }
             set
             {
-                if (_isSelected != value)
+                if (SetProperty(ref m_isSelected, value))
                 {
-                    _isSelected = value;
-                    RaisePropertyChanged("IsSelected");
                 }
             }
         }
