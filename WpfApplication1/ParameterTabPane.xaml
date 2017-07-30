@@ -2,7 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WpfApplication1"
                     xmlns:avalonDock="http://schemas.xceed.com/wpf/xaml/avalondock"
-                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit">
+                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="MenuItemStyles.xaml"/>
@@ -13,6 +15,21 @@
     <DataTemplate x:Key="KeyParameterTabPaneTemplate">
         <DataTemplate.Resources>
             <local:RadToDegreeConverter x:Key="RadToDegreeConverter"/>
+
+            <Style TargetType="{x:Type Panel}" x:Key="KeyParameterPanelStyle">
+                <Setter Property="Background" Value="Transparent"/>
+                <!--<Setter Property="ToolTip" Value="{Binding DispName}"/>-->
+                <Setter Property="ToolTipService.InitialShowDelay" Value="0"/>
+                <Setter Property="ToolTipService.BetweenShowDelay" Value="0"/>
+                <Setter Property="ToolTipService.ShowDuration" Value="{x:Static sys:Int32.MaxValue}"/>
+                <Setter Property="ToolTipService.PlacementTarget" Value="{Binding RelativeSource={RelativeSource Self}}"/>
+                <Setter Property="ToolTipService.Placement" Value="Left"/>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="LightGray"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
 
             <!--<ContextMenu x:Key="KeySliderMenu" Tag="{Binding}">
                 <MenuItem Style="{StaticResource KeyMenuItemExpandAll}" Command="{Binding ExpandAllCommand}" DataContext="{Binding Path=Tag, ElementName=ParameterViewer}"></MenuItem>
@@ -41,7 +58,22 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            <DockPanel Style="{StaticResource KeyParameterPanelStyle}" x:Name="UiNamePanel">
+                                <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+
+                                <Popup IsOpen="{Binding IsMouseOver, Mode=OneWay, ElementName=UiNamePanel}"
+                                       PopupAnimation="Fade"
+                                       StaysOpen="False"
+                                       Placement="Left"
+                                       PlacementTarget="{Binding ElementName=UiNamePanel}"
+                                       MinHeight="100"
+                                       MinWidth="100">
+                                    <i:Interaction.Behaviors>
+                                        <local:PopupBehavior />
+                                    </i:Interaction.Behaviors>
+                                    <TextBlock Text="{Binding DispName}"/>
+                                </Popup>
+                            </DockPanel>
                             <TextBox Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         </Grid>
                     </Expander.Header>
@@ -60,7 +92,21 @@
                                 <ColumnDefinition Width="100"/>
                                 <!--<ColumnDefinition Width="*"/>-->
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            <DockPanel Style="{StaticResource KeyParameterPanelStyle}" x:Name="UiNamePanel">
+                                <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                                <Popup IsOpen="{Binding IsMouseOver, Mode=OneWay, ElementName=UiNamePanel}"
+                                       PopupAnimation="Fade"
+                                       StaysOpen="True"
+                                       Placement="Left"
+                                       PlacementTarget="{Binding ElementName=UiNamePanel}"
+                                       MinHeight="100"
+                                       MinWidth="100">
+                                    <i:Interaction.Behaviors>
+                                        <local:PopupBehavior />
+                                    </i:Interaction.Behaviors>
+                                    <TextBlock Text="{Binding DispName}"/>
+                                </Popup>
+                            </DockPanel>
                             <TextBox Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                             <!--<Label Grid.Column="2" Content="ColorPicker"></Label>-->
                         </Grid>
@@ -85,7 +131,9 @@
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                    <DockPanel Style="{StaticResource KeyParameterPanelStyle}">
+                        <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                    </DockPanel>
                     <CheckBox Grid.Column="1" TabIndex="{Binding TabIndex}" IsChecked="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     <!--<xctk:ColorPicker ColorMode="ColorCanvas" ShowAdvancedButton="False" Background="DarkGray" />-->
                 </Grid>
@@ -101,7 +149,9 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            <DockPanel Style="{StaticResource KeyParameterPanelStyle}">
+                                <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            </DockPanel>
                             <TextBox x:Name="box1" Grid.Column="1" TabIndex="{Binding TabIndex}" Text="{Binding Value[0], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadToDegreeConverter}}"/>
                             <TextBox x:Name="box2" Grid.Column="2" Margin="10,0,0,0" TabIndex="{Binding TabIndex}" Text="{Binding Value[1], Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RadToDegreeConverter}}"/>
                         </Grid>
@@ -141,7 +191,9 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            <DockPanel Style="{StaticResource KeyParameterPanelStyle}">
+                                <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            </DockPanel>
                         </Grid>
                     </Expander.Header>
                     <Grid>
@@ -192,7 +244,9 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            <DockPanel Style="{StaticResource KeyParameterPanelStyle}">
+                                <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            </DockPanel>
                         </Grid>
                     </Expander.Header>
                     <Grid>
@@ -253,7 +307,9 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            <DockPanel Style="{StaticResource KeyParameterPanelStyle}">
+                                <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            </DockPanel>
                         </Grid>
                     </Expander.Header>
                     <Grid>
@@ -287,7 +343,9 @@
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                    <DockPanel Style="{StaticResource KeyParameterPanelStyle}">
+                        <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                    </DockPanel>
                     <ComboBox Grid.Column="1" TabIndex="{Binding TabIndex}" 
                               ItemsSource="{Binding Items}"
                               DisplayMemberPath="Text"
@@ -307,7 +365,9 @@
                                 <ColumnDefinition Width="100"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            <DockPanel Style="{StaticResource KeyParameterPanelStyle}">
+                                <TextBlock Grid.Column="0" Text="{Binding DispName}"/>
+                            </DockPanel>
                         </Grid>
                     </Expander.Header>
                     <Expander.ContentTemplateSelector>
