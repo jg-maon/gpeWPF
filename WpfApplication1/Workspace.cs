@@ -12,14 +12,44 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Interactivity.InteractionRequest;
 using WpfApplication1.Controls;
 using System.Xml.Serialization;
+using Reactive.Bindings;
+using System.Diagnostics;
+using System.Reactive.Subjects;
+using System.Reactive.Linq;
 
 namespace WpfApplication1
 {
     class Workspace : ViewModelBase
     {
-        protected Workspace()
-        { 
+        public ReactiveCommand SaveMaterialCommand { get; }
+        public ReactiveCommand UpdateSaveCommand { get; } = new ReactiveCommand();
 
+        private readonly Subject<bool> m_processExited = new Subject<bool>();
+
+        protected Workspace()
+        {
+            UpdateSaveCommand.Subscribe(() => { m_processExited.OnNext(true); });
+            SaveMaterialCommand = m_processExited.ToReactiveCommand(true);
+            SaveMaterialCommand.Subscribe(() =>
+            {
+                var pi = new ProcessStartInfo("cmd.exe");
+                pi.Arguments = "/c " + @"""work.bat""";
+
+                // 再実行できないように
+                m_processExited.OnNext(false);
+
+                var process = Process.Start(pi);
+                process.EnableRaisingEvents = true;
+
+                // 終わったら実行できるように戻す
+                System.Reactive.Linq.Observable.FromEventPattern(
+                    h => process.Exited += h,
+                    h => process.Exited -= h
+                    ).Subscribe(_ => m_processExited.OnNext(true));
+                
+                
+
+            });
         }
 
         static Workspace s_instance = new Workspace();

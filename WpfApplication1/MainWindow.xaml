@@ -84,6 +84,7 @@
         <KeyBinding x:Name="MenuInstanceCopyCommand" Gesture="Ctrl+Shift+V" Command="{Binding InstanceCopyCommand}"/>
         <KeyBinding x:Name="MenuFindCommand" Gesture="Ctrl+F" Command="{Binding FindCommand}"/>
         <KeyBinding x:Name="MenuShowHelpDocumentCommand" Gesture="F1" Command="{Binding ShowHelpDocumentCommand}"/>
+        <KeyBinding Gesture="F5" Command="{Binding UpdateSaveCommand}"/>
     </Window.InputBindings>
     <Border BorderBrush="Gray" BorderThickness="1">
         <Grid>
@@ -155,7 +156,7 @@
                     <MenuItem Style="{StaticResource KeyMenuItemHelpDocument}" Command="{Binding Command, ElementName=MenuShowHelpDocumentCommand}"></MenuItem>
                     <MenuItem Style="{StaticResource KeyMenuItemVersionInfo}" Command="{Binding ShowVersionInfoCommand}"></MenuItem>
                 </MenuItem>
-
+                <MenuItem Command="{Binding SaveMaterialCommand}" Header="Save"/>
 
             </Menu>
             <!--AnchorablesSource="{Binding Tools}" DocumentsSource="{Binding Files}"-->
